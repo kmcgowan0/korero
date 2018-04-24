@@ -47,14 +47,23 @@ class InterestsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
+    public function randomColour()
+    {
+        $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+        $colour = $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)];
+        return $colour;
+    }
+
     public function add()
     {
+        $colour = $this->randomColour();
         $interest = $this->Interests->newEntity();
         if ($this->request->is('post')) {
 
             $interest_data = $this->request->getData();
             $interest_data['name'] = ucwords($interest_data['name']);
             $interest_data['users']['_ids'] = [$this->Auth->user('id')];
+            $interest_data['colour'] = $colour;
             $interest = $this->Interests->patchEntity($interest, $interest_data);
             if ($this->Interests->save($interest)) {
                 $this->Flash->success(__('The interest has been saved.'));
@@ -67,7 +76,8 @@ class InterestsController extends AppController
         $this->set(compact('interest', 'users'));
     }
 
-    public function search() {
+    public function search()
+    {
         $term = $this->request->getQuery('term');
         $interests = $this->Interests->find()->where(['name LIKE' => '%' . $term . '%']);
         $this->set(compact('interests'));

@@ -45,7 +45,7 @@ class InterestsTable extends Table
 
     public function isInList($interest)
     {
-        $filename = 'http://mycake3.app/files/badwords.txt';
+        $filename = 'http://165.227.239.78/files/badwords.txt';
         $lines = file($filename, FILE_IGNORE_NEW_LINES);
         $interest_string = strtolower($interest);
         $interest_words = explode(' ', $interest_string);
@@ -75,6 +75,10 @@ class InterestsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
+        $validator
+            ->scalar('colour')
+            ->maxLength('colour', 6)
+            ->allowEmpty('colour', 'create');
 
         $validator->add('name', 'custom', [
             'rule' => [$this, 'isInList'],
