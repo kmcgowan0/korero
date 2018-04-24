@@ -1,3 +1,4 @@
 <?php
-
-echo $notifications;
+if ($notifications != 0) {
+    echo '(' . $notifications . ')';
+}
