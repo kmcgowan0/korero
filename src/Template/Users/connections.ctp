@@ -11,7 +11,7 @@ endif; ?>
     $related_users_var = array();
     foreach ($distinct_users as $related_user):
         if ($related_user->id != $user->id) :
-            array_push($related_users_var, $related_user->id); ?>
+//            array_push($related_users_var, $related_user->id); ?>
 
             <?php
             $related_interests = [];
@@ -22,6 +22,7 @@ endif; ?>
                 }
             }
             $interest_count = count($related_interests);
+            $related_users_var[$related_user->id] = $interest_count;
             $related_interest_str = array();
             foreach ($related_interests as $related_interest) {
                 $related_interest_str[] = $related_interest;
