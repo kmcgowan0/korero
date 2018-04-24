@@ -1,0 +1,39 @@
+
+
+/* Messages */
+
+.sent {
+    text-align: right;
+}
+.received {
+    text-align: left;
+}
+.timestamp {
+    font-size: 11px;
+}
+.column + .column:last-child, .columns + .column:last-child, .column + .columns:last-child, .columns + .columns:last-child {
+    float: left;
+}
+
+/* Connections */
+.profile-picture {
+    background-size: cover;
+    background-position: center;
+    border-radius: 100px;
+}
+.profile-picture-small {
+    height:80px;
+    width:80px;
+}
+.profile-picture-large {
+    height:300px;
+    width:300px;
+}
+.main-user {
+    height: 100px;
+    width:100px;
+    margin: 2em auto;
+}
+.profile-info {
+    border-bottom: 1px solid #e1e1e1;
+}
