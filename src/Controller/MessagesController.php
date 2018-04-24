@@ -122,7 +122,7 @@ class MessagesController extends AppController
             $message_data = $this->request->getData();
             $message_data['sender'] = $this->Auth->user('id');
             $message_data['recipient'] = $id;
-            $message_data['sent'] = date('Y-m-d H:i');
+            $message_data['sent'] = date('Y-m-d H:i:s');
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
             } else {
@@ -262,7 +262,7 @@ class MessagesController extends AppController
             $message_data = $this->request->getData();
             $message_data['sender'] = $this->Auth->user('id');
             $message_data['recipient'] = $recipient;
-            $message_data['sent'] = date('Y-m-d H:i');
+            $message_data['sent'] = date('Y-m-d H:i:s');
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
                 return $this->redirect(['action' => 'view', $recipient]);
