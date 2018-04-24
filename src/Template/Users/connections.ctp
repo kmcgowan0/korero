@@ -61,7 +61,7 @@ endif; ?>
                             echo $this->Form->hidden('recipient', ['value' => $related_user->id, 'id' => 'message-recipient']);
                             ?>
                         </fieldset>
-                        <?= $this->Form->button(__('Submit', ['type' => 'button'])) ?>
+                        <?= $this->Form->button(__('Send', ['type' => 'button'])) ?>
                         <?= $this->Form->end() ?>
                     </div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
