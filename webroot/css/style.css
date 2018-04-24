@@ -32,9 +32,9 @@
 .main-user {
     height: 100px;
     width:100px;
-    margin: 2em auto;
-    margin-top: 30%;
-    transform: translateY(-100%);
+    position: fixed;
+    left: 50%;
+    top: 50%;
 }
 .related-user {
     height: 100px;
