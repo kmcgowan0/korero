@@ -3,7 +3,8 @@
 else :
     $profile_img = 'placeholder.png';
 endif; ?>
-<div class="main-user profile-picture" id="user-<?php echo $user->id; ?>" style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
+<div class="main-user profile-picture" id="user-<?php echo $user->id; ?>"
+     style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
 
 
 <?php if ($distinct_users->count()) : ?>
@@ -32,9 +33,10 @@ endif; ?>
                     $related_profile_img = 'placeholder.png';
                 endif; ?>
                 <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
-                   data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>" class="reveal-link">
-                    <div class="related-user main-user profile-picture"
-                         style="border: solid #000 <?php echo $interest_count; ?>px; background-image: url(/img/<?php echo $related_profile_img; ?>)">
+                   data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"
+                   class="reveal-link">
+                    <div class="related-user profile-picture"
+                         style="border: solid #000 <?php echo $interest_count; ?>px; background-image: url(/img/<?php echo $related_profile_img; ?>); top: <?php echo rand(0, 1000); ?>px; left: <?php echo rand(0, 1000); ?>px;">
                         <p><?= h($related_user->firstname) ?></p>
                     </div>
                 </a>
