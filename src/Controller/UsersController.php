@@ -31,25 +31,18 @@ class UsersController extends AppController
             'contain' => ['interests']
         ];
 
+        $users = $this->Users;
 
         if (!empty($term)) {
-//            [
-//                $query = $this->Users->find()->contain(['interests'])->where(['interests.name LIKE ' => '%' . $term . '%'])
-//            ];
+            $query = $users->find()->matching('Interests', function ($q) use ($term) {
+                return $q->where(['Interests.name LIKE' => '%' . $term . '%']);
+            });
+            $users = $this->paginate($query);
+        } else {
+            $users = $this->paginate($this->Users);
         }
 
-        $users = $this->Users;
-        $some_users = $this->Users->find('all', [
-            'contain' => ['Interests'],
-            'conditions' => ['Interests.name LIKE' => $term]
-        ]);
 
-        $query = $users->find()->matching('Interests', function ($q) use ($term) {
-            return $q->where(['Interests.name LIKE' => $term ]);
-        });
-
-
-        $users = $this->paginate($this->Users);
 
         $this->set(compact('users', 'interests', 'query', 'some_users'));
     }
