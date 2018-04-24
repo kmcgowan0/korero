@@ -30,19 +30,15 @@ $(document).ready(function () {
                 url = $form.attr('action');
             var body = $('#message-body' + liveMessageId).val();
             var posting = $.post(url, {body: body, recipient: liveMessageId});
-            console.log('message: ' + body);
             posting.done(function (data) {
-                console.log('message id: ' + liveMessageId);
                 $(".message-form" + liveMessageId)[0].reset();
                 connectionMessages(liveMessageId);
             });
         });
-        console.log(liveMessageId);
     });
 
     $('[data-reveal]').on('closed.zf.reveal', function () {
         var liveMessageId = null;
-        console.log(liveMessageId);
     });
 
     $("#message-form").submit(function (event) {
