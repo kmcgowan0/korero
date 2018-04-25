@@ -77,8 +77,9 @@ class InterestsTable extends Table
 
         $validator
             ->scalar('colour')
-            ->maxLength('colour', 6)
-            ->allowEmpty('colour', 'create');
+            ->maxLength('colour', 10)
+            ->requirePresence('colour', 'create')
+            ->notEmpty('colour');
 
         $validator->add('name', 'custom', [
             'rule' => [$this, 'isInList'],
@@ -88,7 +89,6 @@ class InterestsTable extends Table
 
         return $validator;
     }
-
 
 
     public function buildRules(RulesChecker $rules)

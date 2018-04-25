@@ -26,6 +26,7 @@ class Interest extends Entity
      */
     protected $_accessible = [
         'name' => true,
+        'colour' => true,
         'users' => true
     ];
 }
