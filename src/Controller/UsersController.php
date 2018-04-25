@@ -338,7 +338,12 @@ class UsersController extends AppController
 
         $distinct_users = $related_users_interests->group('user_id')->order('location', 'ASC');
 
+        if ($distinct_users->count()) {
+            $number_of_users = $distinct_users->count();
 
+            $space_allocated = 360 / $number_of_users;
+
+        }
         $this->loadModel('Messages');
 
         //sending messages from within message view
@@ -357,7 +362,7 @@ class UsersController extends AppController
             }
         }
 
-        $this->set(compact('user', 'user_matching_data', 'distinct_users', 'message'));
+        $this->set(compact('user', 'user_matching_data', 'distinct_users', 'message', 'number_of_users', 'space_allocated'));
         $this->set('_serialize', ['user']);
     }
 

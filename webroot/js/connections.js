@@ -12,6 +12,7 @@ $(document).ready(function () {
         relatedUsersCoords.push(coordinates(key, val));
     });
 
+    console.log(relatedUsers);
     console.log(relatedUsersCoords);
     jQuery.each(relatedUsersCoords, function (x, y) {
 
@@ -20,7 +21,8 @@ $(document).ready(function () {
         y1 = mainY;
         x2 = y[0];
         y2 = y[1];
-        height = y[2];
+        //count number of interests
+        height = y[2].length;
 
         var m = (y2 - y1) / (x2 - x1); //slope of the segment
         var angle = (Math.atan(m)) * 180 / (Math.PI); //angle of the line
@@ -37,26 +39,12 @@ $(document).ready(function () {
         // add the (currently invisible) line to the page
 
 
-        jQuery.each(new Array(height),
-            function (i) {
-                var id = 'line_' + new Date().getTime();
-                var line = "<div id='" + id + "'class='line'>&nbsp;</div>";
-                var color = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
 
-                $('#canvas').append(line);
-                console.log(x1);
-
-                console.log(i*10);
-
-                console.log(x1+i);
                 //rotate the line
                 $('#' + id).css({
-                    'left': x1+(i*10),
-                    'top': y1,
                     'width': '0px',
                     'height': '2px',
                     'z-index': '-10',
-                    'background-color': color,
                     'position': 'fixed',
                     'transform': 'rotate(' + transform + 'deg)',
                     'transform-origin': '0px 0px',
@@ -75,9 +63,15 @@ $(document).ready(function () {
                     width: d
                 }, 400, "linear", function () {
                 });
-            }
-        );
 
+            var id = 'line_' + new Date().getTime();
+            var line = "<div id='" + id + "'class='line'>&nbsp;</div>";
+            // var color = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
+            var color = this['colour'];
+            var name = this['name'];
+            $('#canvas').append(line);
+
+        });
 
     });
 
