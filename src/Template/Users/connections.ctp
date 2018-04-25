@@ -1,3 +1,4 @@
+<!--//get profile picture-->
 <?php if ($user->upload) :
     $profile_img = $user->upload;
 else :
@@ -8,52 +9,57 @@ endif; ?>
 
 
 <?php if ($distinct_users->count()) :
+    //related users var to pass to js
     $related_users_var = array();
+//start position for rotating related users
     $position = 0; ?>
 
     <div class="related-container">
         <?php
         foreach ($distinct_users as $related_user):
+            //if the related user isn't the current user
             if ($related_user->id != $user->id) :
-//            array_push($related_users_var, $related_user->id);
                 ?>
 
                 <?php
                 $related_interests = [];
 
                 foreach ($user_matching_data as $matching_datum) {
+                    //if the matching data matches the id of the related user
+                    //add that interest to an array for this user
                     if ($matching_datum['UsersInterests']->user_id == $related_user->id) {
-                        //associative array with colours
-                        //OR
-                        //array of interest objects
+
                         array_push($related_interests, $matching_datum['Interests']);
-                    }
+                    } ?>
+                    <?php
                 }
-                $interest_count_colours = [];
+                //count number of related interests
                 $interest_count = count($related_interests);
-                //change interest count to related interests to get the array of interests here
-                //then in js count them and also have the colours
-                //
+
+                //create associative array where user id: interest
                 $related_users_var[$related_user->id] = $related_interests;
+                //add each related interest to a string
                 $related_interest_str = array();
                 foreach ($related_interests as $related_interest) {
                     $related_interest_str[] = $related_interest->name;
                 }
-
+//profile picture
                 if ($related_user->upload) :
                     $related_profile_img = $related_user->upload;
                 else :
                     $related_profile_img = 'placeholder.png';
                 endif; ?>
+<!--                //link to click to show modal-->
                 <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
                    data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"
                    class="reveal-link">
                     <div class="related-user profile-picture" id="related-user-<?php echo $related_user->id; ?>"
-                         style="border: solid #000 <?php echo $interest_count; ?>px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(12em) rotate(-<?php echo $position; ?>deg);">
+                         style="border: solid #000 <?php echo $interest_count; ?>px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(15em) rotate(-<?php echo $position; ?>deg);">
                         <p><?= h($related_user->firstname) ?></p>
                     </div>
                 </a>
 
+<!--                modal what which is revealed-->
                 <div class="reveal" id="modal-<?php echo $related_user->id; ?>" data-reveal>
                     <div class="profile-info row">
                         <div class="profile-picture-small profile-picture small-2 columns"
@@ -91,9 +97,12 @@ endif; ?>
 
     </div>
     <div id="canvas"></div>
-
+    <?php var_dump($related_users_var); ?>
     <script>
         var relatedUsers = <?php echo json_encode($related_users_var); ?>;
+    </script>
+    <script>
+
     </script>
 <?php else : ?>
     <div class="container">

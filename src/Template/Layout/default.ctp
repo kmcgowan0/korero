@@ -33,6 +33,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('style.css') ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
     <script src="/js/connections.js"></script>
@@ -46,16 +47,20 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <nav class="top-bar expanded" data-topbar role="navigation">
     <ul class="title-area large-3 columns">
         <li class="name">
-            <h1><a href=""><?= $this->fetch('title') ?></a></h1>
+            <h1><?= $this->Html->link(__('Connections'), ['controller' => 'Users', 'action' => 'connections']) ?></h1>
         </li>
     </ul>
-
+    <div class="top-bar-section large-4 columns">
+        <?= $this->Form->create('', ['type' => 'get', 'url' => '/users/search']) ?>
+        <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search']) ?>
+        <?= $this->Form->end() ?>
+    </div>
     <div class="top-bar-section large-5 columns">
         <ul class="right">
             <?php if ($authUser) : ?>
                 <li><?= $this->Html->link(__('View Profile'), ['controller' => 'Users', 'action' => 'view', $authUser['id']]) ?></li>
                 <!-- number of notifications -->
-                <li><?= $this->Html->link(__('Messages'), ['controller' => 'Messages', 'action' => 'inbox']) ?><span id="notifications"></span></li>
+                <li><a href="/messages/inbox">Messages <span id="notifications"></span></a></li>
                 <li><?= $this->Html->link(__('Logout'), ['controller' => 'Users', 'action' => 'logout']) ?></li>
             <?php else : ?>
                 <li><?= $this->Html->link(__('Login'), ['controller' => 'Users', 'action' => 'login']) ?></li>
@@ -84,7 +89,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         });
     </script>
 
-<!--    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAs_1lMnpJElTDelPDgGnO6gZ_raZihRE8"></script>-->
+    <!--    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAs_1lMnpJElTDelPDgGnO6gZ_raZihRE8"></script>-->
 
     <script src="/js/vendor/what-input.js"></script>
     <script src="/js/vendor/foundation.js"></script>
