@@ -1,6 +1,5 @@
 <?php
 
-//get unread boyos
 foreach ($messages_in_thread_ordered as $message_in_thread) : ?>
     <?php if ($message_in_thread->sender == $authUser['id']) {
         $send_class = 'sent';

@@ -1,8 +1,6 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Message[]|\Cake\Collection\CollectionInterface $messages
- * @var \App\Model\Entity\Message[]|\Cake\Collection\CollectionInterface $messaged
  * @var \App\Model\Entity\Message[]|\Cake\Collection\CollectionInterface $message_threads
  * @var \App\Model\Entity\Message[]|\Cake\Collection\CollectionInterface $user_array
  */

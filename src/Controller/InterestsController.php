@@ -71,8 +71,7 @@ class InterestsController extends AppController
             }
             $this->Flash->error(__('The interest could not be saved. Please, try again.'));
         }
-        $users = $this->Interests->Users->find('list', ['limit' => 200]);
-        $this->set(compact('interest', 'users'));
+        $this->set(compact('interest'));
     }
 
     public function search()

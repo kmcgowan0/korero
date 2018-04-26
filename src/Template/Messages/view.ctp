@@ -2,7 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Message $message
- * @var \App\Model\Entity\Message $messages_in_thread
+ * @var \App\Model\Entity\Message $user_array
+ * @var \App\Model\Entity\Message $sent_to_id
+ * @var \App\Model\Entity\Message $interests
+ * @var \App\Controller\Component\AllowedComponent $allowed_user
  */
 ?>
 

@@ -23,7 +23,7 @@ class MessageComponent extends Component
             if ($recipient != null) {
                 $message_data['recipient'] = $recipient;
             }
-            $message_data['sent'] = date('Y-m-d h:i');
+            $message_data['sent'] = date('Y-m-d h:i:s');
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
                 $this->Flash->success(__('Message sent'));

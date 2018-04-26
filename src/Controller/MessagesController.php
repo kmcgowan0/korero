@@ -40,8 +40,6 @@ class MessagesController extends AppController
     public function view($id = null)
     {
 
-        //update seen to true in here
-
         //get all messages from this user
         $messages_in_thread = $this->Messages->find('all', array(
             'conditions' => array(
@@ -55,7 +53,7 @@ class MessagesController extends AppController
 
         $received_messages = $this->Messages->find('all', array(
             'conditions' => array(
-                    array('recipient' => $this->Auth->user('id')),
+                array('recipient' => $this->Auth->user('id')),
             )
         ));
 
@@ -100,7 +98,7 @@ class MessagesController extends AppController
         $auth_user = $this->Auth->user();
         $allowed_user = $this->Allowed->checkAllowed($user, $auth_user);
 
-        $this->set(compact('messages_in_thread', 'message', 'user_array', 'sent_to_id', 'allowed_user', 'update_query', 'interests'));
+        $this->set(compact('message', 'user_array', 'sent_to_id', 'allowed_user', 'interests'));
     }
 
     public function instantMessages($id = null)
@@ -119,21 +117,6 @@ class MessagesController extends AppController
         $this->loadComponent('Message');
         $this->Message->sendMessages($this->Auth->user('id'), $id);
 
-        //sending messages from within message view
-//        $message = $this->Messages->newEntity();
-//        if ($this->request->is('post')) {
-//
-//            $message_data = $this->request->getData();
-//            $message_data['sender'] = $this->Auth->user('id');
-//            $message_data['recipient'] = $id;
-//            $message_data['sent'] = date('Y-m-d H:i:s');
-//            $message = $this->Messages->patchEntity($message, $message_data);
-//            if ($this->Messages->save($message)) {
-//            } else {
-//                $this->Flash->error(__('The message could not be sent. Please, try again.'));
-//            }
-//        }
-        var_dump(date('Y-m-d H:i:s'));
         $this->loadModel('Users');
         $users = $this->Users->find()->all();
 
@@ -143,7 +126,7 @@ class MessagesController extends AppController
         }
         $sent_to_id = $id;
 
-        $this->set(compact('messages_in_thread', 'message', 'user_array', 'sent_to_id'));
+        $this->set(compact('messages_in_thread', 'sent_to_id'));
     }
 
     public function connectionMessages($id = null)
@@ -183,15 +166,12 @@ class MessagesController extends AppController
         foreach ($users as $user) {
             $user_array[$user['id']] = $user;
         }
-        $sent_to_id = $id;
 
-        $this->set(compact('messages_in_thread_ordered', 'message', 'user_array', 'sent_to_id'));
+        $this->set(compact('messages_in_thread_ordered'));
     }
 
     public function inbox()
     {
-
-
         //find all messages relating to current user
         $messages = $this->Messages->find('all', array(
             'conditions' => array(
@@ -202,9 +182,6 @@ class MessagesController extends AppController
 
             )
         ));
-
-//        $messages = $this->paginate($messages);
-
 
         $this->loadModel('Users');
         $users = $this->Users->find()->all();
@@ -238,27 +215,13 @@ class MessagesController extends AppController
             ));
             $message_threads[$messaged_user] = $messages_in_thread;
 
-//            array_push($message_threads, $messages_in_thread);
         }
 
 
-        $this->set(compact('messages', 'messaged', 'message_threads', 'user_array'));
+        $this->set(compact('message_threads', 'user_array'));
     }
 
-    public function outbox()
-    {
-        $messages = $this->Messages->find('all', array(
-            'conditions' => array(
-                'OR' => array(
-                    array('sender' => $this->Auth->user('id')),
-                    array('recipient' => $this->Auth->user('id')),
-                )
-
-            )
-        ));
-        $this->set('messages', $messages);
-    }
-
+    //probably don't need this kid
     public function compose($recipient = null)
     {
         $message = $this->Messages->newEntity();
@@ -328,7 +291,7 @@ class MessagesController extends AppController
     {
         $messages = $this->Messages->find('all', array(
             'conditions' => array(
-                    array('recipient' => $this->Auth->user('id')),
+                array('recipient' => $this->Auth->user('id')),
             )
         ));
 
@@ -342,7 +305,7 @@ class MessagesController extends AppController
         }
 
         $notifications = count($unread_messages);
-        $this->set(compact('message', 'seen', 'unread_messages', 'notifications'));
+        $this->set(compact('notifications'));
     }
 }
 
