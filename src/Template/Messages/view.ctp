@@ -6,11 +6,15 @@
  */
 ?>
 
-<?php if ($allowed_user == true) { ?>
+<?php if ($allowed_user == true) {
+    $related_interest_str = array();
+     foreach ($interests as $interest) {
+            $related_interest_str[] = $interest['name'];
+    } ?>
 <div class="messages view large-9 medium-8 columns content">
     <h4>Conversation with <?php echo $user_array[$sent_to_id]['firstname']; ?></h4>
 
-    <p>You both like</p>
+    <p>You both like: <?php echo implode(', ', $related_interest_str); ?></p>
     <div id="messages"></div>
     <div class="large-12">
         <?= $this->Form->create($message, ['id' => 'message-form']) ?>
