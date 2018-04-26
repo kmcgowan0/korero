@@ -24,7 +24,7 @@
     endif; ?>
     <div class="profile-picture-large profile-picture"
          style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
-    <?php if ($allowed_user) { ?>
+    <?php if ($allowed_user && $my_profile == false) { ?>
         <h6><?= $this->Html->link(__('Send a message'), ['controller' => 'Messages', 'action' => 'view', $user->id]) ?></h6>
     <?php } ?>
     <?php if ($my_profile == true) { ?>
@@ -67,8 +67,7 @@
                     <th scope="col"><?= __('Id') ?></th>
                     <th scope="col"><?= __('Name') ?></th>
                     <th scope="col"><?= __('Description') ?></th>
-                    <th scope="col" class="actions"><?= __('Actions') ?></th>
-                </tr>
+                </tr>bfac
                 <?php foreach ($user->interests as $interests): ?>
                     <tr>
                         <td><?= h($interests->id) ?></td>
@@ -89,32 +88,5 @@
 
             </div>
         <?php } ?>
-    <?php endif; ?>
-    <?php if ($related_users->count()) : ?>
-        <div class="related view large-9 medium-8 columns content">
-            <h4><?= __('Related Users') ?></h4>
-
-            <table cellpadding="0" cellspacing="0">
-                <tr>
-                    <th scope="col"><?= __('Name') ?></th>
-                    <th scope="col"><?= __('Common Interests') ?></th>
-                </tr>
-                <?php foreach ($related_users as $related_user):
-                    if ($related_user->id != $user->id) : ?>
-                        <tr>
-                            <td><?= $this->Html->link(__($related_user->firstname), ['controller' => 'Users', 'action' => 'view', $related_user->id]) ?></td>
-
-                            <td>
-                                <?php foreach ($related_user->_matchingData as $matchingData) : ?>
-
-                                    <?= h($matchingData->name) ?>
-
-                                <?php endforeach; ?></td>
-                        </tr>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </table>
-
-        </div>
     <?php endif; ?>
 </div>
