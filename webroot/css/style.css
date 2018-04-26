@@ -58,3 +58,7 @@
 .profile-info {
     border-bottom: 1px solid #e1e1e1;
 }
+
+.unread {
+    background-color: #ff6b6d!important;
+}
