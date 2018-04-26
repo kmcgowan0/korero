@@ -113,7 +113,7 @@ function messageNotifications() {
     $.get({
         url: '/messages/unread-messages/',
         success: function (data) {
-            $('#notifications').html('(' + data + ')');
+            $('#notifications').html(data);
         }
         // complete: function () {
         //     // Schedule the next
