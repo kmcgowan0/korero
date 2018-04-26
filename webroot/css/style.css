@@ -30,14 +30,12 @@
     width:300px;
 }
 .main-user {
-    height: 100px;
-    width:100px;
     position: fixed;
-    margin: 2em auto;
     display: block;
     top: 50%; left: 50%;
-    width: 4em; height: 4em;
+    width: 5em; height: 5em;
     margin: -2em;
+    z-index: 100;
 }
 .related-container {
     position: relative;
@@ -47,12 +45,12 @@
     margin: 1.75em auto 0;
 }
 .related-user {
-    margin: 2em auto;
     position: fixed;
     display: block;
     top: 50%; left: 50%;
     width: 4em; height: 4em;
     margin: -2em;
+    z-index: 100;
 }
 
 .profile-info {
@@ -61,4 +59,51 @@
 
 .unread {
     background-color: #ff6b6d!important;
+}
+
+.ui-tooltip, .arrow:after {
+    background: #EFEFEF;
+}
+.ui-tooltip {
+    padding: 10px 20px;
+    color: #000;
+    border-radius: 10px;
+    font: bold 14px "Helvetica Neue", Sans-Serif;
+    text-transform: uppercase;
+    box-shadow: 0 0 7px black;
+    position: relative;
+    width:150px;
+    text-align: center;
+}
+.arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 100%;
+    /*margin-left: -35px;*/
+    bottom: -16px;
+}
+.arrow.top {
+    top: -16px;
+    bottom: auto;
+}
+.arrow.left {
+    left: 30%;
+}
+.arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.arrow.top:after {
+    bottom: -20px;
+    top: auto;
 }
