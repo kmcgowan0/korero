@@ -97,7 +97,6 @@ endif; ?>
 
     </div>
     <div id="canvas"></div>
-    <?php var_dump($related_users_var); ?>
     <script>
         var relatedUsers = <?php echo json_encode($related_users_var); ?>;
     </script>

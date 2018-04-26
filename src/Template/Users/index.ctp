@@ -33,6 +33,7 @@
         </tr>
         </thead>
         <tbody>
+
         <?php foreach ($users as $user):
             $interests = array();
             foreach ($user->interests as $interest) {
