@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     messageNotifications();
 
+
     $('#search').on('keyup', function () {
         var term = $(this).val();
         search(term);
