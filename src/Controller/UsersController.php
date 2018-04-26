@@ -6,7 +6,6 @@ use Cake\Event\Event;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Query;
-use Cake\ORM\Association\BelongsToMany;
 
 /**
  * Users Controller
@@ -45,6 +44,62 @@ class UsersController extends AppController
         $this->set(compact('users', 'interests', 'query', 'some_users'));
     }
 
+    public function search()
+    {
+        $id = $this->Auth->user('id');
+        $auth_user = $this->Users->get($id, [
+            'contain' => ['Interests']
+        ]);
+
+        $term = $this->request->query('term');
+
+        $this->paginate = [
+            'contain' => ['interests']
+        ];
+
+        $users = $this->Users;
+
+        if (!empty($term)) {
+            $query = $users->find()->matching('Interests', function ($q) use ($term) {
+                return $q->where(['Interests.name LIKE' => '%' . $term . '%']);
+            });
+            $users = $this->paginate($query);
+        } else {
+            $users = $this->paginate($this->Users);
+        }
+        if ($users->count()) {
+            $number_of_users = $users->count();
+
+            $space_allocated = 360 / $number_of_users;
+        }
+
+        $this->loadModel('Messages');
+
+//        sending messages from within message view
+        $message = $this->Messages->newEntity();
+        if ($this->request->is('post')) {
+
+            $message_data = $this->request->getData();
+            $message_data['sender'] = $id;
+            //$message_data['recipient'] = $id;
+            $message_data['sent'] = date('Y-m-d h:i');
+            $message = $this->Messages->patchEntity($message, $message_data);
+            if ($this->Messages->save($message)) {
+                $this->Flash->success(__('Message sent'));
+            } else {
+                $this->Flash->error(__('The message could not be sent. Please, try again.'));
+            }
+        }
+
+        //need to add messages to here
+        $this->loadComponent('Message');
+        $this->Message->sendMessages($this->Auth->user('id'));
+
+
+        $this->set(compact('users', 'interests', 'query', 'some_users', 'auth_user', 'space_allocated', 'message', 'term'));
+
+    }
+
     /**
      * View method
      *
@@ -79,7 +134,7 @@ class UsersController extends AppController
         //true if authuser and user have any matching interests
         //true if any of the user's interests are in authusers list of interests
         //false if not
-        if ($auth_user == $id) {
+        if ($auth_user['id'] == $user['id']) {
             $my_profile = true;
         } else {
             $my_profile = false;
@@ -344,9 +399,15 @@ class UsersController extends AppController
             $space_allocated = 360 / $number_of_users;
 
         }
+
+        //would like this working
+
+//        $this->loadComponent('Message');
+//        $message = $this->Message->sendMessages($this->Auth->user('id'));
+
         $this->loadModel('Messages');
 
-        //sending messages from within message view
+//        sending messages from within message view
         $message = $this->Messages->newEntity();
         if ($this->request->is('post')) {
 
@@ -362,7 +423,7 @@ class UsersController extends AppController
             }
         }
 
-        $this->set(compact('user', 'user_matching_data', 'distinct_users', 'message', 'number_of_users', 'space_allocated'));
+        $this->set(compact('user', 'user_matching_data', 'distinct_users', 'message', 'number_of_users', 'space_allocated', 'related_users_interests'));
         $this->set('_serialize', ['user']);
     }
 
