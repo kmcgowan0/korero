@@ -54,7 +54,7 @@ endif; ?>
                    data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"
                    class="reveal-link">
                     <div class="related-user profile-picture" id="related-user-<?php echo $related_user->id; ?>"
-                         style="border: solid #000 <?php echo $interest_count; ?>px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(15em) rotate(-<?php echo $position; ?>deg);">
+                         style="border: solid #000 2px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(15em) rotate(-<?php echo $position; ?>deg);">
                         <p><?= h($related_user->firstname) ?></p>
                     </div>
                 </a>
@@ -100,9 +100,7 @@ endif; ?>
     <script>
         var relatedUsers = <?php echo json_encode($related_users_var); ?>;
     </script>
-    <script>
 
-    </script>
 <?php else : ?>
     <div class="container">
         <p>You have no mutual interests with anyone around you, consider adding some. bitch.</p>
