@@ -14,7 +14,7 @@
             echo $this->Form->control('email');
             echo $this->Form->control('password');
 
-        echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1950, 'maxYear' => date('Y')]);
+        echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1920, 'maxYear' => date('Y')]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
