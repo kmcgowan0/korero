@@ -94,12 +94,13 @@ class MessagesController extends AppController
         $sent_to_id = $id;
 
         $user = $user_array[$sent_to_id];
+        $interests = $user_array[$sent_to_id]->interests;
         $this->loadComponent('Allowed');
 
         $auth_user = $this->Auth->user();
         $allowed_user = $this->Allowed->checkAllowed($user, $auth_user);
 
-        $this->set(compact('messages_in_thread', 'message', 'user_array', 'sent_to_id', 'allowed_user', 'update_query'));
+        $this->set(compact('messages_in_thread', 'message', 'user_array', 'sent_to_id', 'allowed_user', 'update_query', 'interests'));
     }
 
     public function instantMessages($id = null)
