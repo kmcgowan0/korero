@@ -33,7 +33,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('style.css') ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
     <script src="/js/connections.js"></script>

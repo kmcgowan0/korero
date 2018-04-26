@@ -44,7 +44,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('home.css') ?>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="/js/script.js"></script>
+    <script src="/js/scripts.js"></script>
 <!--    <script src="/js/geolocation.js"></script>-->
     <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 
