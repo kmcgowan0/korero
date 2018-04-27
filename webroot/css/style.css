@@ -1,4 +1,23 @@
+.footer {
+    background-color: #130f36;
+    color: #fff;
+}
+.footer .columns {
+    padding: 1.5em;
+}
 
+.footer .columns p {
+    margin-bottom: 0;
+}
+.footer a {
+    color: #fff;
+
+}
+
+.footer-links {
+    list-style-type: none;
+    margin-left: 0;
+}
 
 /* Messages */
 

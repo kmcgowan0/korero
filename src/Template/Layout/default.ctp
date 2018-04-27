@@ -74,7 +74,33 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <div class="container clearfix">
     <?= $this->fetch('content') ?>
 </div>
-<footer>
+<footer class="footer">
+    <div class="row">
+        <div class="small-12 medium-2 columns">
+            <img class="logo" src="/img/logo-footer.png">
+        </div>
+        <div class="small-12 medium-4 columns">
+           <p><strong>Lorem Ipsum</strong></p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam efficitur elit lacus, a molestie lectus imperdiet sit amet. Vestibulum varius, nisi vel interdum tincidunt, metus turpis vehicula odio, sit amet placerat dui eros vel dui. </p>
+        </div>
+        <div class="small-12 medium-3 columns">
+            <p><strong>Quick Links</strong></p>
+            <ul class="footer-links">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="small-12 medium-3 columns">
+            <p><strong>Get in Touch</strong></p>
+            <ul class="footer-links">
+                <li>Call: 00000000000</li>
+                <li>Email: info@koreroapp.com</li>
+                <li>Facebook</li>
+                <li>Twitter</li>
+            </ul>
+        </div>
+    </div>
 
     <script>
         $("#btn").click(function () {
