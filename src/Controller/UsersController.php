@@ -329,6 +329,8 @@ class UsersController extends AppController
         $interest = $this->Users->Interests->get($iid);
         $this->Users->unlink($user, [$interest]);
         return $this->redirect(['action' => 'index']);
+        $this->Users->Interests->unlink($user, [$interest]);
+        return $this->redirect(['action' => 'edit-interests', $uid]);
     }
 
 
