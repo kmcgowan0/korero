@@ -12,7 +12,8 @@
         echo $this->Form->control('firstname', ['label' => 'First Name']);
         echo $this->Form->control('lastname', ['label' => 'Last Name']);
             echo $this->Form->control('email');
-            echo $this->Form->control('password');
+        echo $this->Form->control('password');
+        echo $this->Form->control('location');
 
         echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1920, 'maxYear' => date('Y')]);
         ?>
