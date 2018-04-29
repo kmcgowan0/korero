@@ -244,7 +244,15 @@ class UsersController extends AppController
         $top_interests = $this->Users->Interests->find('list')->where(['id IN' => $top_interest_array]);
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
 
-        $this->set(compact('user', 'interests', 'top_interests'));
+        $auth_user = $this->Auth->user();
+
+        if ($auth_user['id'] == $user['id']) {
+            $my_profile = true;
+        } else {
+            $my_profile = false;
+        }
+
+        $this->set(compact('user', 'interests', 'top_interests', 'my_profile'));
     }
 
     public function editInterests($id = null)
