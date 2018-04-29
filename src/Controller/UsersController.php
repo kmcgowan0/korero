@@ -327,8 +327,6 @@ class UsersController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($uid);
         $interest = $this->Users->Interests->get($iid);
-        $this->Users->unlink($user, [$interest]);
-        return $this->redirect(['action' => 'index']);
         $this->Users->Interests->unlink($user, [$interest]);
         return $this->redirect(['action' => 'edit-interests', $uid]);
     }
