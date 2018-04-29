@@ -60,24 +60,12 @@
     </table>
     <?php if (!empty($user->interests)): ?>
         <div class="related">
-            <h4><?= __('Related Interests') ?></h4>
-
-            <table cellpadding="0" cellspacing="0">
-                <tr>
-                    <th scope="col"><?= __('Id') ?></th>
-                    <th scope="col"><?= __('Name') ?></th>
-                    <th scope="col"><?= __('Description') ?></th>
-                </tr>bfac
-                <?php foreach ($user->interests as $interests): ?>
-                    <tr>
-                        <td><?= h($interests->id) ?></td>
-                        <td><?= h($interests->name) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('View'), ['controller' => 'Interests', 'action' => 'view', $interests->id]) ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+            <h4><?= __('Interests') ?></h4>
+<ul class="interests">
+    <?php foreach ($user->interests as $interests): ?>
+    <li><?= h($interests->name) ?></li>
+    <?php endforeach; ?>
+</ul>
 
         </div>
     <?php else : ?>

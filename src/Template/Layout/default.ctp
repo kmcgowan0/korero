@@ -47,13 +47,15 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <nav class="top-bar expanded" data-topbar role="navigation">
     <ul class="title-area large-3 columns">
         <li class="name">
-            <h1><?= $this->Html->link(__('Connections'), ['controller' => 'Users', 'action' => 'connections']) ?></h1>
+            <a href="/users/connections"><img src="/img/logo-header.png" class="logo"></a>
         </li>
     </ul>
-    <div class="top-bar-section large-4 columns">
+    <div class="large-4 columns search-column">
+        <?php if ($authUser) : ?>
         <?= $this->Form->create('', ['type' => 'get', 'url' => '/users/search']) ?>
-        <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search']) ?>
+        <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search', 'class' => 'header-search']) ?>
         <?= $this->Form->end() ?>
+        <?php endif; ?>
     </div>
     <div class="top-bar-section large-5 columns">
         <ul class="right">

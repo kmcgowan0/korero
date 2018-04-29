@@ -45,7 +45,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <?= $this->Html->css('home.css') ?>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="/js/scripts.js"></script>
-<!--    <script src="/js/geolocation.js"></script>-->
+    <!--    <script src="/js/geolocation.js"></script>-->
     <link href="https://fonts.googleapis.com/css?family=Raleway:500i|Roboto:300,400,700|Roboto+Mono" rel="stylesheet">
 
 </head>
@@ -58,36 +58,34 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
         <p>This will be a link to an about page</p>
     </div>
 </header>
-
-
 <div class="row">
 
+    <div class="columns large-6 large-offset-5">
+        <?php if (!$authUser) : ?>
+            <?= $this->Html->link('Login', ['controller' => 'Users', 'action' => 'login']); ?>
+            <p>The actual login form should be here</p>
+            <?= $this->Html->link('Don\'t have an account? Sign up here', ['controller' => 'Users', 'action' => 'add']); ?>
+            <p>OR</p>
+            <?php echo $this->Html->link(
+                'Login with Facebook',
+                ['controller' => 'SocialProfiles', 'action' => 'login', '?' => ['provider' => 'Facebook']]
+            ); ?>
+        <?php else : ?>
+            <?= $this->Html->link('Edit your account', ['controller' => 'Users', 'action' => 'edit', $authUser['id']]); ?>
+            <br>
+            <?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout']); ?>
+        <?php endif; ?>
+        <br>
 
-    <p>Click the button to get your coordinates.</p>
 
-    <button onclick="getLocation()">Try It</button>
+    </div>
 
-    <p id="demo"></p>
 
-    <script>
-        var x = document.getElementById("demo");
-        console.log(x);
+    <hr/>
 
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-                console.log(navigator.geolocation.getCurrentPosition(showPosition));
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
+</div>
 
-        function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude +
-                "<br>Longitude: " + position.coords.longitude;
-            console.log(position);
-        }
-    </script>
+<div class="row">
 
 
 </body>

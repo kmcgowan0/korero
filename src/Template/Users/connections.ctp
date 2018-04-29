@@ -49,7 +49,7 @@ endif; ?>
                 else :
                     $related_profile_img = 'placeholder.png';
                 endif; ?>
-<!--                //link to click to show modal-->
+                <!--                //link to click to show modal-->
                 <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
                    data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"
                    class="reveal-link">
@@ -59,13 +59,17 @@ endif; ?>
                     </div>
                 </a>
 
-<!--                modal what which is revealed-->
+                <!--                modal what which is revealed-->
                 <div class="reveal" id="modal-<?php echo $related_user->id; ?>" data-reveal>
                     <div class="profile-info row">
-                        <div class="profile-picture-small profile-picture small-2 columns"
-                             style="background-image: url(/img/<?php echo $related_profile_img; ?>)"></div>
+                        <a href="/users/view/<?php echo $related_user->id; ?>">
+                            <div class="profile-picture-small profile-picture small-2 columns"
+                                 style="background-image: url(/img/<?php echo $related_profile_img; ?>)"></div>
+                        </a>
                         <div class="small-10 medium-8 columns">
-                            <h4><?= h($related_user->firstname) ?></h4>
+                            <a href="/users/view/<?php echo $related_user->id; ?>">
+                                <h4><?= h($related_user->firstname) ?></h4>
+                            </a>
                             <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
                         </div>
                         <div class="small-10 medium-2 columns">
@@ -99,6 +103,23 @@ endif; ?>
     <div id="canvas"></div>
     <script>
         var relatedUsers = <?php echo json_encode($related_users_var); ?>;
+        var x = document.getElementById("demo");
+        console.log(x);
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+                console.log(navigator.geolocation.getCurrentPosition(showPosition));
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+            console.log(position);
+        }
     </script>
 
 <?php else : ?>
