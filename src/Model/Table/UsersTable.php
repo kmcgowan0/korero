@@ -72,6 +72,20 @@ class UsersTable extends Table
             ->contain(['Interests']);
     }
 
+    public function ofAge($dob)
+    {
+        // $then will first be a string-date
+        $then = strtotime($dob);
+        //The age to be over, over +18
+        $min = strtotime('+18 years', $then);
+        echo $min;
+        if(time() < $min)  {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /**
      * Default validation rules.
      *
@@ -116,6 +130,11 @@ class UsersTable extends Table
         $validator
             ->date('dob')
             ->allowEmpty('dob');
+
+        $validator->add('dob', 'custom', [
+            'rule' => [$this, 'ofAge'],
+            'message' => 'Sorry, you\'re too young.'
+        ]);
 
         return $validator;
     }
