@@ -140,3 +140,9 @@ input.header-search {
     bottom: -20px;
     top: auto;
 }
+.radius-form {
+    padding: 2em;
+}
+input.radius-input {
+    width: 80px;
+}

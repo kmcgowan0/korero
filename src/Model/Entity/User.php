@@ -38,7 +38,8 @@ class User extends Entity
         'dob' => true,
         'location' => true,
         'upload' => true,
-        'interests' => true
+        'interests' => true,
+        'radius' => true
     ];
 
     /**
