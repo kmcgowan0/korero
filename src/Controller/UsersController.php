@@ -374,10 +374,21 @@ class UsersController extends AppController
 
     public function connections()
     {
+
         $id = $this->Auth->user('id');
         $user = $this->Users->get($id, [
             'contain' => ['Interests']
         ]);
+
+//updating the radius to search in
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user_data = $this->request->getData();
+            $user = $this->Users->patchEntity($user, $user_data);
+            if ($this->Users->save($user)) {
+                return $this->redirect(['action' => 'connections']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
 
         $ids = [-1];
 
@@ -399,13 +410,51 @@ class UsersController extends AppController
             array_push($user_matching_data, $related_users_interest->_matchingData);
         }
 
-        $distinct_users = $related_users_interests->group('user_id')->order('location', 'ASC');
+        //get distance component
+        $this->loadComponent('Distance');
 
+        //only get distinct users
+        $distinct_users = $related_users_interests->group('Users.id')->order('location', 'ASC');
+
+        //if there are distinct users work out how much space each gets
         if ($distinct_users->count()) {
             $number_of_users = $distinct_users->count();
 
             $space_allocated = 360 / $number_of_users;
+        }
 
+        //empty array for counting interests
+        $interest_count = array();
+
+//        for each interest set the this interest variable to 0
+        foreach ($related_users_interests as $an_interest) {
+            $this_interest = 0;
+            //for each bit of matching data check if it relates to the current users interests
+            //if it does add it onto the this interest var
+            foreach ($user_matching_data as $a_data) {
+                if ($a_data['UsersInterests']->user_id == $an_interest['id']) {
+                    $this_interest++;
+                }
+            }
+            //create associative array for each users interest where user id => number of mutual interests
+            $interest_count[$an_interest['id']] = $this_interest;
+        }
+
+        //sort the interests from most to least
+        arsort($interest_count);
+
+        //slice the array to get the top 6
+        $top_interests = array_slice($interest_count, 0, 6, true);
+
+        //set empty array for users in radius
+        $users_in_radius = array();
+        //for each user get the distance from the main user
+        foreach ($distinct_users as $distinct_user) {
+            $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
+            //if the user is within the radius and in the top users array add it to the users in radius var
+            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests)) {
+                array_push($users_in_radius, $distinct_user);
+            }
         }
 
         //would like this working
@@ -431,7 +480,10 @@ class UsersController extends AppController
             }
         }
 
-        $this->set(compact('user', 'user_matching_data', 'distinct_users', 'message', 'number_of_users', 'space_allocated', 'related_users_interests'));
+
+
+
+        $this->set(compact('user', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated'));
         $this->set('_serialize', ['user']);
     }
 

@@ -6,17 +6,24 @@ else :
 endif; ?>
 <div class="main-user profile-picture" id="user-<?php echo $user->id; ?>"
      style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
+<div class="radius-form">
+<p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
+<?= $this->Form->create($user) ?>
+<?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
+<?= $this->Form->button(__('Update radius')) ?>
+<?= $this->Form->end() ?>
+</div>
 
-
-<?php if ($distinct_users->count()) :
+<?php if (count($users_in_radius)) :
     //related users var to pass to js
     $related_users_var = array();
 //start position for rotating related users
     $position = 0; ?>
 
     <div class="related-container">
+
         <?php
-        foreach ($distinct_users as $related_user):
+        foreach ($users_in_radius as $related_user):
             //if the related user isn't the current user
             if ($related_user->id != $user->id) :
                 ?>
@@ -124,7 +131,8 @@ endif; ?>
 
 <?php else : ?>
     <div class="container">
-        <p>You have no mutual interests with anyone around you, consider adding some. bitch.</p>
+        <p>You have no mutual interests with anyone around you.</p>
+        <p>Try adding some, or updating your radius.</p>
     </div>
 <?php endif; ?>
 
