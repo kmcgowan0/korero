@@ -67,7 +67,7 @@ class InterestsController extends AppController
 
             $interest = $this->Interests->patchEntity($interest, $interest_data);
             if ($this->Interests->save($interest)) {
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'users', 'action' => 'edit-interests', $this->Auth->user('id')]);
             }
             $this->Flash->error(__('The interest could not be saved. Please, try again.'));
         }
