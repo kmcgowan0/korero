@@ -38,7 +38,11 @@ $(document).ready(function () {
         });
     });
 
-    $('[data-reveal]').on('closed.zf.reveal', function () {
+    $('.location-button').on('click', function () {
+        getLocation();
+    });
+
+        $('[data-reveal]').on('closed.zf.reveal', function () {
         var liveMessageId = null;
     });
 
@@ -121,4 +125,20 @@ function messageNotifications() {
         //     // setTimeout(messageNotifications, interval);
         // }
     })
+}
+
+function getLocation() {
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            var pos = lat + ',' + lng;
+            $('#location-coords').val(pos);
+        })
+    } else {
+        // Browser doesn't support Geolocation
+        alert('get a better broswer. we can\'t find you')
+    }
 }

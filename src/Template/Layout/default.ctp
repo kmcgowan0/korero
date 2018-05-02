@@ -119,6 +119,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <!--    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAs_1lMnpJElTDelPDgGnO6gZ_raZihRE8"></script>-->
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuQ_s1xd3bkDunnX0IJQCE2FXJgEQFOkU"></script>
     <script src="/js/vendor/what-input.js"></script>
     <script src="/js/vendor/foundation.js"></script>
     <script src="/js/app.js"></script>

@@ -14,20 +14,24 @@
         echo $this->Form->control('firstname');
         echo $this->Form->control('lastname');
         echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1950, 'maxYear' => date('Y')]);
-        echo $this->Form->control('location');
+        echo $this->Form->hidden('location', ['type' => 'text', 'id' => 'location-coords']); ?>
+        <?php
         echo '<label for="upload">Profile picture</label>';
-        echo $this->Form->input('upload', array('type' => 'file'));
+        echo $this->Form->control('upload', array('type' => 'file'));
         ?>
     </fieldset>
 
 
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
-
 </div>
 <?php else : ?>
 
 <p>Not allowed bro</p>
 
 <?php endif; ?>
+<div class="large-9 medium-8 columns">
 
+<button class="location-button">Get my location</button>
+
+</div>
