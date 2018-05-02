@@ -51,7 +51,18 @@ class UsersController extends AppController
             'contain' => ['Interests']
         ]);
 
-        $term = $this->request->query('term');
+        $term = $this->request->getQuery('term');
+
+        //updating the radius to search in
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user_data = $this->request->getData();
+            $user = $this->Users->patchEntity($auth_user, $user_data);
+            if ($this->Users->save($auth_user)) {
+                return $this->redirect(['action' => 'search?term=' . $term]);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+
 
         $this->paginate = [
             'contain' => ['interests']
@@ -65,12 +76,24 @@ class UsersController extends AppController
             });
             $users = $this->paginate($query);
         } else {
-            $users = $this->paginate($this->Users);
+            $users = null;
         }
-        if ($users->count()) {
+
+        $this->loadComponent('Distance');
+        $users_in_radius = array();
+
+        if ($users != null && $users->count()) {
             $number_of_users = $users->count();
 
             $space_allocated = 360 / $number_of_users;
+
+
+            foreach ($users as $distinct_user) {
+                $distance = $this->Distance->getDistance($auth_user['location'], $distinct_user['location']);
+                if ($distance <= $auth_user['radius']) {
+                    array_push($users_in_radius, $distinct_user);
+                }
+            }
         }
 
         $this->loadModel('Messages');
@@ -96,7 +119,7 @@ class UsersController extends AppController
         $this->Message->sendMessages($this->Auth->user('id'));
 
 
-        $this->set(compact('users', 'interests', 'query', 'some_users', 'auth_user', 'space_allocated', 'message', 'term'));
+        $this->set(compact('users', 'interests', 'query', 'some_users', 'auth_user', 'space_allocated', 'message', 'term', 'users_in_radius'));
 
     }
 

@@ -11,16 +11,20 @@ else :
 endif; ?>
 <div class="main-user profile-picture" id="user-<?php echo $auth_user->id; ?>"
      style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
-
+<p>Currently showing users within <?php echo $auth_user->radius; ?> miles of you.</p>
+<?= $this->Form->create($auth_user) ?>
+<?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
+<?= $this->Form->button(__('Update radius')) ?>
+<?= $this->Form->end() ?>
 <div class="users index large-9 medium-8 columns content">
-    <?php if ($users) :
+    <?php if ($users_in_radius) :
         //related users var to pass to js
         $related_users_var = array();
         $position = 0; ?>
         <div class="related-container">
             <h5>People who like <?php echo $term; ?></h5>
             <?php
-            foreach ($users as $user) {
+            foreach ($users_in_radius as $user) {
                 if ($user['id'] != $auth_user['id']) {
                     $related_users_var[$user['id']] = $user->interests;
 
@@ -83,7 +87,7 @@ endif; ?>
         </script>
     <?php else : ?>
         <div class="container">
-            <p>You have no mutual interests with anyone around you, consider adding some. bitch.</p>
+            <p>There's nobody around with that interest listed. Try a different search term or increase your radius.</p>
         </div>
     <?php endif; ?>
 </div>
