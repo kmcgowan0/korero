@@ -163,8 +163,27 @@ class UsersController extends AppController
             $my_profile = false;
         }
 
-        $this->set(compact('user', 'related_users', 'allowed_user', 'my_profile'));
+        $validation = $this->ofAge($user['dob']);
+
+
+        $this->set(compact('user', 'related_users', 'allowed_user', 'my_profile', 'validation'));
         $this->set('_serialize', ['user']);
+    }
+
+    public function ofAge($dob)
+    {
+        // $then will first be a string-date
+        $birthday = strtotime($dob);
+        //The age to be over, over +18
+        $birthday_plus18 = strtotime('+18 years', $birthday);
+
+        if (time() > $birthday_plus18) {
+            echo 'You\'re over 18';
+            return true;
+        } else {
+            echo 'You\'re under 18';
+            return false;
+        }
     }
 
     public function compareDeepValue($val1, $val2)
