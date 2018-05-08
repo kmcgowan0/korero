@@ -223,10 +223,9 @@ class MessagesController extends AppController
             $messages_in_thread = $this->Messages->find('all', array(
                 'conditions' => array(
                     'OR' => array(
-                        array('sender' => $messaged_user),
-                        array('recipient' => $messaged_user),
+                        array('sender' => $messaged_user, 'recipient' => $this->Auth->user('id')),
+                        array('recipient' => $messaged_user, 'sender' => $this->Auth->user('id')),
                     )
-
                 )
             ));
             $message_threads[$messaged_user] = $messages_in_thread;
