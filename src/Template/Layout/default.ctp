@@ -26,6 +26,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </title>
     <?= $this->Html->meta('icon') ?>
 
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <?= $this->Html->css('foundation.min.css') ?>
     <?= $this->Html->css('app.css') ?>
     <?= $this->Html->css('base.css') ?>

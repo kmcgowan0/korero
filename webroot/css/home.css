@@ -11,7 +11,7 @@
 }
 
 .home {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 14px;
     line-height: 27px;
     color: #404041;
@@ -67,7 +67,7 @@ header .header-title {
 }
 
 header .header-title h1 {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     margin: 0;
     font-style: italic;
     font-size: 18px;
@@ -81,7 +81,7 @@ header h1 {
 }
 
 h3, h4 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 27px;
     line-height: 30px;
     font-weight: 300;
@@ -129,7 +129,7 @@ h3, h4 {
 .alert p:before {
     color: #ffcf06;
     content: "\0055";
-    font-family: 'cakefont', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 21px;
     margin-left: -0.8em;
     width: 2.3em;
@@ -169,7 +169,7 @@ ul li ul, ul li ul li {
 }
 
 .bullet:before {
-    font-family: 'cakefont', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: 18px;
     display: inline-block;
     margin-left: -1.3em;
@@ -212,7 +212,7 @@ hr {
 .icon {
     color: #404041;
     font-style: normal;
-    font-family: 'cakefont', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
