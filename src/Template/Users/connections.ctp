@@ -6,12 +6,22 @@ else :
 endif; ?>
 <div class="main-user profile-picture" id="user-<?php echo $user->id; ?>"
      style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
-<div class="radius-form">
-<p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
-<?= $this->Form->create($user) ?>
-<?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
-<?= $this->Form->button(__('Update radius')) ?>
-<?= $this->Form->end() ?>
+<div class="row">
+
+<div class="radius-form columns small-12 medium-8">
+    <p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
+    <?= $this->Form->create($user) ?>
+    <?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
+    <?= $this->Form->button(__('Update radius')) ?>
+    <?= $this->Form->end() ?>
+</div>
+
+        <div class="radius-form columns small-12 medium-4">
+            <div class="location">
+                <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a href="/users/edit/<?php echo $user->id; ?>">update
+                        your location here</a></p>
+            </div>
+        </div>
 </div>
 
 <?php if (count($users_in_radius)) :

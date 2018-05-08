@@ -11,26 +11,49 @@ else :
 endif; ?>
 <div class="main-user profile-picture" id="user-<?php echo $auth_user->id; ?>"
      style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
-<p>Currently showing users within <?php echo $auth_user->radius; ?> miles of you.</p>
-<?= $this->Form->create($auth_user) ?>
-<?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
-<?= $this->Form->button(__('Update radius')) ?>
-<?= $this->Form->end() ?>
-<div class="users index large-9 medium-8 columns content">
-    <?php if ($users_in_radius) :
-        //related users var to pass to js
-        $related_users_var = array();
-        $position = 0; ?>
-        <div class="related-container">
-            <h5>People who like <?php echo $term; ?></h5>
-            <?php
-            foreach ($users_in_radius as $user) {
-                if ($user['id'] != $auth_user['id']) {
-                    $related_users_var[$user['id']] = $user->interests;
+<div class="row">
 
-                    $related_interest_str = array();
-                    foreach ($user->interests as $interest) {
-                        $related_interest_str[] = $interest->name;
+    <div class="radius-form columns small-12 medium-8">
+        <p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
+        <?= $this->Form->create($user) ?>
+        <?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
+        <?= $this->Form->button(__('Update radius')) ?>
+        <?= $this->Form->end() ?>
+    </div>
+
+    <div class="radius-form columns small-12 medium-4">
+        <div class="location">
+            <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a href="/users/edit-account">update
+                    your location here</a></p>
+        </div>
+    </div>
+</div>
+
+<?php if (count($users_in_radius)) :
+    //related users var to pass to js
+    $related_users_var = array();
+//start position for rotating related users
+    $position = 0; ?>
+
+    <div class="related-container">
+        <h5>People who like <?php echo $term; ?></h5>
+        <?php
+        foreach ($users_in_radius as $related_user):
+            //if the related user isn't the current user
+            if ($related_user->id != $user->id) :
+                ?>
+
+                <?php
+                $related_interests = [];
+
+                foreach ($user_matching_data as $matching_datum) {
+                    //if the matching data matches the id of the related user
+                    //add that interest to an array for this user
+                    foreach ($matching_datum as $a_match) {
+                        if ($a_match['_matchingData']['UsersInterests']->user_id == $related_user->id) {
+
+                            array_push($related_interests, $a_match['_matchingData']['Interests']);
+                        }
                     }
                     if ($user['upload']) {
                         $related_profile_img = $user['upload'];
