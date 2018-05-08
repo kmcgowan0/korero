@@ -4,15 +4,15 @@
  * @var \App\Model\Entity\Message $message
  * @var \App\Model\Entity\Message $user_array
  * @var \App\Model\Entity\Message $sent_to_id
- * @var \App\Model\Entity\Message $interests
+ * @var \App\Model\Entity\Message $mutual_interest_array
  * @var \App\Controller\Component\AllowedComponent $allowed_user
  */
 ?>
 
 <?php if ($allowed_user == true) {
     $related_interest_str = array();
-     foreach ($interests as $interest) {
-            $related_interest_str[] = $interest['name'];
+     foreach ($mutual_interest_array as $interest) {
+            $related_interest_str[] = $interest;
     } ?>
 <div class="messages view large-9 medium-8 columns content">
     <h4>Conversation with <?php echo $user_array[$sent_to_id]['firstname']; ?></h4>
