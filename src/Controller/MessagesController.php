@@ -81,6 +81,7 @@ class MessagesController extends AppController
         }
 
         $this->loadModel('Users');
+//        $this->loadModel('Interests');
         $users = $this->Users->find('all', [
             'contain' => ['Interests']
         ]);
@@ -92,13 +93,28 @@ class MessagesController extends AppController
         $sent_to_id = $id;
 
         $user = $user_array[$sent_to_id];
-        $interests = $user_array[$sent_to_id]->interests;
+        $all_interests = $user_array[$sent_to_id]->interests;
+        $my_interests = $user_array[$this->Auth->user('id')]->interests;
+
+        $all_interests_array = array();
+        foreach ($all_interests as $an_interest) {
+            array_push($all_interests_array, $an_interest->name);
+        }
+
+        $my_interests_array = array();
+        foreach ($my_interests as $an_interest) {
+            array_push($my_interests_array, $an_interest->name);
+        }
+
+        $mutual_interest_array = array_intersect($all_interests_array, $my_interests_array);
+
+
         $this->loadComponent('Allowed');
 
         $auth_user = $this->Auth->user();
         $allowed_user = $this->Allowed->checkAllowed($user, $auth_user);
 
-        $this->set(compact('message', 'user_array', 'sent_to_id', 'allowed_user', 'interests'));
+        $this->set(compact('message', 'user_array', 'sent_to_id', 'allowed_user', 'mutual_interests', 'all_interests_array', 'my_interests', 'mutual_interest_array'));
     }
 
     public function instantMessages($id = null)
