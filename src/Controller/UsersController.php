@@ -46,55 +46,124 @@ class UsersController extends AppController
 
     public function search()
     {
+
         $id = $this->Auth->user('id');
-        $auth_user = $this->Users->get($id, [
+        $user = $this->Users->get($id, [
             'contain' => ['Interests']
         ]);
-
-        $term = $this->request->getQuery('term');
-
-        //updating the radius to search in
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $user_data = $this->request->getData();
-            $user = $this->Users->patchEntity($auth_user, $user_data);
-            if ($this->Users->save($auth_user)) {
-                return $this->redirect(['action' => 'search?term=' . $term]);
-            }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-
 
         $this->paginate = [
             'contain' => ['interests']
         ];
 
+        $term = $this->request->getQuery('term');
+
+//updating the radius to search in
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user_data = $this->request->getData();
+            $user = $this->Users->patchEntity($user, $user_data);
+            if ($this->Users->save($user)) {
+                return $this->redirect(['action' => 'search?term=' . $term]);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+
+        $ids = [-1];
+
+        foreach ($user->interests as $interest) {
+            $interest_id = $interest->id;
+            array_push($ids, $interest_id);
+        }
+
+//        $related_users_interests = $this->Users->find()->matching('Interests', function ($q) use ($ids) {
+//            return $q->where(['Interests.id IN' => $ids]);
+//        });
+
         $users = $this->Users;
 
         if (!empty($term)) {
-            $query = $users->find()->matching('Interests', function ($q) use ($term) {
+            $related_users_interests = $users->find()->matching('Interests', function ($q) use ($term) {
                 return $q->where(['Interests.name LIKE' => '%' . $term . '%']);
             });
-            $users = $this->paginate($query);
+            $search_result = $this->Users->Interests->find()->where(['name LIKE' => '%' . $term . '%']);
+//            $related_users_interests = $this->paginate($query);
         } else {
-            $users = null;
+            $search_result = null;
+            $related_users_interests = null;
         }
 
-        $this->loadComponent('Distance');
-        $users_in_radius = array();
+        //empty array of matching data
+        $user_matching_data = array();
+        $bunch_of_interests = array();
 
-        if ($users != null && $users->count()) {
-            $number_of_users = $users->count();
+        //foreach users interest entry add the matching data to an array
+        foreach ($related_users_interests as $related_users_interest) {
+            $uid = $related_users_interest['id'];
+            $other_interests = $users->find()->matching('Interests', function ($q) use ($ids, $uid) {
+            return $q->where(['Interests.id IN' => $ids, 'Users.id =' => $uid]);
+        });
+            foreach ($other_interests as $other_interest) {
+                array_push($bunch_of_interests, $other_interest);
+            }
+
+        }
+        array_push($user_matching_data, $bunch_of_interests);
+
+        //get distance component
+        $this->loadComponent('Distance');
+
+        //only get distinct users
+        $distinct_users = $related_users_interests->group('Users.id')->order('location', 'ASC');
+
+        //if there are distinct users work out how much space each gets
+        if ($distinct_users->count()) {
+            $number_of_users = $distinct_users->count();
 
             $space_allocated = 360 / $number_of_users;
+        }
 
+        //empty array for counting interests
+        $interest_count = array();
 
-            foreach ($users as $distinct_user) {
-                $distance = $this->Distance->getDistance($auth_user['location'], $distinct_user['location']);
-                if ($distance <= $auth_user['radius']) {
-                    array_push($users_in_radius, $distinct_user);
+//        for each interest set the this interest variable to 0
+        foreach ($related_users_interests as $an_interest) {
+            $this_interest = 0;
+            //for each bit of matching data check if it relates to the current users interests
+            //if it does add it onto the this interest var
+            foreach ($user_matching_data as $a_data) {
+//                var_dump($a_data);
+                foreach ($a_data as $a_datum) {
+                    if ($a_datum['_matchingData']['UsersInterests']->user_id == $an_interest['id']) {
+                        $this_interest++;
+                    }
                 }
+
+            }
+            //create associative array for each users interest where user id => number of mutual interests
+            $interest_count[$an_interest['id']] = $this_interest;
+        }
+
+        //sort the interests from most to least
+        arsort($interest_count);
+
+        //slice the array to get the top 6
+        $top_interests = array_slice($interest_count, 0, 6, true);
+
+        //set empty array for users in radius
+        $users_in_radius = array();
+        //for each user get the distance from the main user
+        foreach ($distinct_users as $distinct_user) {
+            $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
+            //if the user is within the radius and in the top users array add it to the users in radius var
+            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests)) {
+                array_push($users_in_radius, $distinct_user);
             }
         }
+
+        //would like this working
+
+//        $this->loadComponent('Message');
+//        $message = $this->Message->sendMessages($this->Auth->user('id'));
 
         $this->loadModel('Messages');
 
@@ -114,13 +183,11 @@ class UsersController extends AppController
             }
         }
 
-        //need to add messages to here
-        $this->loadComponent('Message');
-        $this->Message->sendMessages($this->Auth->user('id'));
 
 
-        $this->set(compact('users', 'interests', 'query', 'some_users', 'auth_user', 'space_allocated', 'message', 'term', 'users_in_radius'));
 
+        $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated', 'term'));
+        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -165,8 +232,20 @@ class UsersController extends AppController
 
         $validation = $this->ofAge($user['dob']);
 
+        $user_interests_array = array();
+        foreach ($user->interests as $an_interest) {
+            array_push($user_interests_array, $an_interest->name);
+        }
 
-        $this->set(compact('user', 'related_users', 'allowed_user', 'my_profile', 'validation'));
+        $auth_interests_array = array();
+        foreach ($auth_user['interests'] as $an_interest) {
+            array_push($auth_interests_array, $an_interest['name']);
+        }
+
+        $mutual_interest_array = array_intersect($user_interests_array, $auth_interests_array);
+
+
+        $this->set(compact('user', 'related_users', 'allowed_user', 'my_profile', 'validation', 'mutual_interest_array'));
         $this->set('_serialize', ['user']);
     }
 
