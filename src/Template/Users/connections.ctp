@@ -135,23 +135,6 @@ endif; ?>
     <div id="canvas"></div>
     <script>
         var relatedUsers = <?php echo json_encode($related_users_var); ?>;
-        var x = document.getElementById("demo");
-        console.log(x);
-
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-                console.log(navigator.geolocation.getCurrentPosition(showPosition));
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
-
-        function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude +
-                "<br>Longitude: " + position.coords.longitude;
-            console.log(position);
-        }
     </script>
 
 <?php else : ?>
@@ -161,3 +144,14 @@ endif; ?>
     </div>
 <?php endif; ?>
 
+<?php list($lat, $long) = explode(',', $user->location); ?>
+<script>
+    var lat_connections = parseFloat(<?php echo json_encode($lat); ?>);
+    var lng_connections = parseFloat(<?php echo json_encode($long); ?>);
+    $(document).ready(function () {
+        var geocoder = new google.maps.Geocoder;
+        console.log('lat ' + lat_connections);
+        console.log(lng_connections);
+        geocodeLatLng(geocoder, lat_connections, lng_connections);
+    });
+</script>

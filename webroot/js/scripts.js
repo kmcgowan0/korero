@@ -129,16 +129,38 @@ function messageNotifications() {
 
 function getLocation() {
 
+    var geocoder = new google.maps.Geocoder;
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
             var pos = lat + ',' + lng;
+            console.log(pos);
+            geocodeLatLng(geocoder, lat, lng);
+            console.log(geocodeLatLng(geocoder, lat, lng));
             $('#location-coords').val(pos);
         })
     } else {
         // Browser doesn't support Geolocation
         alert('get a better broswer. we can\'t find you')
     }
+}
+
+
+function geocodeLatLng(geocoder, lat, lng) {
+    var latlng = {lat: lat, lng: lng};
+    console.log(latlng);
+    geocoder.geocode({'location': latlng}, function (results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+                $('#my-location').html(results[0].address_components[3].long_name);
+                console.log(results[0]);
+            } else {
+                window.alert('No results found');
+            }
+        } else {
+            window.alert('Geocoder failed due to: ' + status);
+        }
+    });
 }
