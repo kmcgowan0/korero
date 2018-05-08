@@ -4,7 +4,7 @@ $(document).ready(function () {
     var width = mainUser.width();
     var height = mainUser.height();
     var mainX = offset.left + width / 2;
-    var mainY = offset.top + height / 2;
+    var mainY = offset.top + height / 2 - 80;
 
     var relatedUsersCoords = [];
 
@@ -53,7 +53,7 @@ $(document).ready(function () {
                 'height': '4px',
                 'z-index': '10',
                 'background-color': '#' + color,
-                'position': 'fixed',
+                'position': 'absolute',
                 'transform': 'rotate(' + transform + 'deg)',
                 'transform-origin': '0px 0px',
                 '-ms-transform': 'rotate(' + transform + 'deg)',
@@ -69,7 +69,7 @@ $(document).ready(function () {
             // 'draw' the line
             $('#' + id).animate({
                 width: d
-            }, 400, "linear", function () {
+            }, 600, "linear", function () {
             });
 
         });
@@ -103,7 +103,7 @@ function coordinates(key, val) {
     var relatedWidth = relatedUser.width();
     var relatedHeight = relatedUser.height();
     var relatedX = relatedOffset.left + relatedWidth / 2;
-    var relatedY = relatedOffset.top + relatedHeight / 2;
+    var relatedY = relatedOffset.top + relatedHeight / 2 - 60;
     var coords = [relatedX, relatedY, val];
 
     return coords;

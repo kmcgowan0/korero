@@ -63,7 +63,7 @@ input.header-search {
     width:250px;
 }
 .main-user {
-    position: fixed;
+    position: absolute;
     display: block;
     top: 50%; left: 50%;
     width: 5em; height: 5em;
@@ -78,7 +78,7 @@ input.header-search {
     margin: 1.75em auto 0;
 }
 .related-user {
-    position: fixed;
+    position: absolute;
     display: block;
     top: 50%; left: 50%;
     width: 4em; height: 4em;
