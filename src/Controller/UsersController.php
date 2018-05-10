@@ -6,6 +6,7 @@ use Cake\Event\Event;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Query;
+use Cake\I18n\Time;
 
 /**
  * Users Controller
@@ -203,6 +204,10 @@ class UsersController extends AppController
             'contain' => ['Interests']
         ]);
 
+        $from = new Time($user->dob);
+        $to = Time::now();
+        $user_age = $from->diff($to)->y;
+
         $ids = [-1];
 
         foreach ($user->interests as $interest) {
@@ -210,14 +215,10 @@ class UsersController extends AppController
             array_push($ids, $id);
         }
 
-        $related_users = $this->Users->find()->matching('Interests', function ($q) use ($ids) {
-            return $q->where(['Interests.id IN' => $ids]);
-        });
-
         $this->loadComponent('Allowed');
 
-        $auth_user = $this->Auth->user();
-        $allowed_user = $this->Allowed->checkAllowed($user, $auth_user);
+        $authorised_user = $this->Auth->user();
+        $allowed_user = $this->Allowed->checkAllowed($user, $authorised_user);
 
 
         //allowed user should return either true or false

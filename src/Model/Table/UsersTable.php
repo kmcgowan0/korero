@@ -7,7 +7,7 @@ use Cake\ORM\Table;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Validation\Validator;
 use Cake\Event\Event;
-use Cake\ORM\Association\BelongsToMany;
+use Cake\I18n\Time;
 
 /**
  * Users Model
@@ -74,15 +74,15 @@ class UsersTable extends Table
 
     public function ofAge($dob)
     {
-        // $then will first be a string-date
-        $then = strtotime($dob);
-        //The age to be over, over +18
-        $min = strtotime('+18 years', $then);
-        echo $min;
-        if(time() < $min)  {
-            return false;
-        } else {
+        $dob_string = $dob['year'] . '/' . $dob['month'] . '/' . $dob['day'];
+        $from = new Time($dob_string);
+        $to   = Time::now();
+        $user_age = $from->diff($to)->y;
+
+        if ($user_age >= 18) {
             return true;
+        } else {
+            return false;
         }
     }
 
