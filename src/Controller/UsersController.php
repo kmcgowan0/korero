@@ -101,8 +101,8 @@ class UsersController extends AppController
         foreach ($related_users_interests as $related_users_interest) {
             $uid = $related_users_interest['id'];
             $other_interests = $users->find()->matching('Interests', function ($q) use ($ids, $uid) {
-            return $q->where(['Interests.id IN' => $ids, 'Users.id =' => $uid]);
-        });
+                return $q->where(['Interests.id IN' => $ids, 'Users.id =' => $uid]);
+            });
             foreach ($other_interests as $other_interest) {
                 array_push($bunch_of_interests, $other_interest);
             }
@@ -183,8 +183,6 @@ class UsersController extends AppController
                 $this->Flash->error(__('The message could not be sent. Please, try again.'));
             }
         }
-
-
 
 
         $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated', 'term'));
@@ -323,15 +321,11 @@ class UsersController extends AppController
                     //prepare the filename for database entry
                     $imageFileName = $setNewFileName . '.' . $ext;
 
-
-//                                  $image = new ImageResize('img/reports/' . $imageFileName . '.jpg');
-//                                  $image->scale(50);
-//                                  $image->save('img/reports/' . $imageFileName . '_thumb.jpg');
-
                 }
                 $user_data['upload'] = $imageFileName;
             }
             $user = $this->Users->patchEntity($user, $user_data);
+
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
@@ -601,8 +595,6 @@ class UsersController extends AppController
                 $this->Flash->error(__('The message could not be sent. Please, try again.'));
             }
         }
-
-
 
 
         $this->set(compact('user', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated'));
