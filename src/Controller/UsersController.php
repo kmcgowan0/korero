@@ -573,6 +573,11 @@ class UsersController extends AppController
             }
         }
 
+        foreach ($users_in_radius as $users_in_radiu) {
+            $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
+            $users_in_radiu['distance'] = $distance;
+        }
+
         //would like this working
 
 //        $this->loadComponent('Message');
