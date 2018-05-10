@@ -19,22 +19,26 @@
     </ul>
 </nav>
 <div class="users form large-9 medium-8 columns content">
-    <h4>Current Interests</h4>
+    <?php if ($user->interests) { ?>
+        <h4>Current Interests</h4>
 
     <?php foreach ($user->interests as $interests): ?>
             <p><?= h($interests->name) ?></p>
-        <?= $this->Form->postLink(
-            __('Delete'),
-            ['action' => 'remove-interest', $user->id, $interests->id],
-            ['confirm' => __('Are you sure you want to remove # {0}?', $user->id, $interests->id)]
-        )
-        ?>
-    <?php endforeach; ?>
+            <?= $this->Form->postLink(
+                __('X'),
+                ['action' => 'remove-interest', $user->id, $interests->id],
+                ['confirm' => __('Are you sure you want to remove # {0}?', $user->id, $interests->id)]
+            )
+            ?>
+        <?php endforeach; ?>
+    <?php } else { ?>
+        <h5>Add some interests and start connecting with people</h5>
+    <?php } ?>
     <?= $this->Form->create($user) ?>
     <fieldset>
         <legend><?= __('Edit User') ?></legend>
         <h4>Top Interests</h4>
-        <?php echo $this->Form->control('interests._ids', ['options' => $top_interests, 'multiple' => 'checkbox']);
+        <?php echo $this->Form->control('interests._ids', ['options' => $top_interests, 'multiple' => 'checkbox', 'label' => false]);
         ?>
         <div id="selected-form">
             <?php
