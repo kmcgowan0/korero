@@ -560,7 +560,7 @@ class UsersController extends AppController
         arsort($interest_count);
 
         //slice the array to get the top 6
-        $top_interests = array_slice($interest_count, 0, 6, true);
+        $top_interests = array_slice($interest_count, 0, 15, true);
 
         //set empty array for users in radius
         $users_in_radius = array();
