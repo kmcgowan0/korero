@@ -9,3 +9,6 @@
     <?= $this->Form->button(__('Login')); ?>
     <?= $this->Form->end() ?>
 </div>
+<div class="container">
+<?= $this->Html->link('Don\'t have an account? Sign up here', ['controller' => 'Users', 'action' => 'add']); ?>
+</div>
