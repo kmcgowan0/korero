@@ -293,8 +293,7 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
-            $imageFileName = null;
-            if (!empty($user_data['upload']['name'])) {
+            if ($user_data['upload']['name'] != '') {
                 $file = $user_data['upload'];
                 $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
                 $arr_ext = ['jpg', 'png']; //set allowed extensions
@@ -310,6 +309,10 @@ class UsersController extends AppController
 
                 }
                 $user_data['upload'] = $imageFileName;
+            } elseif ($user_data['upload']['name'] == null) {
+                $user_data['upload'] = '';
+            } else {
+                $user_data['upload'] = $user->getOriginal('upload');
             }
             $user = $this->Users->patchEntity($user, $user_data);
 
