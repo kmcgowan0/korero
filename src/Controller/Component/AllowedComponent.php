@@ -7,11 +7,11 @@ use Cake\Controller\Component;
 class AllowedComponent extends Component
 {
 
-    public function checkAllowed($user, $auth_user)
+    public function checkAllowed($user, $authorised_user)
     {
         $allowed_user = false;
 
-        $auth_user_interests = $auth_user['interests'];
+        $auth_user_interests = $authorised_user['interests'];
         $user_interests = $user->interests;
         $intersect = array_uintersect($auth_user_interests, $user_interests, array($this, 'compareDeepValue'));
         if ($intersect) {
