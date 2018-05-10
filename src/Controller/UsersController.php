@@ -218,6 +218,9 @@ class UsersController extends AppController
         $authorised_user = $this->Auth->user();
         $allowed_user = $this->Allowed->checkAllowed($user, $authorised_user);
 
+        $this->loadComponent('Distance');
+
+        $distance = round($this->Distance->getDistance($authorised_user['location'], $user['location']));
 
         //allowed user should return either true or false
         //true if authuser and user have any matching interests
@@ -228,8 +231,6 @@ class UsersController extends AppController
         } else {
             $my_profile = false;
         }
-
-        $validation = $this->ofAge($user['dob']);
 
         $user_interests_array = array();
         foreach ($user->interests as $an_interest) {
@@ -244,7 +245,7 @@ class UsersController extends AppController
         $mutual_interest_array = array_intersect($user_interests_array, $auth_interests_array);
 
 
-        $this->set(compact('user', 'related_users', 'allowed_user', 'my_profile', 'validation', 'mutual_interest_array'));
+        $this->set(compact('user', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
         $this->set('_serialize', ['user']);
     }
 
