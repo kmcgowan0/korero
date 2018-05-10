@@ -4,25 +4,11 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $user->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]
-            )
-            ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Interests'), ['controller' => 'Interests', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Interest'), ['controller' => 'Interests', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="users form large-9 medium-8 columns content">
     <?php if ($user->interests) { ?>
         <h4>Current Interests</h4>
 
-    <?php foreach ($user->interests as $interests): ?>
+        <?php foreach ($user->interests as $interests): ?>
             <p><?= h($interests->name) ?></p>
             <?= $this->Form->postLink(
                 __('X'),
@@ -36,13 +22,12 @@
     <?php } ?>
     <?= $this->Form->create($user) ?>
     <fieldset>
-        <legend><?= __('Edit User') ?></legend>
         <h4>Top Interests</h4>
         <?php echo $this->Form->control('interests._ids', ['options' => $top_interests, 'multiple' => 'checkbox', 'label' => false]);
         ?>
         <div id="selected-form">
             <?php
-            foreach($user->interests as $interest) {
+            foreach ($user->interests as $interest) {
                 echo '<input type="hidden" name="interests[_ids][]" value="' . $interest->id . '">';
             }
             ?>
@@ -52,7 +37,7 @@
     </fieldset>
 
     <div class="row">
-        <label>Search for interests</label>
+        <h4>Search for interests</h4>
         <div id="selected" class=""></div>
         <div>
 

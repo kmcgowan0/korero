@@ -149,3 +149,7 @@ input.radius-input {
 div.location p {
     font-size: 0.8rem;
 }
+.checkbox {
+    width: 50%;
+    display: inline-block;
+}
