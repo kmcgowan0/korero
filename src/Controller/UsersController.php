@@ -226,7 +226,7 @@ class UsersController extends AppController
         //true if authuser and user have any matching interests
         //true if any of the user's interests are in authusers list of interests
         //false if not
-        if ($auth_user['id'] == $user['id']) {
+        if ($authorised_user['id'] == $user['id']) {
             $my_profile = true;
         } else {
             $my_profile = false;
@@ -238,7 +238,7 @@ class UsersController extends AppController
         }
 
         $auth_interests_array = array();
-        foreach ($auth_user['interests'] as $an_interest) {
+        foreach ($authorised_user['interests'] as $an_interest) {
             array_push($auth_interests_array, $an_interest['name']);
         }
 
@@ -247,22 +247,6 @@ class UsersController extends AppController
 
         $this->set(compact('user', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
         $this->set('_serialize', ['user']);
-    }
-
-    public function ofAge($dob)
-    {
-        // $then will first be a string-date
-        $birthday = strtotime($dob);
-        //The age to be over, over +18
-        $birthday_plus18 = strtotime('+18 years', $birthday);
-
-        if (time() > $birthday_plus18) {
-            echo 'You\'re over 18';
-            return true;
-        } else {
-            echo 'You\'re under 18';
-            return false;
-        }
     }
 
     public function compareDeepValue($val1, $val2)
