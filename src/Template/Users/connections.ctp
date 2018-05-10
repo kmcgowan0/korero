@@ -78,6 +78,9 @@ endif; ?>
                     $distance_from_center = 12;
                 }
                 elseif ($distance > 1000) {
+                    $distance_from_center = 14;
+                }
+                elseif ($distance <= 1000) {
                     $distance_from_center = 16;
                 }
                 ?>
