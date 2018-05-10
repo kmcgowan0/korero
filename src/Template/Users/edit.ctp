@@ -5,6 +5,11 @@
  */
 ?>
 <?php if ($my_profile) : ?>
+    <?php if ($user->upload) :
+        $profile_img = $user->upload;
+    else :
+        $profile_img = 'placeholder.png';
+    endif; ?>
 <div class="users form large-9 medium-8 columns content">
     <?= $this->Form->create($user, ['enctype'=>'multipart/form-data']) ?>
     <fieldset>
@@ -17,17 +22,13 @@
         echo $this->Form->hidden('location', ['type' => 'text', 'id' => 'location-coords']); ?>
         <button class="location-button" type="button">Get my location</button>
         <?php
-        echo '<label for="upload">Profile picture</label>';
+        echo '<label for="upload">Profile picture</label>'; ?>
+        <img id="profile-preview" src="/img/<?php echo $profile_img; ?>">
+<?php
         echo $this->Form->control('upload', ['type' => 'file', 'value' => $user['upload'], 'id' => 'profile-picture']);
         ?>
         <button id="remove-profile-image" type="button">Remove profile picture</button>
-        <?php if ($user->upload) :
-            $profile_img = $user->upload;
-        else :
-            $profile_img = 'placeholder.png';
-        endif; ?>
-        <div class="profile-picture-large profile-picture"
-             style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
+
     </fieldset>
 
     <?= $this->Form->button(__('Submit')) ?>

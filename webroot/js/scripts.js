@@ -32,6 +32,8 @@ $(document).ready(function () {
             var body = $('#message-body' + liveMessageId).val();
             var posting = $.post(url, {body: body, recipient: liveMessageId});
             posting.done(function (data) {
+                console.log(body);
+                console.log(liveMessageId);
                 $(".message-form" + liveMessageId)[0].reset();
                 connectionMessages(liveMessageId);
             });
@@ -42,11 +44,25 @@ $(document).ready(function () {
         getLocation();
     });
 
-    $('#remove-profile-image').on('click', function () {
-        $('#profile.picture').val(null);
+    $('#profile-picture').on('change', function () {
+        if (typeof (FileReader) != "undefined") {
+            var image_holder = $("#profile-preview");
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                image_holder.attr('src', e.target.result);
+            };
+            reader.readAsDataURL($(this)[0].files[0]);
+        } else {
+            alert("This browser does not support FileReader.");
+        }
     });
 
-        $('[data-reveal]').on('closed.zf.reveal', function () {
+    $('#remove-profile-image').on('click', function () {
+        $('#profile.picture').val(null);
+        $('#profile-preview').attr('src', '/img/placeholder.png');
+    });
+
+    $('[data-reveal]').on('closed.zf.reveal', function () {
         var liveMessageId = null;
     });
 
@@ -136,7 +152,7 @@ function getLocation() {
     var geocoder = new google.maps.Geocoder;
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
             var pos = lat + ',' + lng;
