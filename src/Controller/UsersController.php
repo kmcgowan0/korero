@@ -446,7 +446,16 @@ class UsersController extends AppController
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
-                return $this->redirect($redirect_url);
+                //on first login redirect to edit interests
+                if ($user['loggedin'] == 0) {
+                    $this->Users->query()->update()
+                        ->set(['loggedin' => 1])
+                        ->where(['id' => $user['id']])
+                        ->execute();
+                    return $this->redirect(['action' => 'edit-interests']);
+                } else {
+                    return $this->redirect($redirect_url);
+                }
             }
             $this->Flash->error('Your username or password is incorrect.');
         }
