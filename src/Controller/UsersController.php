@@ -148,7 +148,7 @@ class UsersController extends AppController
         arsort($interest_count);
 
         //slice the array to get the top 6
-        $top_interests = array_slice($interest_count, 0, 6, true);
+        $top_interests = array_slice($interest_count, 0, 15, true);
 
         //set empty array for users in radius
         $users_in_radius = array();
@@ -396,7 +396,7 @@ class UsersController extends AppController
         arsort($number_of_interests);
 
         //take the first 4 from the array
-        $largest = array_slice($number_of_interests, 0, 4, true);
+        $largest = array_slice($number_of_interests, 0, 20, true);
 
         //get array of just interest ids for query
         $top_interest_array = [];
