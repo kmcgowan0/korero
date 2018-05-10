@@ -15,12 +15,20 @@
         echo $this->Form->control('lastname');
         echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1950, 'maxYear' => date('Y')]);
         echo $this->Form->hidden('location', ['type' => 'text', 'id' => 'location-coords']); ?>
+        <button class="location-button" type="button">Get my location</button>
         <?php
         echo '<label for="upload">Profile picture</label>';
-        echo $this->Form->control('upload', array('type' => 'file'));
+        echo $this->Form->control('upload', ['type' => 'file', 'value' => $user['upload'], 'id' => 'profile-picture']);
         ?>
+        <button id="remove-profile-image" type="button">Remove profile picture</button>
+        <?php if ($user->upload) :
+            $profile_img = $user->upload;
+        else :
+            $profile_img = 'placeholder.png';
+        endif; ?>
+        <div class="profile-picture-large profile-picture"
+             style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
     </fieldset>
-
 
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
@@ -30,8 +38,4 @@
 <p>Not allowed bro</p>
 
 <?php endif; ?>
-<div class="large-9 medium-8 columns">
-
-<button class="location-button">Get my location</button>
-
-</div>
+<p id="my-location"></p>

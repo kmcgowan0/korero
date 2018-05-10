@@ -42,6 +42,10 @@ $(document).ready(function () {
         getLocation();
     });
 
+    $('#remove-profile-image').on('click', function () {
+        $('#profile.picture').val(null);
+    });
+
         $('[data-reveal]').on('closed.zf.reveal', function () {
         var liveMessageId = null;
     });
