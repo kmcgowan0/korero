@@ -442,6 +442,10 @@ class UsersController extends AppController
     public function login()
     {
         $redirect_url = '/users/connections';
+
+        if ($this->Auth->user()) {
+            return $this->redirect($redirect_url);
+        }
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
