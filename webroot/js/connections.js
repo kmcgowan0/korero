@@ -45,10 +45,32 @@ $(document).ready(function () {
 
             $('#canvas').append(line);
 
+            var left = x1;
+            var top = y1;
+            if (transform < 45) {
+                top = y1  + (2 * 30);
+                left = x1;
+            }
+            if (transform > 180) {
+                top = y1  + (i * 20);
+                left = x1  + (i * 10);
+            }
+            if (transform > 90) {
+                top = y1  + (i * 5);
+                left = x1  + (i * 10);
+            }
+            if (transform < 90) {
+                top = y1;
+                left = x1  + (i * 10);
+            }
+
+
+            console.log(x1 + ' left: ' + left + ' top: ' + top);
+
             //rotate the line
             $('#' + id).css({
-                'left': x1 + (i * 5),
-                'top': y1 + (i * 5),
+                'left': left,
+                'top': top,
                 'width': '0px',
                 'height': '4px',
                 'z-index': '10',
