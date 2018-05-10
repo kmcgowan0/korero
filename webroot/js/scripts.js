@@ -159,6 +159,7 @@ function geocodeLatLng(geocoder, lat, lng) {
         if (status === 'OK') {
             if (results[0]) {
                 $('#my-location').html(results[0].address_components[3].long_name);
+                $('#my-location-input').html(results[0].address_components[3].long_name);
                 console.log(results[0]);
             } else {
                 window.alert('No results found');
