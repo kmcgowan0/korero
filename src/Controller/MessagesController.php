@@ -111,8 +111,11 @@ class MessagesController extends AppController
 
         $this->loadComponent('Allowed');
 
-        $auth_user = $this->Auth->user();
-        $allowed_user = $this->Allowed->checkAllowed($user, $auth_user);
+        $authorised_user_id = $this->Auth->user('id');
+        $authorised_user = $this->Users->get($authorised_user_id, [
+            'contain' => ['Interests']
+        ]);
+        $allowed_user = $this->Allowed->checkAllowed($user, $authorised_user);
 
         $this->set(compact('message', 'user_array', 'sent_to_id', 'allowed_user', 'mutual_interests', 'all_interests_array', 'my_interests', 'mutual_interest_array'));
     }
@@ -182,6 +185,12 @@ class MessagesController extends AppController
         foreach ($users as $user) {
             $user_array[$user['id']] = $user;
         }
+
+        $update_query = $messages_in_thread;
+        $update_query->update()
+            ->set(['seen' => true])
+            ->where(['sender' => $id])
+            ->execute();
 
         $this->set(compact('messages_in_thread_ordered'));
     }
