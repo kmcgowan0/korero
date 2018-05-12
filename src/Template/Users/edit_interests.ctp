@@ -44,6 +44,7 @@
             <input id="search" type="text">
         </div>
         <div id="results"></div>
+        <button id="add-interest" type="button">Add Interest</button>
         <?= $this->Form->submit(('Can\'t find your interest listed? add it here'), ['name' => 'new-interest']) ?>
     </div>
     <?= $this->Form->button(__('Submit'), ['name' => 'submit-form']) ?>
