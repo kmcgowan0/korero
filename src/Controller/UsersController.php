@@ -393,27 +393,6 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
-            if ($user_data['upload']['name'] != '') {
-                $file = $user_data['upload'];
-                $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
-                $arr_ext = ['jpg', 'png']; //set allowed extensions
-                $setNewFileName = time() . "_" . rand(000000, 999999);
-                //only process if the extension is valid
-                if (in_array($ext, $arr_ext)) {
-                    //do the actual uploading of the file. First arg is the tmp name, second arg is
-                    //where we are putting it
-                    move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/' . $setNewFileName . '.' . $ext);
-
-                    //prepare the filename for database entry
-                    $imageFileName = $setNewFileName . '.' . $ext;
-
-                }
-                $user_data['upload'] = $imageFileName;
-            } elseif ($user_data['upload']['name'] == null) {
-                $user_data['upload'] = '';
-            } else {
-                $user_data['upload'] = $user->getOriginal('upload');
-            }
             $user = $this->Users->patchEntity($user, $user_data);
 
             if ($this->Users->save($user)) {
@@ -424,30 +403,6 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
 
-
-        $users_interests = $this->Users->UsersInterests->find('all');
-        $users_interests->distinct('interest_id');
-
-        //get count of each interest
-        $number_of_interests = [];
-        foreach ($users_interests as $users_interest) {
-            $query = $this->Users->UsersInterests->find('all');
-            $query->where(['interest_id' => $users_interest['interest_id']]);
-            $number = $query->count();
-            $number_of_interests[$users_interest['interest_id']] = $number;
-        }
-        //sort by count
-        arsort($number_of_interests);
-
-        //take the first 4 from the array
-        $largest = array_slice($number_of_interests, 0, 4, true);
-
-        //get array of just interest ids for query
-        $top_interest_array = [];
-        foreach ($largest as $key => $value) {
-            array_push($top_interest_array, $key);
-        }
-        $top_interests = $this->Users->Interests->find('list')->where(['id IN' => $top_interest_array]);
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
 
         $auth_user = $this->Auth->user();
@@ -458,7 +413,7 @@ class UsersController extends AppController
             $my_profile = false;
         }
 
-        $this->set(compact('user', 'interests', 'top_interests', 'my_profile', 'user_data'));
+        $this->set(compact('user', 'interests', 'my_profile', 'user_data'));
     }
 
     public function editInterests()
