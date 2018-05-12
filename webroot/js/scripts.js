@@ -24,7 +24,9 @@ $(document).ready(function () {
     $('.reveal-link').on('click', function () {
         var liveMessageId = $(this).data('id');
         connectionMessages(liveMessageId);
-
+        $('#related-user-'+liveMessageId).css('border', '2px solid #000');
+        $('#notifications-'+liveMessageId).html('');
+        messageNotifications();
         $('.message-form' + liveMessageId).submit(function (event) {
             event.preventDefault();
             var $form = $(this),
@@ -63,6 +65,7 @@ $(document).ready(function () {
     });
 
     $('[data-reveal]').on('closed.zf.reveal', function () {
+
         var liveMessageId = null;
     });
 

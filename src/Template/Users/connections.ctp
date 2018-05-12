@@ -8,20 +8,21 @@ endif; ?>
      style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
 <div class="row">
 
-<div class="radius-form columns small-12 medium-8">
-    <p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
-    <?= $this->Form->create($user) ?>
-    <?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
-    <?= $this->Form->button(__('Update radius')) ?>
-    <?= $this->Form->end() ?>
-</div>
+    <div class="radius-form columns small-12 medium-8">
+        <p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
+        <?= $this->Form->create($user) ?>
+        <?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
+        <?= $this->Form->button(__('Update radius')) ?>
+        <?= $this->Form->end() ?>
+    </div>
 
-        <div class="radius-form columns small-12 medium-4">
-            <div class="location">
-                <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a href="/users/edit/<?php echo $user->id; ?>">update
-                        your location here</a></p>
-            </div>
+    <div class="radius-form columns small-12 medium-4">
+        <div class="location">
+            <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a
+                        href="/users/edit/<?php echo $user->id; ?>">update
+                    your location here</a></p>
         </div>
+    </div>
 </div>
 
 <?php if (count($users_in_radius)) :
@@ -60,6 +61,20 @@ endif; ?>
                 foreach ($related_interests as $related_interest) {
                     $related_interest_str[] = $related_interest->name;
                 }
+
+                $notification_count = 0;
+                foreach ($unread_messages as $unread_message) {
+                    if ($unread_message['sender'] == $related_user->id) {
+                        $notification_count++;
+                    }
+                }
+
+                if ($notification_count > 0) {
+                    $border = 'solid #d33c44 4px';
+                } else {
+                    $border = 'solid #000 2px';
+                }
+
 //profile picture
                 if ($related_user->upload) :
                     $related_profile_img = $related_user->upload;
@@ -68,29 +83,34 @@ endif; ?>
                 endif;
                 $distance = $related_user->distance;
                 if ($distance < 2) {
-                    $distance_from_center = 5.5;
+                    $distance_from_center = 8;
                 } elseif ($distance < 5) {
                     $distance_from_center = 10;
                 } elseif ($distance < 50) {
                     $distance_from_center = 11;
-                }
-                elseif ($distance < 100) {
+                } elseif ($distance < 100) {
                     $distance_from_center = 12;
-                }
-                elseif ($distance > 1000) {
+                } elseif ($distance > 1000) {
                     $distance_from_center = 14;
-                }
-                elseif ($distance <= 1000) {
+                } elseif ($distance <= 1000) {
                     $distance_from_center = 16;
                 }
+
                 ?>
                 <!--                //link to click to show modal-->
                 <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
                    data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"
                    class="reveal-link">
                     <div class="related-user profile-picture" id="related-user-<?php echo $related_user->id; ?>"
-                         style="border: solid #000 2px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(<?php echo $distance_from_center; ?>em) rotate(-<?php echo $position; ?>deg);">
-                        <p><?= h($related_user->firstname) ?></p>
+                         style="border: <?php echo $border; ?>; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(<?php echo $distance_from_center; ?>em) rotate(-<?php echo $position; ?>deg);">
+
+                    </div>
+                    <div class="hover-overlay" id="related-user-<?php echo $related_user->id; ?>"
+                         style="transform: rotate(<?php echo $position; ?>deg) translate(<?php echo $distance_from_center; ?>em) rotate(-<?php echo $position; ?>deg);">
+                        <p><?= h($related_user->firstname) ?> <?php if ($notification_count > 0) { ?>
+                            <span id="notifications-<?php echo $related_user->id;?>"><?= $notification_count; ?></span>
+                            <?php } ?></p>
+
                     </div>
                 </a>
 
@@ -134,6 +154,19 @@ endif; ?>
             $position = $position + $space_allocated;
         endforeach; ?>
 
+        <?php
+        if (count($number_of_interests) > 15) { ?>
+            <a href="/users" class="reveal-link">
+                <div class="related-user profile-picture"
+                     style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(180deg) translate(18em) rotate(-180deg);">
+                </div>
+                <div class="hover-overlay"
+                     style="transform: rotate(180deg) translate(18em) rotate(-180deg);">
+                    <?php $extra_count = count($number_of_interests) - 15; ?>
+                    <p>+<?= $extra_count ?> more</p>
+                </div>
+            </a>
+        <?php } ?>
     </div>
     <div id="canvas"></div>
     <script>
@@ -155,6 +188,6 @@ endif; ?>
         var geocoder = new google.maps.Geocoder;
         console.log('lat ' + lat_connections);
         console.log(lng_connections);
-        geocodeLatLng(geocoder, lat_connections, lng_connections);
+        geocodeLatLng(geocoder, lat_connections, lng_connections, '#my-location');
     });
 </script>
