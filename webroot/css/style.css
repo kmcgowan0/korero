@@ -153,3 +153,35 @@ div.location p {
     width: 50%;
     display: inline-block;
 }
+
+.hover-overlay {
+    position: absolute;
+    display: block;
+    top: 50%; left: 50%;
+    width: 4em; height: 4em;
+    margin: -2em;
+    z-index: 100;
+    transition: .5s ease;
+    background-color: rgba(0,0,0,0.35);
+    opacity: 0;
+    border-radius: 200px;
+}
+.reveal-link:hover .hover-overlay {
+    opacity: 1;
+}
+.hover-overlay p {
+    color: white;
+    font-size: 14px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+.connection-notifications {
+    border-radius: 50px;
+    background-color: #d33c44;
+    color: #fff;
+}

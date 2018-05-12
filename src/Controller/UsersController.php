@@ -398,9 +398,71 @@ class UsersController extends AppController
         $top_interests = $this->Users->Interests->find('list')->where(['id IN' => $top_interest_array]);
 
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'interests', 'top_interests'));
+        $this->set(compact('user', 'interests', 'top_interests', 'largest', 'users_interests', 'this_user_interests', 'number_of_interests', 'user_interest_ids', 'diff'));
     }
 
+    public function editProfilePicture()
+    {
+        $id = $this->Auth->user('id');
+        $user = $this->Users->get($id);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user_data = $this->request->getData();
+var_dump($user_data);
+            if ($user_data['upload']['name'] != '') {
+                $file = $user_data['upload'];
+                $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
+                $arr_ext = ['jpg', 'png']; //set allowed extensions
+                $setNewFileName = time() . "_" . rand(000000, 999999);
+                //only process if the extension is valid
+                if (in_array($ext, $arr_ext)) {
+                    //do the actual uploading of the file. First arg is the tmp name, second arg is
+                    //where we are putting it
+                    move_uploaded_file($file['tmp_name'], WWW_ROOT . 'img/' . $setNewFileName . '.' . $ext);
+
+                    //prepare the filename for database entry
+                    $imageFileName = $setNewFileName . '.' . $ext;
+
+                }
+                $user_data['upload'] = $imageFileName;
+            } elseif ($user_data['remove-profile'] == 'yes') {
+                $user_data['upload'] = '';
+            } else {
+                $user_data['upload'] = $user->getOriginal('upload');
+            }
+            $user = $this->Users->patchEntity($user, $user_data);
+
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+
+                return $this->redirect(['action' => 'view', $user->id]);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
+
+        $interests = $this->Users->Interests->find('list', ['limit' => 200]);
+
+        $auth_user = $this->Auth->user();
+
+        if ($auth_user['id'] == $user['id']) {
+            $my_profile = true;
+        } else {
+            $my_profile = false;
+        }
+
+        $this->set(compact('user', 'interests', 'my_profile', 'user_data'));
+    }
+
+    public function removeProfilePicture()
+    {
+        $id = $this->Auth->user('id');
+
+        $this->Users->query()->update()
+            ->set(['upload' => ''])
+            ->where(['id' => $id])
+            ->execute();
+
+        return $this->redirect(['action' => 'view', $id]);
+    }
     /**
      * Delete method
      *

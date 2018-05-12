@@ -33,6 +33,8 @@
             <h6><?= $this->Html->link(__('Reset Password'), ['action' => 'password-reset', $user->id]) ?></h6>
             <h6><?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $user->id]) ?></h6>
             <h6><?= $this->Html->link(__('Edit Interests'), ['action' => 'edit-interests', $user->id]) ?></h6>
+            <h6><?= $this->Html->link(__('Edit Profile picture'), ['action' => 'edit-profile-picture', $user->id]) ?></h6>
+            <h6><?= $this->Html->link(__('Remove Profile picture'), ['action' => 'remove-profile-picture']) ?></h6>
             <table class="vertical-table">
                 <tr>
                     <th scope="row"><?= __('Email') ?></th>

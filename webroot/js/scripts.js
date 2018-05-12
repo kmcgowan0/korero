@@ -59,11 +59,6 @@ $(document).ready(function () {
         }
     });
 
-    $('#remove-profile-image').on('click', function () {
-        $('#profile.picture').val(null);
-        $('#profile-preview').attr('src', '/img/placeholder.png');
-    });
-
     $('[data-reveal]').on('closed.zf.reveal', function () {
 
         var liveMessageId = null;
@@ -81,6 +76,35 @@ $(document).ready(function () {
             refreshMessages(messageId);
 
         });
+    });
+
+    $('#add-interest').on('click', function () {
+        console.log('button click');
+        var newInterest = $('#search').val();
+        
+    });
+
+    $('#add-user-form').submit(function (event) {
+        var form = this;
+        event.preventDefault();
+        if ($('#location-coords').val() == '') {
+            var address = $('#my-location').val();
+            geocodeTown(address);
+        }
+        form.submit();
+    });
+
+    $('#profile-upload').on('change', function () {
+        if (typeof (FileReader) != "undefined") {
+            var image_holder = $("#upload-image");
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                image_holder.attr('src', e.target.result);
+            };
+            reader.readAsDataURL($(this)[0].files[0]);
+        } else {
+            alert("This browser does not support FileReader.");
+        }
     });
 
     // var messageId = $('#messages-id').val();
