@@ -75,13 +75,33 @@ endif; ?>
                     $related_profile_img = $related_user->upload;
                 else :
                     $related_profile_img = 'placeholder.png';
-                endif; ?>
+                endif;
+
+                $distance = $related_user->distance;
+                if ($distance < 2) {
+                    $distance_from_center = 5.5;
+                } elseif ($distance < 5) {
+                    $distance_from_center = 10;
+                } elseif ($distance < 50) {
+                    $distance_from_center = 11;
+                }
+                elseif ($distance < 100) {
+                    $distance_from_center = 12;
+                }
+                elseif ($distance > 1000) {
+                    $distance_from_center = 14;
+                }
+                elseif ($distance <= 1000) {
+                    $distance_from_center = 16;
+                }
+
+                ?>
                 <!--                //link to click to show modal-->
                 <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
                    data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"
                    class="reveal-link">
                     <div class="related-user profile-picture" id="related-user-<?php echo $related_user->id; ?>"
-                         style="border: solid #000 2px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(15em) rotate(-<?php echo $position; ?>deg);">
+                         style="border: solid #000 2px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(<?php echo $distance_from_center; ?>em) rotate(-<?php echo $position; ?>deg);">
                         <p><?= h($related_user->firstname) ?></p>
                     </div>
                 </a>
@@ -125,6 +145,20 @@ endif; ?>
             <?php endif;
             $position = $position + $space_allocated;
         endforeach; ?>
+
+        <?php
+        if (count($number_of_interests) > 15) { ?>
+            <a href="/users" class="reveal-link">
+                <div class="related-user profile-picture"
+                     style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(180deg) translate(18em) rotate(-180deg);">
+                </div>
+                <div class="hover-overlay"
+                     style="transform: rotate(180deg) translate(18em) rotate(-180deg);">
+                    <?php $extra_count = count($number_of_interests) - 15; ?>
+                    <p>+<?= $extra_count ?> more</p>
+                </div>
+            </a>
+        <?php } ?>
 
     </div>
     <div id="canvas"></div>
