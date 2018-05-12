@@ -450,14 +450,25 @@ class UsersController extends AppController
         //sort by count
         arsort($number_of_interests);
 
+        $this_user_interests = $user->interests;
+
+        $user_interest_ids = array();
+        foreach ($this_user_interests as $this_user_interest) {
+//            array_push($user_interest_ids, $this_user_interest['id']);
+            $user_interest_ids[$this_user_interest['id']] = 1;
+        }
+
+        $diff_interests = array_diff_key($number_of_interests, $user_interest_ids);
+
         //take the first 4 from the array
-        $largest = array_slice($number_of_interests, 0, 20, true);
+        $largest = array_slice($diff_interests, 0, 20, true);
 
         //get array of just interest ids for query
         $top_interest_array = [];
         foreach ($largest as $key => $value) {
             array_push($top_interest_array, $key);
         }
+
         $top_interests = $this->Users->Interests->find('list')->where(['id IN' => $top_interest_array]);
 
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
