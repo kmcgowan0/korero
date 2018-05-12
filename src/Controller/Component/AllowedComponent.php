@@ -14,6 +14,7 @@ class AllowedComponent extends Component
         $auth_user_interests = $authorised_user['interests'];
         $user_interests = $user->interests;
         $intersect = array_uintersect($auth_user_interests, $user_interests, array($this, 'compareDeepValue'));
+
         if ($intersect) {
             $allowed_user = true;
         } else {
