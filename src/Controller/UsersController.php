@@ -232,17 +232,9 @@ class UsersController extends AppController
             $my_profile = false;
         }
 
-        $user_interests_array = array();
-        foreach ($user->interests as $an_interest) {
-            array_push($user_interests_array, $an_interest->name);
-        }
+        $this->loadComponent('Mutual');
 
-        $auth_interests_array = array();
-        foreach ($authorised_user['interests'] as $an_interest) {
-            array_push($auth_interests_array, $an_interest['name']);
-        }
-
-        $mutual_interest_array = array_intersect($user_interests_array, $auth_interests_array);
+        $mutual_interest_array = $this->Mutual->getMutual($user->interests, $authorised_user['interests']);
 
 
         $this->set(compact('user', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
