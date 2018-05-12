@@ -660,16 +660,10 @@ var_dump($user_data);
 
         //get distance component
         $this->loadComponent('Distance');
+        $this->loadComponent('Mutual');
 
         //only get distinct users
-        $distinct_users = $related_users_interests->group('Users.id')->order('location', 'ASC');
-
-        //if there are distinct users work out how much space each gets
-        if ($distinct_users->count()) {
-            $number_of_users = $distinct_users->count();
-
-            $space_allocated = 360 / $number_of_users;
-        }
+        $distinct_users = $related_users_interests->group('Users.id');
 
         //empty array for counting interests
         $interest_count = array();
