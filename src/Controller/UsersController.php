@@ -681,15 +681,17 @@ var_dump($user_data);
             //create associative array for each users interest where user id => number of mutual interests
             $interest_count[$an_interest['id']] = $this_interest;
         }
+        $number_of_interests = $interest_count;
 
         //sort the interests from most to least
         arsort($interest_count);
 
-        //slice the array to get the top 6
+        //slice the array to get the top 15
         $top_interests = array_slice($interest_count, 0, 15, true);
 
         //set empty array for users in radius
         $users_in_radius = array();
+
         //for each user get the distance from the main user
         foreach ($distinct_users as $distinct_user) {
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
@@ -701,7 +703,18 @@ var_dump($user_data);
 
         foreach ($users_in_radius as $users_in_radiu) {
             $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
+//            $mutual_interests = $this->Mutual->getMutual($user->interests, )
+//                $number_in_common =
             $users_in_radiu['distance'] = $distance;
+        }
+
+//        $users_in_radius_limit = array_slice($users_in_radius);
+
+        //if there are distinct users work out how much space each gets
+        if (count($users_in_radius)) {
+            $number_of_users = count($users_in_radius);
+
+            $space_allocated = 360 / $number_of_users;
         }
 
         //would like this working
@@ -710,6 +723,23 @@ var_dump($user_data);
 //        $message = $this->Message->sendMessages($this->Auth->user('id'));
 
         $this->loadModel('Messages');
+
+        $messages = $this->Messages->find('all', array(
+            'conditions' => array(
+                array('recipient' => $this->Auth->user('id')),
+            )
+        ));
+
+            $unread_messages = array();
+            foreach ($messages as $message) {
+                $seen = $message['seen'];
+
+                if ($seen == false || $seen == null) {
+                    array_push($unread_messages, $message);
+                }
+            }
+
+
 
 //        sending messages from within message view
         $message = $this->Messages->newEntity();
@@ -728,7 +758,7 @@ var_dump($user_data);
         }
 
 
-        $this->set(compact('user', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated'));
+        $this->set(compact('user', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count', 'unread_messages'));
         $this->set('_serialize', ['user']);
     }
 
