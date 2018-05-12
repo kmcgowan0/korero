@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     messageNotifications();
 
+    scrollBottom();
 
     $('#search').on('keyup', function () {
         var term = $(this).val();
@@ -76,6 +77,7 @@ $(document).ready(function () {
             refreshMessages(messageId);
 
         });
+        scrollBottom();
     });
 
     $('#add-interest').on('click', function () {
@@ -150,6 +152,13 @@ function connectionMessages(messageId) {
             setTimeout(refreshMessages(messageId), interval);
         }
     })
+}
+
+function scrollBottom() {
+    var messages    = $('#messages');
+    var height = messages[0].scrollHeight;
+    messages.scrollTop(height);
+        $('#messages').animate({scrollTop: 15000},'fast');
 }
 
 function bindFunc() {
