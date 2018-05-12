@@ -4,14 +4,7 @@
  * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Interests'), ['controller' => 'Interests', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Interest'), ['controller' => 'Interests', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
+
 <div class="users index large-9 medium-8 columns content">
     <h3><?= __('Users') ?></h3>
 
@@ -25,20 +18,36 @@
         <tr>
             <th scope="col"></th>
             <th scope="col"><?= $this->Paginator->sort('firstname') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('lastname') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('dob') ?></th>
             <th scope="col"><?= $this->Paginator->sort('location') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('interests') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('You both like') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
         </thead>
         <tbody>
 
-        <?php foreach ($users as $user):
-            $interests = array();
-            foreach ($user->interests as $interest) {
-                $interests[] = $interest->name;
-            } ?>
+        <?php foreach ($distinct_users as $user):
+
+        if ($user->id != $authUser['id']) {
+
+        $related_interests = [];
+
+        foreach ($user_matching_data as $matching_datum) {
+            //if the matching data matches the id of the related user
+            //add that interest to an array for this user
+            if ($matching_datum['UsersInterests']->user_id == $user->id) {
+
+                array_push($related_interests, $matching_datum['Interests']);
+            }
+        }
+
+            $related_users_var[$user->id] = $related_interests;
+            //add each related interest to a string
+            $related_interest_str = array();
+            foreach ($related_interests as $related_interest) {
+                $related_interest_str[] = $related_interest->name;
+            }
+
+            ?>
 
             <tr>
                 <td><?php if ($user->upload) :
@@ -52,19 +61,19 @@
                     </div>
                 </td>
                 <td><?= h($user->firstname) ?></td>
-                <td><?= h($user->lastname) ?></td>
-                <td><?= h($user->dob) ?></td>
-                <td><?= h($user->location) ?></td>
-                <td><?php echo implode(", ", $interests); ?>
+                <td id="my-location-<?= $user->id ?>"><?= h($user->location) ?></td>
+                <td><?php echo implode(", ", $related_interest_str); ?>
                 </td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                    <?php if ($authUser['id'] == $user->id) : ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                    <?php endif; ?>
+                    <?= $this->Html->link(__('View profile'), ['action' => 'view', $user->id]) ?>
+                    <br>
+                    <?= $this->Html->link(__('Send a message'), ['controller' => 'messages', 'action' => 'view', $user->id]) ?>
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php } ?>
+
+            <?php
+        endforeach; ?>
         </tbody>
     </table>
     <div class="paginator">
