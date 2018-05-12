@@ -32,12 +32,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->css('croppie.css') ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
     <script src="/js/connections.js"></script>
+    <script src="/js/croppie.js"></script>
 
 
     <?= $this->fetch('meta') ?>
@@ -46,21 +47,22 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
 <nav class="top-bar expanded" data-topbar role="navigation">
-    <ul class="title-area large-3 columns">
+    <ul class="title-area large-3  medium-3 columns">
         <li class="name">
             <a href="/users/connections"><img src="/img/logo-header.png" class="logo"></a>
         </li>
     </ul>
-    <div class="large-4 columns search-column">
+    <div class="large-4 medium-4 columns search-column">
         <?php if ($authUser) : ?>
         <?= $this->Form->create('', ['type' => 'get', 'url' => '/users/search']) ?>
         <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search', 'class' => 'header-search']) ?>
         <?= $this->Form->end() ?>
         <?php endif; ?>
     </div>
-    <div class="top-bar-section large-5 columns">
+    <div class="top-bar-section large-5 medium-5 columns">
         <ul class="right">
             <?php if ($authUser) : ?>
+                <li><?= $this->Html->link(__('Connections'), ['controller' => 'Users', 'action' => 'connections']) ?></li>
                 <li><?= $this->Html->link(__('View Profile'), ['controller' => 'Users', 'action' => 'view', $authUser['id']]) ?></li>
                 <!-- number of notifications -->
                 <li><a href="/messages/inbox">Messages <span id="notifications"></span></a></li>
@@ -124,6 +126,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <script src="/js/vendor/what-input.js"></script>
     <script src="/js/vendor/foundation.js"></script>
     <script src="/js/app.js"></script>
+
 
 </footer>
 </body>
