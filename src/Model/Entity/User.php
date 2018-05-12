@@ -40,7 +40,8 @@ class User extends Entity
         'upload' => true,
         'interests' => true,
         'radius' => true,
-        'loggedin' => true
+        'loggedin' => true,
+        'coded_location' => true
     ];
 
     /**

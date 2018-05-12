@@ -50,7 +50,8 @@ class UsersTable extends Table
         \Cake\Event\EventManager::instance()->on('HybridAuth.newUser', [$this, 'createUser']);
     }
 
-    public function createUser(\Cake\Event\Event $event) {
+    public function createUser(\Cake\Event\Event $event)
+    {
         // Entity representing record in social_profiles table
         $profile = $event->data()['profile'];
 
@@ -76,7 +77,7 @@ class UsersTable extends Table
     {
         $dob_string = $dob['year'] . '/' . $dob['month'] . '/' . $dob['day'];
         $from = new Time($dob_string);
-        $to   = Time::now();
+        $to = Time::now();
         $user_age = $from->diff($to)->y;
 
         if ($user_age >= 18) {
@@ -125,7 +126,13 @@ class UsersTable extends Table
             ->scalar('location')
             ->maxLength('location', 255)
             ->requirePresence('location', 'create')
-            ->notEmpty('location');
+            ->allowEmpty('location');
+
+        $validator
+            ->scalar('coded_location')
+            ->maxLength('coded_location', 255)
+            ->requirePresence('coded_location', 'create')
+            ->notEmpty('coded_location');
 
         $validator
             ->date('dob')
@@ -139,12 +146,12 @@ class UsersTable extends Table
         return $validator;
     }
 
-    public function validationPassword(Validator $validator )
+    public function validationPassword(Validator $validator)
     {
 
         $validator
-            ->add('old_password','custom',[
-                'rule'=>  function($value, $context){
+            ->add('old_password', 'custom', [
+                'rule' => function ($value, $context) {
                     $user = $this->get($context['data']['id']);
                     if ($user) {
                         if ((new DefaultPasswordHasher)->check($value, $user->password)) {
@@ -153,7 +160,7 @@ class UsersTable extends Table
                     }
                     return false;
                 },
-                'message'=>'The old password does not match the current password!',
+                'message' => 'The old password does not match the current password!',
             ])
             ->notEmpty('old_password');
 
@@ -164,10 +171,10 @@ class UsersTable extends Table
                     'message' => 'The password have to be at least 6 characters!',
                 ]
             ])
-            ->add('password1',[
-                'match'=>[
-                    'rule'=> ['compareWith','password2'],
-                    'message'=>'The passwords does not match!',
+            ->add('password1', [
+                'match' => [
+                    'rule' => ['compareWith', 'password2'],
+                    'message' => 'The passwords does not match!',
                 ]
             ])
             ->notEmpty('password1');
@@ -178,10 +185,10 @@ class UsersTable extends Table
                     'message' => 'The password have to be at least 6 characters!',
                 ]
             ])
-            ->add('password2',[
-                'match'=>[
-                    'rule'=> ['compareWith','password1'],
-                    'message'=>'The passwords does not match!',
+            ->add('password2', [
+                'match' => [
+                    'rule' => ['compareWith', 'password1'],
+                    'message' => 'The passwords does not match!',
                 ]
             ])
             ->notEmpty('password2');
