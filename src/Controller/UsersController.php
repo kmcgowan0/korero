@@ -219,13 +219,6 @@ class UsersController extends AppController
         //only get distinct users
         $distinct_users = $related_users_interests->group('Users.id')->order('location', 'ASC');
 
-        //if there are distinct users work out how much space each gets
-        if ($distinct_users->count()) {
-            $number_of_users = $distinct_users->count();
-
-            $space_allocated = 360 / $number_of_users;
-        }
-
         //empty array for counting interests
         $interest_count = array();
 
@@ -235,7 +228,6 @@ class UsersController extends AppController
             //for each bit of matching data check if it relates to the current users interests
             //if it does add it onto the this interest var
             foreach ($user_matching_data as $a_data) {
-//                var_dump($a_data);
                 foreach ($a_data as $a_datum) {
                     if ($a_datum['_matchingData']['UsersInterests']->user_id == $an_interest['id']) {
                         $this_interest++;
@@ -246,6 +238,8 @@ class UsersController extends AppController
             //create associative array for each users interest where user id => number of mutual interests
             $interest_count[$an_interest['id']] = $this_interest;
         }
+
+        $number_of_interests = $interest_count;
 
         //sort the interests from most to least
         arsort($interest_count);
@@ -262,6 +256,17 @@ class UsersController extends AppController
             if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests)) {
                 array_push($users_in_radius, $distinct_user);
             }
+        }
+
+        foreach ($users_in_radius as $users_in_radiu) {
+            $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
+            $users_in_radiu['distance'] = $distance;
+        }
+
+        if (count($users_in_radius)) {
+            $number_of_users = count($users_in_radius);
+
+            $space_allocated = 360 / $number_of_users;
         }
 
         //would like this working
@@ -288,7 +293,7 @@ class UsersController extends AppController
         }
 
 
-        $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated', 'term'));
+        $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance'));
         $this->set('_serialize', ['user']);
     }
 
