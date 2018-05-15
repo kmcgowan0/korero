@@ -26,7 +26,9 @@
             <img id="profile-preview" src="/img/<?php echo $profile_img; ?>">
             <?php
             echo $this->Form->control('upload', ['type' => 'file', 'id' => 'profile-picture']);
-            echo $this->Form->hidden('remove-profile', ['type' => 'text', 'id' => 'remove-profile-picture']); ?>
+            echo $this->Form->hidden('remove-profile', ['type' => 'text', 'id' => 'remove-profile-picture']);
+            echo $this->Form->control('accept_messages', ['type' => 'checkbox', 'label' => 'Check this box if you\'re happy to receive messages from people with no mutual interests with you']);
+			?>
 
 
         </fieldset>

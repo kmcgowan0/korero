@@ -16,6 +16,14 @@
     </div>
     <div class="users view large-9 medium-8 columns content">
         <h3><?= h($user->firstname) ?>, <?= $user_age ?></h3>
+<!--        If the user has been blocked by the logged in user-->
+        <?php if ($blocked_user) { ?>
+    <p>You have blocked <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can no longer message each other.</p>
+    <h6> <?= $this->Form->postLink(__('Unblock this user'),['action' => 'unblock-user', $user->id]) ?></h6> <?php
+    //if the user has blocked the logged in user
+} else if ($blocked_by) { ?>
+        <p>You have blocked by <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can no longer message each other.</p>
+         <?php } else { ?>
         <?php if ($allowed_user && $my_profile == false) { ?>
             <p><span id="my-location"></span> (<?= $distance ?> miles from you)</p>
             <?php if (!empty($user->interests)):
@@ -26,9 +34,18 @@
                 <div class="related">
                     <h4>You both like <?php echo implode(", ", $interests_string); ?></h4>
                     <h6><?= $this->Html->link(__('Message ' . $user->firstname), ['controller' => 'Messages', 'action' => 'view', $user->id]) ?></h6>
+                    <h6> <?= $this->Form->postLink(
+                __('Block this user'),
+                ['action' => 'block-user', $user->id],
+                ['confirm' => __('Are you sure? You will no longer be able to view each other\'s profiles or send each other messages')]
+            )
+            ?></h6>
                 </div>
             <?php endif; ?>
-        <?php } ?>
+        <?php } 
+        //give option to message if have no mututal interests
+                      }
+        ?>
         <?php if ($my_profile == true) { ?>
             <h6><?= $this->Html->link(__('Reset Password'), ['action' => 'password-reset', $user->id]) ?></h6>
             <h6><?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $user->id]) ?></h6>

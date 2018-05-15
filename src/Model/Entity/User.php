@@ -41,7 +41,9 @@ class User extends Entity
         'interests' => true,
         'radius' => true,
         'loggedin' => true,
-        'coded_location' => true
+        'coded_location' => true,
+		'accept_messages' => true,
+        'blocked_users' => true
     ];
 
     /**

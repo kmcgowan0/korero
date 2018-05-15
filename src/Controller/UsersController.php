@@ -343,9 +343,17 @@ class UsersController extends AppController
         $this->loadComponent('Mutual');
 
         $mutual_interest_array = $this->Mutual->getMutual($user->interests, $authorised_user['interests']);
+        
+        //check if users have blocked each other
+        $this->loadComponent('Blocked');
 
+        $current_user = $this->Users->get($authorised_user['id']);
+       
+        $blocked_user = $this->Blocked->blockedUser($user, $current_user);
+        $blocked_by = $this->Blocked->blockedBy($user, $current_user);
+        
 
-        $this->set(compact('user', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
+        $this->set(compact('user', 'blocked_user', 'blocked_by', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
         $this->set('_serialize', ['user']);
     }
 
@@ -565,6 +573,53 @@ var_dump($user_data);
         $this->Users->Interests->unlink($user, [$interest]);
         return $this->redirect(['action' => 'edit-interests', $uid]);
     }
+    
+    public function blockUser($uid = null)
+    {
+        $authorised_user = $this->Auth->user('id');
+        $user = $this->Users->get($authorised_user);
+        $blocked_array = array();
+        $blocked_users = $user['blocked_users'];
+        var_dump($blocked_users);
+        $blocked_array = explode(",", $blocked_users);
+
+        if(!in_array($uid, $blocked_array)) {
+            array_push($blocked_array, $uid);
+        }
+        
+        $new_blocked_list = implode(",", $blocked_array);
+        $this->Users->query()->update()
+                        ->set(['blocked_users' => $new_blocked_list])
+                        ->where(['id' => $user['id']])
+                        ->execute();
+                        return $this->redirect(['action' => 'view', $uid]);
+
+
+    }
+    
+    public function unblockUser($uid = null)
+    {
+        $authorised_user = $this->Auth->user('id');
+        $user = $this->Users->get($authorised_user);
+        $blocked_array = array();
+        $blocked_users = $user['blocked_users'];
+        var_dump($blocked_users);
+        $blocked_array = explode(",", $blocked_users);
+
+        if (($key = array_search($uid, $blocked_array)) !== false) {
+            unset($blocked_array[$key]);
+        }
+        
+        $new_blocked_list = implode(",", $blocked_array);
+        $this->Users->query()->update()
+                        ->set(['blocked_users' => $new_blocked_list])
+                        ->where(['id' => $user['id']])
+                        ->execute();
+                        return $this->redirect(['action' => 'view', $uid]);
+
+
+    }
+
 
 
     public function login()
@@ -691,12 +746,16 @@ var_dump($user_data);
 
         //set empty array for users in radius
         $users_in_radius = array();
+         $this->loadComponent('Blocked');
+       
 
         //for each user get the distance from the main user
         foreach ($distinct_users as $distinct_user) {
+            $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
+        $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
             //if the user is within the radius and in the top users array add it to the users in radius var
-            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests)) {
+            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests) && $blocked_user == false && $blocked_by == false) {
                 array_push($users_in_radius, $distinct_user);
             }
         }

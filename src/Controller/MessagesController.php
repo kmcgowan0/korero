@@ -40,6 +40,7 @@ class MessagesController extends AppController
     public function view($id = null)
     {
 
+	
         //get all messages from this user
         $messages_in_thread = $this->Messages->find('all', array(
             'conditions' => array(
@@ -116,8 +117,13 @@ class MessagesController extends AppController
             'contain' => ['Interests']
         ]);
         $allowed_user = $this->Allowed->checkAllowed($user, $authorised_user);
+        
+        $this->loadComponent('Blocked');
+       
+        $blocked_user = $this->Blocked->blockedUser($user, $authorised_user);
+        $blocked_by = $this->Blocked->blockedBy($user, $authorised_user);
 
-        $this->set(compact('message', 'user_array', 'sent_to_id', 'allowed_user', 'mutual_interests', 'all_interests_array', 'my_interests', 'mutual_interest_array'));
+        $this->set(compact('message', 'blocked_user', 'blocked_by', 'authorised_user', 'user_array', 'user', 'sent_to_id', 'allowed_user', 'messages_in_thread', 'mutual_interests', 'all_interests_array', 'my_interests', 'mutual_interest_array'));
     }
 
     public function instantMessages($id = null)
