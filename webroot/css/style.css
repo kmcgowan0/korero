@@ -47,6 +47,13 @@ input.header-search {
 .column + .column:last-child, .columns + .column:last-child, .column + .columns:last-child, .columns + .columns:last-child {
     float: left;
 }
+.messages {
+    position: relative;
+}
+#messages {
+    height:250px;
+    overflow-y: scroll;
+}
 
 /* Connections */
 .profile-picture {
@@ -72,8 +79,8 @@ input.header-search {
 }
 .related-container {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 54em;
+    height: 24em;
     padding: 2.8em;
     margin: 1.75em auto 0;
 }
