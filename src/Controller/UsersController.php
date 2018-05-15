@@ -322,6 +322,8 @@ class UsersController extends AppController
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user_data = $this->request->getData();
+            $user_data['firstname'] = ucwords($user_data['firstname']);
+            $user_data['lastname'] = ucwords($user_data['lastname']);
             $user = $this->Users->patchEntity($user, $user_data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -351,6 +353,8 @@ class UsersController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
+            $user_data['firstname'] = ucwords($user_data['firstname']);
+            $user_data['lastname'] = ucwords($user_data['lastname']);
             $user = $this->Users->patchEntity($user, $user_data);
 
             if ($this->Users->save($user)) {
