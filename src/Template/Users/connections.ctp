@@ -1,4 +1,3 @@
-<!--//get profile picture-->
 <?php if ($user->upload) :
     $profile_img = $user->upload;
 else :
@@ -82,19 +81,64 @@ endif; ?>
                     $related_profile_img = 'placeholder.png';
                 endif;
                 $distance = $related_user->distance;
-                if ($distance < 2) {
+                if ($related_user->radius < 5) {
+	                if ($distance < 0.1) {
+                    $distance_from_center = 9;
+                } elseif ($distance < 0.5) {
+                    $distance_from_center = 10;
+                } elseif ($distance < 1) {
+                    $distance_from_center = 11;
+                } elseif ($distance < 2) {
+                    $distance_from_center = 12;
+                } elseif ($distance < 3) {
+                    $distance_from_center = 14;
+                } elseif ($distance <= 5) {
+                    $distance_from_center = 16;
+                } 
+                } else if ($related_user->radius < 10) {
+	                if ($distance < 0.5) {
+                    $distance_from_center = 9;
+                } elseif ($distance < 1) {
+                    $distance_from_center = 10;
+                } elseif ($distance < 2) {
+                    $distance_from_center = 11;
+                } elseif ($distance < 5) {
+                    $distance_from_center = 12;
+                } elseif ($distance < 7) {
+                    $distance_from_center = 14;
+                } elseif ($distance <= 10) {
+                    $distance_from_center = 16;
+                } 
+                } else if ($related_user->radius < 500) {
+	                if ($distance < 2) {
                     $distance_from_center = 8;
                 } elseif ($distance < 5) {
+                    $distance_from_center = 10;
+                } elseif ($distance < 20) {
+                    $distance_from_center = 11;
+                } elseif ($distance < 40) {
+                    $distance_from_center = 12;
+                } elseif ($distance < 70) {
+                    $distance_from_center = 14;
+                } elseif ($distance <= 100) {
+                    $distance_from_center = 16;
+                }
+                } else if ($related_user->radius >= 500) {
+	                if ($distance < 2) {
+                    $distance_from_center = 8;
+                } elseif ($distance < 10) {
                     $distance_from_center = 10;
                 } elseif ($distance < 50) {
                     $distance_from_center = 11;
                 } elseif ($distance < 100) {
                     $distance_from_center = 12;
-                } elseif ($distance > 1000) {
+                } elseif ($distance < 1000) {
                     $distance_from_center = 14;
-                } elseif ($distance <= 1000) {
+                } elseif ($distance >= 1000) {
                     $distance_from_center = 16;
                 }
+                }
+                
 
                 ?>
                 <!--                //link to click to show modal-->
@@ -134,14 +178,14 @@ endif; ?>
 
                     <div id="messages<?php echo $related_user->id; ?>"></div>
                     <div class="messages-in-view">
-                        <?= $this->Form->create($message, ['data-id' => $related_user->id, 'class' => 'message-form' . $related_user->id]) ?>
+                        <?= $this->Form->create($message, ['data-id' => $related_user->id, 'class' => 'message-form' . $related_user->id, 'id' => 'message-form' . $related_user->id, 'url' => '/users/send-message']) ?>
                         <fieldset>
                             <?php
-                            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'message-body' . $related_user->id]);
+                            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'message-body' . $related_user->id, 'autocomplete' => 'off']);
                             echo $this->Form->hidden('recipient', ['value' => $related_user->id, 'id' => 'message-recipient']);
                             ?>
                         </fieldset>
-                        <?= $this->Form->button(__('Send', ['type' => 'button'])) ?>
+                        <?= $this->Form->button(__('Send')) ?>
                         <?= $this->Form->end() ?>
                     </div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -155,14 +199,14 @@ endif; ?>
         endforeach; ?>
 
         <?php
-        if (count($number_of_interests) > 15) { ?>
+        if (count($number_of_interests) > 10) { ?>
             <a href="/users" class="reveal-link">
                 <div class="related-user profile-picture"
                      style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(180deg) translate(18em) rotate(-180deg);">
                 </div>
                 <div class="hover-overlay"
                      style="transform: rotate(180deg) translate(18em) rotate(-180deg);">
-                    <?php $extra_count = count($number_of_interests) - 15; ?>
+                    <?php $extra_count = count($number_of_interests) - 10; ?>
                     <p>+<?= $extra_count ?> more</p>
                 </div>
             </a>
