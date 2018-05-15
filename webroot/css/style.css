@@ -192,3 +192,85 @@ div.location p {
     background-color: #d33c44;
     color: #fff;
 }
+
+/*loading animation */
+
+
+/* */
+
+.twoToneCenter {
+    text-align: center;
+    margin: 1em 0;
+}
+.location-button {
+    display: inline-block;
+    outline: none;
+    padding: 10px 20px;
+    line-height: 1.4;
+    background: transparent;
+    border-radius: 4px;
+    border: 2px solid #fff;
+    color: #fff;
+    text-transform: uppercase;
+    position: relative;
+    -webkit-transition: padding-right 0.3s ease;
+    transition: padding-right 0.3s ease;
+    font-weight: 700;
+}
+
+.location-button:active {
+    color: #fff;
+    background: transparent;
+}
+.location-button.spinning {
+    padding-right: 40px;
+}
+.location-button.spinning:after {
+    content: '';
+    right: 6px;
+    top: 50%;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-radius: 50%;
+    -webkit-animation: rotate360 .5s infinite linear, exist .1s forwards ease;
+    animation: rotate360 .5s infinite linear, exist .1s forwards ease;
+}
+.location-button.spinning:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    right: 6px;
+    top: 50%;
+    position: absolute;
+    border-right: 3px solid #fff;
+    -webkit-animation: rotate360 .5s infinite linear, exist .1s forwards ease ;
+    animation: rotate360 .5s infinite linear, exist .1s forwards ease ;
+}
+@-webkit-keyframes rotate360 {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate360 {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes exist {
+    100% {
+        width: 15px;
+        height: 15px;
+        margin: -8px 5px 0 0;
+    }
+}
+@keyframes exist {
+    100% {
+        width: 15px;
+        height: 15px;
+        margin: -8px 5px 0 0;
+    }
+}
