@@ -193,15 +193,19 @@ class UsersController extends AppController
         arsort($interest_count);
 
         //slice the array to get the top 6
-        $top_interests = array_slice($interest_count, 0, 15, true);
+        $top_interests = array_slice($interest_count, 0, 10, true);
 
         //set empty array for users in radius
         $users_in_radius = array();
+        $this->loadComponent('Blocked');
+       
         //for each user get the distance from the main user
         foreach ($distinct_users as $distinct_user) {
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
+            $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
+        $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
             //if the user is within the radius and in the top users array add it to the users in radius var
-            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests)) {
+            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests) && $blocked_user == false && $blocked_by == false) {
                 array_push($users_in_radius, $distinct_user);
             }
         }
@@ -218,10 +222,6 @@ class UsersController extends AppController
             $space_allocated = 360 / $number_of_users;
         }
 
-        //would like this working
-
-//        $this->loadComponent('Message');
-//        $message = $this->Message->sendMessages($this->Auth->user('id'));
 
         $this->loadModel('Messages');
 
@@ -231,8 +231,9 @@ class UsersController extends AppController
 
             $message_data = $this->request->getData();
             $message_data['sender'] = $id;
-            //$message_data['recipient'] = $id;
+            $message_data['recipient'] = $id;
             $message_data['sent'] = date('Y-m-d h:i');
+
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
                 $this->Flash->success(__('Message sent'));
@@ -695,21 +696,28 @@ var_dump($user_data);
         arsort($interest_count);
 
         //slice the array to get the top 15
-        $top_interests = array_slice($interest_count, 0, 15, true);
+        $top_interests = $interest_count;
 
         //set empty array for users in radius
         $users_in_radius = array();
          $this->loadComponent('Blocked');
        
 
+$array_count = 0;
+$list_of_users = array();
+foreach ($top_interests as $top_interest_id => $count) {
+	$top_user = $this->Users->get($top_interest_id);
+	array_push($list_of_users, $top_user);
+}
         //for each user get the distance from the main user
-        foreach ($distinct_users as $distinct_user) {
+        foreach ($list_of_users as $distinct_user) {
             $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
         $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
             //if the user is within the radius and in the top users array add it to the users in radius var
-            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests) && $blocked_user == false && $blocked_by == false) {
+            if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $array_count <= 10) {
                 array_push($users_in_radius, $distinct_user);
+                $array_count++;
             }
         }
 
@@ -720,7 +728,7 @@ var_dump($user_data);
             $users_in_radiu['distance'] = $distance;
         }
 
-//        $users_in_radius_limit = array_slice($users_in_radius);
+       $users_in_radius_limit = array_slice($users_in_radius, 0, 10, true);
 
         //if there are distinct users work out how much space each gets
         if (count($users_in_radius)) {

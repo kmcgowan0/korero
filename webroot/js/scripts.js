@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     messageNotifications();
 
-    scrollBottom();
+//     scrollBottom();
 
     $('#search').on('keyup', function () {
         var term = $(this).val();
@@ -25,20 +25,20 @@ $(document).ready(function () {
         bindFunc();
     });
     $('.reveal-link').on('click', function () {
-        console.log('please');
+
         var liveMessageId = $(this).data('id');
         connectionMessages(liveMessageId);
-        console.log(liveMessageId);
+
         $('#related-user-'+liveMessageId).css('border', '2px solid #000');
         $('#notifications-'+liveMessageId).html('');
         messageNotifications();
-        $('.message-form' + liveMessageId).submit(function (event) {
+        $('#message-form' + liveMessageId).submit(function (event) {
             event.preventDefault();
             var $form = $(this),
-                url = $form.attr('action');
+                url = $form.attr('url');
             var body = $('#message-body' + liveMessageId).val();
-            var old = $.post(url, {body: body, recipient: liveMessageId});
-            var posting = $('.message-form' + liveMessageId).ajaxForm(url, {body: body, recipient: liveMessageId});
+            var posting = $.post(url, {body: body, recipient: liveMessageId});
+            
             posting.done(function (data) {
                 $(".message-form" + liveMessageId)[0].reset();
                 connectionMessages(liveMessageId);
@@ -47,6 +47,8 @@ $(document).ready(function () {
     });
 
     $('.location-button').on('click', function () {
+	    
+        $('.location-button').addClass('spinning');
         getLocation();
 
     });
@@ -75,7 +77,6 @@ $(document).ready(function () {
             url = $form.attr('action');
 
         var posting = $.post(url, {body: $('#body').val()});
-
         posting.done(function (data) {
             $("#message-form")[0].reset();
             refreshMessages(messageId);
@@ -112,6 +113,8 @@ $(document).ready(function () {
             alert("This browser does not support FileReader.");
         }
     });
+    
+    
 
     // var messageId = $('#messages-id').val();
     refreshMessages(messageId);
@@ -141,6 +144,7 @@ function refreshMessages(messageId) {
         complete: function () {
             // Schedule the next
             setTimeout(refreshMessages(messageId), interval);
+            messageNotifications();
         }
     });
 }
@@ -153,8 +157,8 @@ function connectionMessages(messageId) {
         },
         complete: function () {
             // Schedule the next
-            setTimeout(refreshMessages(messageId), interval);
-            console.log('ok');
+            setTimeout(connectionMessages(messageId), interval);
+            messageNotifications();
         }
     });
 }
@@ -174,11 +178,9 @@ function addInterests() {
 function scrollBottom() {
     var messages    = $('#messages');
     console.log(messages);
-    if ($('#messages')) {
     var height = messages[0].scrollHeight;
     messages.scrollTop(height);
     $('#messages').animate({scrollTop: 15000},'fast');
-    }
 }
 
 function getWindowSize() {
