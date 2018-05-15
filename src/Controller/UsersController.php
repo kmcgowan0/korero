@@ -90,59 +90,7 @@ class UsersController extends AppController
         arsort($interest_count);
 
         //slice the array to get the top 15
-        $top_interests = array_slice($interest_count, 0, 15, true);
-
-        //set empty array for users in radius
-        $users_in_radius = array();
-
-        //for each user get the distance from the main user
-        foreach ($distinct_users as $distinct_user) {
-            $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
-            //if the user is within the radius and in the top users array add it to the users in radius var
-            if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests)) {
-                array_push($users_in_radius, $distinct_user);
-            }
-        }
-
-        foreach ($users_in_radius as $users_in_radiu) {
-            $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
-//            $mutual_interests = $this->Mutual->getMutual($user->interests, )
-//                $number_in_common =
-            $users_in_radiu['distance'] = $distance;
-        }
-
-//        $users_in_radius_limit = array_slice($users_in_radius);
-
-        //if there are distinct users work out how much space each gets
-        if (count($users_in_radius)) {
-            $number_of_users = count($users_in_radius);
-
-            $space_allocated = 360 / $number_of_users;
-        }
-
-        //would like this working
-
-//        $this->loadComponent('Message');
-//        $message = $this->Message->sendMessages($this->Auth->user('id'));
-
-        $this->loadModel('Messages');
-
-//        sending messages from within message view
-        $message = $this->Messages->newEntity();
-        if ($this->request->is('post')) {
-
-            $message_data = $this->request->getData();
-            $message_data['sender'] = $id;
-            //$message_data['recipient'] = $id;
-            $message_data['sent'] = date('Y-m-d h:i');
-            $message = $this->Messages->patchEntity($message, $message_data);
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('Message sent'));
-            } else {
-                $this->Flash->error(__('The message could not be sent. Please, try again.'));
-            }
-        }
-
+        $top_interests = array_slice($interest_count, 0, 10, true);
 
         $this->set(compact('user', 'user_matching_data', 'message', 'distinct_users', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count'));
         $this->set('_serialize', ['user']);
