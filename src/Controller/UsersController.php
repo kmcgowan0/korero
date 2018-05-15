@@ -358,11 +358,9 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $user_data);
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'view', $user->id]);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
 
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
@@ -632,6 +630,43 @@ var_dump($user_data);
         }
         $this->set('user', $user);
     }
+    
+    public function sendMessage() {
+	    
+	     $this->loadModel('Messages');
+
+        $messages = $this->Messages->find('all', array(
+            'conditions' => array(
+                array('recipient' => $this->Auth->user('id')),
+            )
+        ));
+
+            $unread_messages = array();
+            foreach ($messages as $message) {
+                $seen = $message['seen'];
+
+                if ($seen == false || $seen == null) {
+                    array_push($unread_messages, $message);
+                }
+            }
+
+//        sending messages from within message view
+        $message = $this->Messages->newEntity();
+        
+        if ($this->request->is('post')) {
+
+            $message_data = $this->request->getData();
+            $message_data['sender'] = $id;
+//             $message_data['recipient'] = $id;
+            $message_data['sent'] = date('Y-m-d H:i:s');
+
+            $message = $this->Messages->patchEntity($message, $message_data);
+            if ($this->Messages->save($message)) {
+            } else {
+                $this->Flash->error(__('The message could not be sent. Please, try again.'));
+            }
+        }
+    }
 
     public function connections()
     {
@@ -640,7 +675,6 @@ var_dump($user_data);
         $user = $this->Users->get($id, [
             'contain' => ['Interests']
         ]);
-
 //updating the radius to search in
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
@@ -650,6 +684,7 @@ var_dump($user_data);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
+
 
         $ids = [-1];
 
@@ -743,8 +778,6 @@ foreach ($top_interests as $top_interest_id => $count) {
 
         //would like this working
 
-//        $this->loadComponent('Message');
-//        $message = $this->Message->sendMessages($this->Auth->user('id'));
 
         $this->loadModel('Messages');
 
@@ -764,25 +797,7 @@ foreach ($top_interests as $top_interest_id => $count) {
             }
 
 
-
-//        sending messages from within message view
-        $message = $this->Messages->newEntity();
-        if ($this->request->is('post')) {
-
-            $message_data = $this->request->getData();
-            $message_data['sender'] = $id;
-            //$message_data['recipient'] = $id;
-            $message_data['sent'] = date('Y-m-d h:i');
-            $message = $this->Messages->patchEntity($message, $message_data);
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('Message sent'));
-            } else {
-                $this->Flash->error(__('The message could not be sent. Please, try again.'));
-            }
-        }
-
-
-        $this->set(compact('user', 'user_matching_data', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count', 'unread_messages'));
+        $this->set(compact('user', 'user_matching_data', 'list_of_users', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'top_interests', 'interest_count', 'unread_messages'));
         $this->set('_serialize', ['user']);
     }
 
