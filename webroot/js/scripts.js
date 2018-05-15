@@ -1,6 +1,8 @@
 $(document).ready(function () {
 
     bindFunc();
+    
+    getWindowSize();
 
     messageNotifications();
 
@@ -20,11 +22,13 @@ $(document).ready(function () {
             '</div>' +
             '');
         $('#selected-form').append('<input type="hidden" id="' + id + '" name="interests[_ids][]" value="' + id + '">');
-        bindFunc()
+        bindFunc();
     });
     $('.reveal-link').on('click', function () {
+        console.log('please');
         var liveMessageId = $(this).data('id');
         connectionMessages(liveMessageId);
+        console.log(liveMessageId);
         $('#related-user-'+liveMessageId).css('border', '2px solid #000');
         $('#notifications-'+liveMessageId).html('');
         messageNotifications();
@@ -33,10 +37,9 @@ $(document).ready(function () {
             var $form = $(this),
                 url = $form.attr('action');
             var body = $('#message-body' + liveMessageId).val();
-            var posting = $.post(url, {body: body, recipient: liveMessageId});
+            var old = $.post(url, {body: body, recipient: liveMessageId});
+            var posting = $('.message-form' + liveMessageId).ajaxForm(url, {body: body, recipient: liveMessageId});
             posting.done(function (data) {
-                console.log(body);
-                console.log(liveMessageId);
                 $(".message-form" + liveMessageId)[0].reset();
                 connectionMessages(liveMessageId);
             });
@@ -45,11 +48,12 @@ $(document).ready(function () {
 
     $('.location-button').on('click', function () {
         getLocation();
+
     });
 
     $('#profile-picture').on('change', function () {
         if (typeof (FileReader) != "undefined") {
-            var image_holder = $("#profile-preview");
+            var image_holder = $(".profile-preview");
             var reader = new FileReader();
             reader.onload = function (e) {
                 image_holder.attr('src', e.target.result);
@@ -80,9 +84,9 @@ $(document).ready(function () {
         scrollBottom();
     });
 
-    $('#add-interest').on('click', function () {
-        console.log('button click');
-        var newInterest = $('#search').val();
+    $('#my-new-interest').on('click', function () {
+        
+        
         
     });
 
@@ -122,7 +126,7 @@ function search(term) {
         success: function (data) {
             $('#results').html(data);
         }
-    })
+    });
 }
 
 var interval = 1000;
@@ -138,7 +142,7 @@ function refreshMessages(messageId) {
             // Schedule the next
             setTimeout(refreshMessages(messageId), interval);
         }
-    })
+    });
 }
 
 function connectionMessages(messageId) {
@@ -150,15 +154,38 @@ function connectionMessages(messageId) {
         complete: function () {
             // Schedule the next
             setTimeout(refreshMessages(messageId), interval);
+            console.log('ok');
         }
-    })
+    });
+}
+
+function addInterests() {
+    console.log('button click');
+    var newInterest = $('#search').val();
+    $.get({
+        url: '/interests/add',
+        data: {name: newInterest},
+        success: function (data) {
+            console.log(data);
+        }
+    });
 }
 
 function scrollBottom() {
     var messages    = $('#messages');
+    console.log(messages);
+    if ($('#messages')) {
     var height = messages[0].scrollHeight;
     messages.scrollTop(height);
-        $('#messages').animate({scrollTop: 15000},'fast');
+    $('#messages').animate({scrollTop: 15000},'fast');
+    }
+}
+
+function getWindowSize() {
+    var width = $(document).width();
+    var height = $('.container').height() / 2;
+    console.log('width: ' + width + ' height: ' + height);
+    $('.related-container').css({'width': width, 'height': height})
 }
 
 function bindFunc() {
@@ -186,15 +213,15 @@ function messageNotifications() {
 function getLocation() {
 
     var geocoder = new google.maps.Geocoder;
+    
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
+       
         navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
             var pos = lat + ',' + lng;
-            console.log(pos);
-            geocodeLatLng(geocoder, lat, lng);
-            console.log(geocodeLatLng(geocoder, lat, lng));
+            geocodeLatLng(geocoder, lat, lng, '#my-location');
             $('#location-coords').val(pos);
         })
     } else {
@@ -204,15 +231,13 @@ function getLocation() {
 }
 
 
-function geocodeLatLng(geocoder, lat, lng) {
+function geocodeLatLng(geocoder, lat, lng, output) {
     var latlng = {lat: lat, lng: lng};
-    console.log(latlng);
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === 'OK') {
             if (results[0]) {
-                $('#my-location').html(results[0].address_components[3].long_name);
-                $('#my-location-input').html(results[0].address_components[3].long_name);
-                console.log(results[0]);
+                $(output).html(results[0].address_components[3].long_name);
+                $(output).val(results[0].address_components[3].long_name);
             } else {
                 window.alert('No results found');
             }
@@ -220,4 +245,18 @@ function geocodeLatLng(geocoder, lat, lng) {
             window.alert('Geocoder failed due to: ' + status);
         }
     });
+}
+
+function geocodeTown(address) {
+    var geocoder = new google.maps.Geocoder;
+    geocoder.geocode( { 'address' : address }, function( results, status ) {
+        if( status == google.maps.GeocoderStatus.OK ) {
+            //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
+            var lat = results[0].geometry.location.lat();
+            var lng = results[0].geometry.location.lng();
+            $('#location-coords').val(lat+','+lng);
+        } else {
+            alert( 'Geocode was not successful for the following reason: ' + status );
+        }
+    } );
 }

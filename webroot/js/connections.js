@@ -36,7 +36,6 @@ $(document).ready(function () {
 
         // add the (currently invisible) line to the page
 
-        console.log(y[2]);
         jQuery.each(y[2], function (i) {
             var id = 'line_' + new Date().getTime();
             var line = "<div id='" + id + "'class='line' title='" + this['name'] + "'>&nbsp;</div>";
@@ -91,7 +90,6 @@ $(document).ready(function () {
                 width: d
             }, 600, "linear", function () {
             });
-            console.log(i);
             return i < 3;
         });
 
