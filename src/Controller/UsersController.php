@@ -258,6 +258,7 @@ class UsersController extends AppController
             }
         }
 
+		 
         foreach ($users_in_radius as $users_in_radiu) {
             $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
             $users_in_radiu['distance'] = $distance;
@@ -293,7 +294,7 @@ class UsersController extends AppController
         }
 
 
-        $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance'));
+        $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'distinct_users', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance'));
         $this->set('_serialize', ['user']);
     }
 
@@ -481,6 +482,10 @@ class UsersController extends AppController
 
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
         $this->set(compact('user', 'interests', 'top_interests', 'largest', 'users_interests', 'this_user_interests', 'number_of_interests', 'user_interest_ids', 'diff'));
+    }
+    
+    public function refreshInterests() {
+        
     }
 
     public function editProfilePicture()
