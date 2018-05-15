@@ -12,3 +12,7 @@ foreach ($messages_in_thread_ordered as $message_in_thread) : ?>
         <p class="timestamp"><?= h($message_in_thread->sent) ?></p>
     </div>
 <?php endforeach; ?>
+
+<script>
+	messageNotifications();
+	</script>

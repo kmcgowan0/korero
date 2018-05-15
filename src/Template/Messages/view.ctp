@@ -52,6 +52,8 @@
 
 <script>
     var messageId = <?php echo json_encode($sent_to_id); ?>;
+    refreshMessages(messageId);
+    scrollBottom();
 </script>
 
 <?php } else { ?>

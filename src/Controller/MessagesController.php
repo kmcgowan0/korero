@@ -172,18 +172,22 @@ class MessagesController extends AppController
         $messages_in_thread_ordered = array_reverse($messages_in_thread_array);
         //sending messages from within message view
         $message = $this->Messages->newEntity();
+
         if ($this->request->is('post')) {
 
             $message_data = $this->request->getData();
             $message_data['sender'] = $this->Auth->user('id');
             $message_data['recipient'] = $id;
             $message_data['sent'] = date('Y-m-d H:i:s');
+            var_dump($message_data);
+            return;
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
             } else {
                 $this->Flash->error(__('The message could not be sent. Please, try again.'));
             }
         }
+
         $this->loadModel('Users');
         $users = $this->Users->find()->all();
 
@@ -261,6 +265,7 @@ class MessagesController extends AppController
             $message_data['sender'] = $this->Auth->user('id');
             $message_data['recipient'] = $recipient;
             $message_data['sent'] = date('Y-m-d H:i:s');
+            
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
                 return $this->redirect(['action' => 'view', $recipient]);

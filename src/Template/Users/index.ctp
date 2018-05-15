@@ -13,7 +13,7 @@
     <button>Search</button>
     <?= $this->Form->end() ?>
 
-    <table cellpadding="0" cellspacing="0">
+    <table cellpadding="0" cellspacing="0" id="user-table">
         <thead>
         <tr>
             <th scope="col"></th>
@@ -46,6 +46,7 @@
             foreach ($related_interests as $related_interest) {
                 $related_interest_str[] = $related_interest->name;
             }
+            $interest_count = count($related_interest_str);
 
             ?>
 
