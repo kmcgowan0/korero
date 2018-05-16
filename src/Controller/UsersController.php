@@ -92,6 +92,8 @@ class UsersController extends AppController
         //slice the array to get the top 15
         $top_interests = array_slice($interest_count, 0, 10, true);
 
+        $distinct_users = $this->paginate($distinct_users);
+
         $this->set(compact('user', 'user_matching_data', 'message', 'distinct_users', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count'));
         $this->set('_serialize', ['user']);
     }
