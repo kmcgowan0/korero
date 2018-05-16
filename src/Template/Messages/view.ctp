@@ -20,7 +20,7 @@
     <!--        If the user has been blocked by the logged in user-->
         <?php if ($blocked_user) { ?>
     <p>You have blocked <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can no longer message each other.</p>
-    <h6> <?= $this->Form->postLink(__('Unblock this user'),['action' => 'unblock-user', $user->id]) ?></h6> 
+    <h6> <?= $this->Form->postLink(__('Unblock this user'),['controller' => 'Users', 'action' => 'unblock-user', $user->id]) ?></h6>
     <div id="messages"></div>
     <?php
     //if the user has blocked the logged in user
@@ -41,7 +41,7 @@
         <?= $this->Form->create($message, ['id' => 'message-form']) ?>
         <fieldset>
             <?php
-            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'body']);
+            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'body', 'autocomplete' => 'off']);
             ?>
         </fieldset>
         <?= $this->Form->button(__('Send')) ?>
