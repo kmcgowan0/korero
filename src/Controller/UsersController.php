@@ -64,6 +64,7 @@ class UsersController extends AppController
         //get distance component
         $this->loadComponent('Distance');
         $this->loadComponent('Mutual');
+        $this->loadComponent('Age');
 
         //only get distinct users
         $distinct_users = $related_users_interests->group('Users.id');
@@ -86,6 +87,8 @@ class UsersController extends AppController
         }
         $number_of_interests = $interest_count;
 
+            $age = $this->Age->getAge($single_user->dob);
+            $single_user['age'] = $age;
         //sort the interests from most to least
         arsort($interest_count);
 
@@ -200,22 +203,24 @@ class UsersController extends AppController
         //set empty array for users in radius
         $users_in_radius = array();
         $this->loadComponent('Blocked');
-       
+        $this->loadComponent('Age');
+
         //for each user get the distance from the main user
         foreach ($distinct_users as $distinct_user) {
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
             $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
-        $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
             //if the user is within the radius and in the top users array add it to the users in radius var
             if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests) && $blocked_user == false && $blocked_by == false) {
                 array_push($users_in_radius, $distinct_user);
             }
         }
 
-		 
+
         foreach ($users_in_radius as $users_in_radiu) {
             $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
+            $age = $this->Age->getAge($users_in_radiu['dob']);
             $users_in_radiu['distance'] = $distance;
+            $users_in_radiu['age'] = $age;
         }
 
         if (count($users_in_radius)) {
@@ -295,15 +300,15 @@ class UsersController extends AppController
         $this->loadComponent('Mutual');
 
         $mutual_interest_array = $this->Mutual->getMutual($user->interests, $authorised_user['interests']);
-        
+
         //check if users have blocked each other
         $this->loadComponent('Blocked');
 
         $current_user = $this->Users->get($authorised_user['id']);
-       
+
         $blocked_user = $this->Blocked->blockedUser($user, $current_user);
         $blocked_by = $this->Blocked->blockedBy($user, $current_user);
-        
+
 
         $this->set(compact('user', 'blocked_user', 'blocked_by', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
         $this->set('_serialize', ['user']);
@@ -384,6 +389,8 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => ['Interests']
         ]);
+
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {

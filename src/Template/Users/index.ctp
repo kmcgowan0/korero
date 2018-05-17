@@ -61,8 +61,8 @@
 
                     </div>
                 </td>
-                <td><?= h($user->firstname) ?></td>
-                <td id="my-location-<?= $user->id ?>"><?= h($user->location) ?></td>
+                <td><?= h($user->firstname) ?>, <?= h($user->age) ?></td>
+                <td><?= h($user->coded_location) ?></td>
                 <td><?php echo implode(", ", $related_interest_str); ?>
                 </td>
                 <td class="actions">
