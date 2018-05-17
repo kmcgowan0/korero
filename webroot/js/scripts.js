@@ -219,7 +219,7 @@ function scrollBottom() {
 
 function getWindowSize() {
     var width = $(document).width();
-    var height = $('.container').height() / 2;
+    var height = $('.container').height() / 4;
     console.log('width: ' + width + ' height: ' + height);
     $('.related-container').css({'width': width, 'height': height})
 }
