@@ -21,12 +21,11 @@
             echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1950, 'maxYear' => date('Y')]);
             echo $this->Form->hidden('location', ['type' => 'text', 'id' => 'location-coords']); ?>
             <button class="location-button" type="button">Get my location</button>
+            <h6>Current location: <span class="my-coded-location"><?= $user->coded_location; ?></span></h6>
             <?php
-            echo '<label for="upload">Profile picture</label>'; ?>
-            <img id="profile-preview" src="/img/<?php echo $profile_img; ?>">
-            <?php
-            echo $this->Form->control('upload', ['type' => 'file', 'id' => 'profile-picture']);
-            echo $this->Form->hidden('remove-profile', ['type' => 'text', 'id' => 'remove-profile-picture']);
+            echo $this->Form->hidden('coded_location', ['type' => 'text', 'class' => 'my-coded-location']);
+            ?>
+       <?php
             echo $this->Form->control('accept_messages', ['type' => 'checkbox', 'label' => 'Check this box if you\'re happy to receive messages from people with no mutual interests with you']);
 			?>
 

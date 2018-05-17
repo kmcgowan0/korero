@@ -15,10 +15,11 @@
         echo $this->Form->control('password');
         echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1920, 'maxYear' => date('Y')]);
         echo $this->Form->hidden('location', ['type' => 'text', 'id' => 'location-coords']); ?>
-        <?php
-        echo $this->Form->control('coded_location', ['type' => 'text', 'id' => 'my-location', 'label' => 'Location']);
-        ?>
         <button class="location-button" type="button">Get my location</button>
+        <h6 class="hidden">Current location: <span class="my-coded-location"></span></h6>
+        <?php
+        echo $this->Form->hidden('coded_location', ['type' => 'text', 'class' => 'my-coded-location']);
+        ?>
 
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
