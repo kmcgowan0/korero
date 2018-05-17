@@ -102,40 +102,36 @@ endif; ?>
                    class="reveal-link">
                     <div class="related-user profile-picture" id="related-user-<?php echo $related_user->id; ?>"
                          style="border: solid #000 2px; background-image: url(/img/<?php echo $related_profile_img; ?>); transform: rotate(<?php echo $position; ?>deg) translate(<?php echo $distance_from_center; ?>em) rotate(-<?php echo $position; ?>deg);">
+                    </div>
+                    <div class="hover-overlay" id="related-user-<?php echo $related_user->id; ?>"
+                         style="transform: rotate(<?php echo $position; ?>deg) translate(<?php echo $distance_from_center; ?>em) rotate(-<?php echo $position; ?>deg);">
                         <p><?= h($related_user->firstname) ?></p>
+
                     </div>
                 </a>
 
                 <!--                modal what which is revealed-->
                 <div class="reveal" id="modal-<?php echo $related_user->id; ?>" data-reveal>
-                    <div class="profile-info row">
-                        <a href="/users/view/<?php echo $related_user->id; ?>">
-                            <div class="profile-picture-small profile-picture small-2 columns"
+                    <div class="profile-info row search-profile">
+                        <a href="/users/view/<?php echo $related_user->id; ?>" class="small-12 columns align-center">
+                            <div class="profile-picture-medium profile-picture"
                                  style="background-image: url(/img/<?php echo $related_profile_img; ?>)"></div>
                         </a>
-                        <div class="small-10 medium-8 columns">
+                        <div class="small-12 columns">
                             <a href="/users/view/<?php echo $related_user->id; ?>">
-                                <h4><?= h($related_user->firstname) ?></h4>
+                                <h4><?= h($related_user->firstname) ?>, <?= h($related_user->age) ?></h4>
                             </a>
-                            <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
+                            <?php if (round($related_user->distance) == 0) {
+                                $distance = 'less than 1';
+                            } else {
+                                $distance = round($related_user->distance);
+                            } ?>
+                            <p>Town<br>(<?php echo $distance; ?> miles from you)</p>
+                            <p><?= h($related_user->firstname) ?> likes <?php echo implode(", ", $related_interest_str); ?></p>
                         </div>
-                        <div class="small-10 medium-2 columns">
-                            <?= $this->Html->link(__('Full Conversation'), ['controller' => 'messages', 'action' => 'view', $related_user->id]) ?>
-                        </div>
+
                     </div>
 
-                    <div id="messages<?php echo $related_user->id; ?>"></div>
-                    <div class="messages-in-view">
-                        <?= $this->Form->create($message, ['data-id' => $related_user->id, 'class' => 'message-form' . $related_user->id]) ?>
-                        <fieldset>
-                            <?php
-                            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'message-body' . $related_user->id]);
-                            echo $this->Form->hidden('recipient', ['value' => $related_user->id, 'id' => 'message-recipient']);
-                            ?>
-                        </fieldset>
-                        <?= $this->Form->button(__('Send', ['type' => 'button'])) ?>
-                        <?= $this->Form->end() ?>
-                    </div>
                     <button class="close-button" data-close aria-label="Close modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
