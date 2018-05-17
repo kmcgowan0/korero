@@ -457,9 +457,15 @@ class UsersController extends AppController
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
         $this->set(compact('user', 'interests', 'top_interests', 'largest', 'users_interests', 'this_user_interests', 'number_of_interests', 'user_interest_ids', 'diff'));
     }
-    
-    public function refreshInterests() {
-        
+
+    public function refreshInterests()
+    {
+        $id = $this->Auth->user('id');
+        $user = $this->Users->get($id, [
+            'contain' => ['Interests']
+        ]);
+
+        $this->set(compact('user'));
     }
 
     public function editProfilePicture()

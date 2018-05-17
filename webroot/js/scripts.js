@@ -1,10 +1,12 @@
 $(document).ready(function () {
 
     bindFunc();
-    
+
     getWindowSize();
 
     messageNotifications();
+
+    refreshInterests();
 
 //     scrollBottom();
 
@@ -35,14 +37,15 @@ $(document).ready(function () {
         $('#message-form' + liveMessageId).submit(function (event) {
             event.preventDefault();
             var $form = $(this),
-                url = $form.attr('url');
+                url = $form.attr('action');
             var body = $('#message-body' + liveMessageId).val();
-            var posting = $.post(url, {body: body, recipient: liveMessageId});
-            
-            posting.done(function (data) {
-                $(".message-form" + liveMessageId)[0].reset();
-                connectionMessages(liveMessageId);
-            });
+            if (body != '') {
+                var posting = $.post(url, {body: body, recipient: liveMessageId});
+                posting.done(function (data) {
+                    $(".message-form" + liveMessageId)[0].reset();
+                    connectionMessages(liveMessageId);
+                });
+            }
         });
     });
 
@@ -75,21 +78,18 @@ $(document).ready(function () {
         event.preventDefault();
         var $form = $(this),
             url = $form.attr('action');
+        var body = $('#body').val();
+        if (body != '') {
+            var posting = $.post(url, {body: body});
+            posting.done(function (data) {
+                $("#message-form")[0].reset();
+                refreshMessages(messageId);
 
-        var posting = $.post(url, {body: $('#body').val()});
-        posting.done(function (data) {
-            $("#message-form")[0].reset();
-            refreshMessages(messageId);
-
-        });
+            });
+        }
         scrollBottom();
     });
 
-    $('#my-new-interest').on('click', function () {
-        
-        
-        
-    });
 
     $('#add-user-form').submit(function (event) {
         var form = this;
@@ -99,6 +99,19 @@ $(document).ready(function () {
             geocodeTown(address);
         }
         form.submit();
+    });
+
+    $('#new-interest-form').submit(function (event) {
+        console.log(this);
+        event.preventDefault();
+        var $form = $(this),
+            url = $form.attr('action');
+        var posting = $.post(url, {name: $('#search').val()});
+        posting.done(function (data) {
+            $("#new-interest-form")[0].reset();
+            refreshInterests();
+        });
+
     });
 
     $('#profile-upload').on('change', function () {
@@ -144,6 +157,21 @@ function refreshMessages(messageId) {
         complete: function () {
             // Schedule the next
             setTimeout(refreshMessages(messageId), interval);
+            messageNotifications();
+        }
+    });
+    scrollBottom();
+}
+
+function refreshInterests() {
+
+    $.get({
+        url: '/users/refresh-interests/',
+        success: function (data) {
+            $('#interests-list').html(data);
+        },
+        complete: function () {
+            // Schedule the next
             messageNotifications();
         }
     });
