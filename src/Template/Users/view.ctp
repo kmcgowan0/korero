@@ -115,6 +115,6 @@
         var geocoder = new google.maps.Geocoder;
         console.log('lat ' + lat_connections);
         console.log(lng_connections);
-        geocodeLatLng(geocoder, lat_connections, lng_connections);
+        geocodeLatLng(geocoder, lat_connections, lng_connections, '#my-location');
     });
 </script>

@@ -50,11 +50,15 @@ $(document).ready(function () {
     });
 
     $('.location-button').on('click', function () {
-	    
-        $('.location-button').addClass('spinning');
-        getLocation();
 
+        $('.location-button').addClass('spinning');
+        $('h6.hidden').css({'display': 'block'});
+        getLocation('.my-coded-location');
+        $('#location-coords').on('change', function () {
+            $('.location-button').removeClass('spinning');
+        });
     });
+
 
     $('#profile-picture').on('change', function () {
         if (typeof (FileReader) != "undefined") {
@@ -93,10 +97,14 @@ $(document).ready(function () {
 
     $('#add-user-form').submit(function (event) {
         var form = this;
+        var geocoder = new google.maps.Geocoder;
         event.preventDefault();
-        if ($('#location-coords').val() == '') {
-            var address = $('#my-location').val();
-            geocodeTown(address);
+        if ($('#location-coords').val() != "") {
+            var input = $('#location-coords').val();
+            var latlng = input.split(',');
+            var lat = parseFloat(latlng[0]);
+            var lng = parseFloat(latlng[1]);
+            geocodeLatLng(geocoder, lat, lng, 'my-coded-location')
         }
         form.submit();
     });
@@ -240,19 +248,19 @@ function messageNotifications() {
     })
 }
 
-function getLocation() {
+function getLocation(output) {
 
     var geocoder = new google.maps.Geocoder;
-    
+
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
-       
+
         navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
             var pos = lat + ',' + lng;
-            geocodeLatLng(geocoder, lat, lng, '#my-location');
-            $('#location-coords').val(pos);
+            geocodeLatLng(geocoder, lat, lng, output);
+            $('#location-coords').val(pos).trigger('change');
         })
     } else {
         // Browser doesn't support Geolocation
@@ -263,6 +271,7 @@ function getLocation() {
 
 function geocodeLatLng(geocoder, lat, lng, output) {
     var latlng = {lat: lat, lng: lng};
+    console.log(latlng);
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === 'OK') {
             if (results[0]) {
@@ -272,21 +281,20 @@ function geocodeLatLng(geocoder, lat, lng, output) {
                 window.alert('No results found');
             }
         } else {
-            window.alert('Geocoder failed due to: ' + status);
         }
     });
 }
 
 function geocodeTown(address) {
     var geocoder = new google.maps.Geocoder;
-    geocoder.geocode( { 'address' : address }, function( results, status ) {
-        if( status == google.maps.GeocoderStatus.OK ) {
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status === 'OK') {
             //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
             var lat = results[0].geometry.location.lat();
             var lng = results[0].geometry.location.lng();
-            $('#location-coords').val(lat+','+lng);
+            $('#location-coords').val(lat + ',' + lng);
         } else {
-            alert( 'Geocode was not successful for the following reason: ' + status );
+            alert('Geocode was not successful for the following reason: ' + status);
         }
-    } );
+    });
 }

@@ -18,7 +18,7 @@ endif; ?>
 
     <div class="radius-form columns small-12 medium-4">
         <div class="location">
-            <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a href="/users/edit-account">update
+            <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a href="/users/edit/<?php echo $user->id; ?>">update
                     your location here</a></p>
         </div>
     </div>
@@ -181,6 +181,6 @@ endif; ?>
         var geocoder = new google.maps.Geocoder;
         console.log('lat ' + lat_connections);
         console.log(lng_connections);
-        geocodeLatLng(geocoder, lat_connections, lng_connections);
+        geocodeLatLng(geocoder, lat_connections, lng_connections, '#my-location');
     });
 </script>
