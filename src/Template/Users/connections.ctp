@@ -3,8 +3,7 @@
 else :
     $profile_img = 'placeholder.png';
 endif; ?>
-<div class="main-user profile-picture" id="user-<?php echo $user->id; ?>"
-     style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
+
 <div class="row">
 
     <div class="radius-form columns small-12 medium-8">
@@ -24,13 +23,16 @@ endif; ?>
     </div>
 </div>
 
+<div class="related-container">
+    <div class="main-user profile-picture" id="user-<?php echo $user->id; ?>"
+         style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
 <?php if (count($users_in_radius)) :
     //related users var to pass to js
     $related_users_var = array();
 //start position for rotating related users
     $position = 0; ?>
 
-    <div class="related-container">
+
 
         <?php
         foreach ($users_in_radius as $related_user):
@@ -81,7 +83,7 @@ endif; ?>
                     $related_profile_img = 'placeholder.png';
                 endif;
                 $distance = $related_user->distance;
-                if ($related_user->radius < 5) {
+                if ($related_user->radius <= 5) {
 	                if ($distance < 0.1) {
                     $distance_from_center = 9;
                 } elseif ($distance < 0.5) {
@@ -95,20 +97,18 @@ endif; ?>
                 } elseif ($distance <= 5) {
                     $distance_from_center = 16;
                 } 
-                } else if ($related_user->radius < 10) {
+                } else if ($related_user->radius <= 10) {
 	                if ($distance < 0.5) {
                     $distance_from_center = 9;
                 } elseif ($distance < 1) {
-                    $distance_from_center = 10;
-                } elseif ($distance < 2) {
                     $distance_from_center = 11;
-                } elseif ($distance < 5) {
+                } elseif ($distance < 2) {
                     $distance_from_center = 12;
-                } elseif ($distance < 7) {
+                } elseif ($distance < 5) {
                     $distance_from_center = 14;
-                } elseif ($distance <= 10) {
+                } elseif ($distance > 7) {
                     $distance_from_center = 16;
-                } 
+                }
                 } else if ($related_user->radius < 500) {
 	                if ($distance < 2) {
                     $distance_from_center = 8;
@@ -199,20 +199,19 @@ endif; ?>
         endforeach; ?>
 
         <?php
-        if (count($number_of_interests) > 10) { ?>
+        if (count($users_in_radius) > 10) { ?>
             <a href="/users" class="reveal-link">
                 <div class="related-user profile-picture"
-                     style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(180deg) translate(18em) rotate(-180deg);">
+                     style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(0deg) translate(18em) rotate(-0deg);">
                 </div>
                 <div class="hover-overlay"
-                     style="transform: rotate(180deg) translate(18em) rotate(-180deg);">
-                    <?php $extra_count = count($number_of_interests) - 10; ?>
+                     style="transform: rotate(0deg) translate(18em) rotate(-0deg);">
+                    <?php $extra_count = count($top_interests) - 10; ?>
                     <p>+<?= $extra_count ?> more</p>
                 </div>
             </a>
         <?php } ?>
-    </div>
-    <div id="canvas"></div>
+
     <script>
         var relatedUsers = <?php echo json_encode($related_users_var); ?>;
     </script>
@@ -223,6 +222,8 @@ endif; ?>
         <p>Try adding some, or updating your radius.</p>
     </div>
 <?php endif; ?>
+    </div>
+<div id="canvas"></div>
 
 <?php list($lat, $long) = explode(',', $user->location); ?>
 <script>
