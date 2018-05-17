@@ -5,12 +5,6 @@
  * @var \App\Model\Entity\Message[]|\Cake\Collection\CollectionInterface $user_array
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Message'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="messages index large-9 medium-8 columns content">
     <?php if ($message_threads) : ?>
         <h3><?= __('Messages') ?></h3>
