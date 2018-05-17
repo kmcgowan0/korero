@@ -408,11 +408,11 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Auth->setUser($user);
                 if (isset($this->request->data['new-interest'])) {
                     return $this->redirect(['controller' => 'Interests', 'action' => 'add']);
                 } else {
-                    return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'view', $id]);
                 }
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -455,7 +455,8 @@ class UsersController extends AppController
         $top_interests = $this->Users->Interests->find('list')->where(['id IN' => $top_interest_array]);
 
         $interests = $this->Users->Interests->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'interests', 'top_interests', 'largest', 'users_interests', 'this_user_interests', 'number_of_interests', 'user_interest_ids', 'diff'));
+        $interest = $this->Users->Interests->newEntity();
+        $this->set(compact('user', 'interests', 'interest', 'top_interests', 'largest', 'users_interests', 'this_user_interests', 'number_of_interests', 'user_interest_ids', 'diff'));
     }
 
     public function refreshInterests()
@@ -474,7 +475,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
-var_dump($user_data);
+            var_dump($user_data);
             if ($user_data['upload']['name'] != '') {
                 $file = $user_data['upload'];
                 $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
