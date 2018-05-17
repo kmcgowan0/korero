@@ -1,3 +1,6 @@
+.hidden {
+    display: none;
+}
 .logo {
     padding: 0.25em;
     width: 150px;
@@ -65,9 +68,20 @@ input.header-search {
     height:80px;
     width:80px;
 }
+.profile-picture-medium {
+    height:180px;
+    width:180px;
+}
 .profile-picture-large {
     height:250px;
     width:250px;
+}
+.search-profile {
+    text-align: center;
+}
+.search-profile .profile-picture {
+    margin-left: auto;
+    margin-right: auto;
 }
 .main-user {
     position: absolute;
@@ -201,21 +215,6 @@ div.location p {
 .twoToneCenter {
     text-align: center;
     margin: 1em 0;
-}
-.location-button {
-    display: inline-block;
-    outline: none;
-    padding: 10px 20px;
-    line-height: 1.4;
-    background: transparent;
-    border-radius: 4px;
-    border: 2px solid #fff;
-    color: #fff;
-    text-transform: uppercase;
-    position: relative;
-    -webkit-transition: padding-right 0.3s ease;
-    transition: padding-right 0.3s ease;
-    font-weight: 700;
 }
 
 .location-button:active {
