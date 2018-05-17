@@ -530,6 +530,7 @@ var_dump($user_data);
 
         return $this->redirect(['action' => 'view', $id]);
     }
+
     /**
      * Delete method
      *
@@ -604,7 +605,6 @@ var_dump($user_data);
 
 
     }
-
 
 
     public function login()

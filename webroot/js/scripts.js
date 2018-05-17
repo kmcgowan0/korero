@@ -31,8 +31,8 @@ $(document).ready(function () {
         var liveMessageId = $(this).data('id');
         connectionMessages(liveMessageId);
 
-        $('#related-user-'+liveMessageId).css('border', '2px solid #000');
-        $('#notifications-'+liveMessageId).html('');
+        $('#related-user-' + liveMessageId).css('border', '2px solid #000');
+        $('#notifications-' + liveMessageId).html('');
         messageNotifications();
         $('#message-form' + liveMessageId).submit(function (event) {
             event.preventDefault();
@@ -134,8 +134,6 @@ $(document).ready(function () {
             alert("This browser does not support FileReader.");
         }
     });
-    
-    
 
     // var messageId = $('#messages-id').val();
     refreshMessages(messageId);
@@ -212,11 +210,11 @@ function addInterests() {
 }
 
 function scrollBottom() {
-    var messages    = $('#messages');
+    var messages = $('#messages');
     console.log(messages);
     var height = messages[0].scrollHeight;
     messages.scrollTop(height);
-    $('#messages').animate({scrollTop: 15000},'fast');
+    $('#messages').animate({scrollTop: 15000}, 'fast');
 }
 
 function getWindowSize() {
