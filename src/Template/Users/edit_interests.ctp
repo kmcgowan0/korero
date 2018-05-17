@@ -2,21 +2,13 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
+ * @var \App\Model\Entity\Interest $interest
  */
 ?>
 <div class="users form large-9 medium-8 columns content">
     <?php if ($user->interests) { ?>
         <h4>Current Interests</h4>
-
-        <?php foreach ($user->interests as $interests): ?>
-            <p><?= h($interests->name) ?></p>
-            <?= $this->Form->postLink(
-                __('X'),
-                ['action' => 'remove-interest', $user->id, $interests->id],
-                ['confirm' => __('Are you sure you want to remove # {0}?', $user->id, $interests->id)]
-            )
-            ?>
-        <?php endforeach; ?>
+<div id="interests-list"></div>
     <?php } else { ?>
         <h5>Add some interests and start connecting with people</h5>
     <?php } ?>
@@ -27,8 +19,8 @@
         ?>
         <div id="selected-form">
             <?php
-            foreach ($user->interests as $interest) {
-                echo '<input type="hidden" name="interests[_ids][]" value="' . $interest->id . '">';
+            foreach ($user->interests as $user_interest) {
+                echo '<input type="hidden" name="interests[_ids][]" value="' . $user_interest->id . '">';
             }
             ?>
 
@@ -39,15 +31,22 @@
     <div class="row">
         <h4>Search for interests</h4>
         <div id="selected" class=""></div>
-        <div>
 
-            <input id="search" type="text">
-        </div>
-        <div id="results"></div>
-        <?= $this->Form->submit(('Can\'t find your interest listed? add it here'), ['name' => 'new-interest']) ?>
     </div>
     <?= $this->Form->button(__('Submit'), ['name' => 'submit-form']) ?>
     <?= $this->Form->end() ?>
-<button class="add-interest" id="my-new-interest" type="button" onclick="addInterests();">Add Interest</button>
+
+    <?= $this->Form->create($interest, ['url' => '/interests/add', 'id' => 'new-interest-form']) ?>
+    <fieldset>
+        <?php
+        echo $this->Form->control('name', ['id' => 'search']);
+        ?>
+    </fieldset>
+    <?= $this->Form->button(__('Add Interest')) ?>
+    <?= $this->Form->end() ?>
+    <div id="results"></div>
 </div>
+
+
+
 
