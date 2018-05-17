@@ -242,6 +242,7 @@ class UsersController extends AppController
         foreach ($distinct_users as $distinct_user) {
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
             $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
+            $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
             //if the user is within the radius and in the top users array add it to the users in radius var
             if ($distance <= $user['radius'] && array_key_exists($distinct_user['id'], $top_interests) && $blocked_user == false && $blocked_by == false) {
                 array_push($users_in_radius, $distinct_user);
@@ -551,7 +552,7 @@ var_dump($user_data);
         $this->Users->Interests->unlink($user, [$interest]);
         return $this->redirect(['action' => 'edit-interests', $uid]);
     }
-    
+
     public function blockUser($uid = null)
     {
         $authorised_user = $this->Auth->user('id');
@@ -561,20 +562,20 @@ var_dump($user_data);
         var_dump($blocked_users);
         $blocked_array = explode(",", $blocked_users);
 
-        if(!in_array($uid, $blocked_array)) {
+        if (!in_array($uid, $blocked_array)) {
             array_push($blocked_array, $uid);
         }
-        
+
         $new_blocked_list = implode(",", $blocked_array);
         $this->Users->query()->update()
-                        ->set(['blocked_users' => $new_blocked_list])
-                        ->where(['id' => $user['id']])
-                        ->execute();
-                        return $this->redirect(['action' => 'view', $uid]);
+            ->set(['blocked_users' => $new_blocked_list])
+            ->where(['id' => $user['id']])
+            ->execute();
+        return $this->redirect(['action' => 'view', $uid]);
 
 
     }
-    
+
     public function unblockUser($uid = null)
     {
         $authorised_user = $this->Auth->user('id');
@@ -587,13 +588,13 @@ var_dump($user_data);
         if (($key = array_search($uid, $blocked_array)) !== false) {
             unset($blocked_array[$key]);
         }
-        
+
         $new_blocked_list = implode(",", $blocked_array);
         $this->Users->query()->update()
-                        ->set(['blocked_users' => $new_blocked_list])
-                        ->where(['id' => $user['id']])
-                        ->execute();
-                        return $this->redirect(['action' => 'view', $uid]);
+            ->set(['blocked_users' => $new_blocked_list])
+            ->where(['id' => $user['id']])
+            ->execute();
+        return $this->redirect(['action' => 'view', $uid]);
 
 
     }
@@ -761,19 +762,19 @@ var_dump($user_data);
 
         //set empty array for users in radius
         $users_in_radius = array();
-         $this->loadComponent('Blocked');
-       
+        $this->loadComponent('Blocked');
 
-$array_count = 0;
-$list_of_users = array();
-foreach ($top_interests as $top_interest_id => $count) {
-	$top_user = $this->Users->get($top_interest_id);
-	array_push($list_of_users, $top_user);
-}
+
+        $array_count = 0;
+        $list_of_users = array();
+        foreach ($top_interests as $top_interest_id => $count) {
+            $top_user = $this->Users->get($top_interest_id);
+            array_push($list_of_users, $top_user);
+        }
         //for each user get the distance from the main user
         foreach ($list_of_users as $distinct_user) {
             $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
-        $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
+            $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
             //if the user is within the radius and in the top users array add it to the users in radius var
             if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $array_count <= 10) {
@@ -789,7 +790,7 @@ foreach ($top_interests as $top_interest_id => $count) {
             $users_in_radiu['distance'] = $distance;
         }
 
-       $users_in_radius_limit = array_slice($users_in_radius, 0, 10, true);
+        $users_in_radius_limit = array_slice($users_in_radius, 0, 10, true);
 
         //if there are distinct users work out how much space each gets
         if (count($users_in_radius)) {
