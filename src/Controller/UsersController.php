@@ -23,7 +23,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
+    public function index($sort = null)
     {
 
         $id = $this->Auth->user('id');
@@ -69,6 +69,12 @@ class UsersController extends AppController
         //only get distinct users
         $distinct_users = $related_users_interests->group('Users.id');
 
+        $distinct_user_array = array();
+        foreach ($distinct_users as $distinct_user) {
+            array_push($distinct_user_array, $distinct_user);
+
+        }
+
         //empty array for counting interests
         $interest_count = array();
 
@@ -87,17 +93,43 @@ class UsersController extends AppController
         }
         $number_of_interests = $interest_count;
 
+        $distance_sort = array();
+        $interest_sort = array();
+        foreach ($distinct_user_array as $key => $single_user) {
+            //add age and distance to array
             $age = $this->Age->getAge($single_user->dob);
             $single_user['age'] = $age;
+            $distance = $this->Distance->getDistance($user['location'], $single_user['location']);
+            $single_user['distance'] = $distance;
+            //create assoc array to sort by distance
+            $distance_sort[$key] = $distance;
+
+            foreach ($interest_count as $uid => $count) {
+                if ($single_user['id'] == $uid) {
+                    $single_user['interest_count'] = $count;
+                }
+            }
+            $interest_sort[$key] = $single_user['interest_count'];
+
+        }
+
+
         //sort the interests from most to least
         arsort($interest_count);
 
         //slice the array to get the top 15
         $top_interests = array_slice($interest_count, 0, 10, true);
 
+
+        if ($sort == 'distance') {
+            array_multisort($distance_sort, SORT_ASC, $distinct_user_array);
+        } else if ($sort == 'interests') {
+            array_multisort($interest_sort, SORT_DESC, $distinct_user_array);
+        }
+
         $distinct_users = $this->paginate($distinct_users);
 
-        $this->set(compact('user', 'user_matching_data', 'message', 'distinct_users', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count'));
+        $this->set(compact('user', 'user_matching_data', 'sort', 'message', 'distinct_users', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count', 'distinct_user_array', 'data'));
         $this->set('_serialize', ['user']);
     }
 

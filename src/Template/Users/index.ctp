@@ -5,14 +5,11 @@
  */
 ?>
 
-<div class="users index large-9 medium-8 columns content">
+<div class="users index large-9 medium-8 columns content full-user-list">
     <h3><?= __('Users') ?></h3>
 
-    <?= $this->Form->create('', ['type' => 'get']) ?>
-    <?= $this->Form->control('term') ?>
-    <button>Search</button>
-    <?= $this->Form->end() ?>
-
+    <p>Sort by: <?= $this->Html->link(__('Distance from me'), ['distance']) ?>
+        <?= $this->Html->link(__('Number of mutual interests'), ['interests']) ?></p>
     <table cellpadding="0" cellspacing="0" id="user-table">
         <thead>
         <tr>
@@ -25,9 +22,13 @@
         </thead>
         <tbody>
 
-        <?php foreach ($distinct_users as $user):
+        <?php
+        $user_locations = array();
+        foreach ($distinct_user_array as $user):
 
         if ($user->id != $authUser['id']) {
+
+            $user_locations[$user->id] = $user->location;
 
         $related_interests = [];
 
@@ -88,3 +89,6 @@
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>
 </div>
+<script>
+    var userLocations = <?php echo json_encode($user_locations); ?>;
+</script>
