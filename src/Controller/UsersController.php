@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -259,26 +260,6 @@ class UsersController extends AppController
             $number_of_users = count($users_in_radius);
 
             $space_allocated = 360 / $number_of_users;
-        }
-
-
-        $this->loadModel('Messages');
-
-//        sending messages from within message view
-        $message = $this->Messages->newEntity();
-        if ($this->request->is('post')) {
-
-            $message_data = $this->request->getData();
-            $message_data['sender'] = $id;
-            $message_data['recipient'] = $id;
-            $message_data['sent'] = date('Y-m-d h:i');
-
-            $message = $this->Messages->patchEntity($message, $message_data);
-            if ($this->Messages->save($message)) {
-                $this->Flash->success(__('Message sent'));
-            } else {
-                $this->Flash->error(__('The message could not be sent. Please, try again.'));
-            }
         }
 
 
@@ -671,10 +652,12 @@ var_dump($user_data);
         }
         $this->set('user', $user);
     }
-    
-    public function sendMessage() {
-	    
-	     $this->loadModel('Messages');
+
+    public function sendMessage()
+    {
+
+        $id = $this->Auth->user('id');
+        $this->loadModel('Messages');
 
         $messages = $this->Messages->find('all', array(
             'conditions' => array(
@@ -682,25 +665,23 @@ var_dump($user_data);
             )
         ));
 
-            $unread_messages = array();
-            foreach ($messages as $message) {
-                $seen = $message['seen'];
+        $unread_messages = array();
+        foreach ($messages as $message) {
+            $seen = $message['seen'];
 
-                if ($seen == false || $seen == null) {
-                    array_push($unread_messages, $message);
-                }
+            if ($seen == false || $seen == null) {
+                array_push($unread_messages, $message);
             }
+        }
 
 //        sending messages from within message view
         $message = $this->Messages->newEntity();
-        
-        if ($this->request->is('post')) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
 
             $message_data = $this->request->getData();
             $message_data['sender'] = $id;
 //             $message_data['recipient'] = $id;
             $message_data['sent'] = date('Y-m-d H:i:s');
-
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
             } else {
@@ -821,21 +802,21 @@ foreach ($top_interests as $top_interest_id => $count) {
 
 
         $this->loadModel('Messages');
-
+        $message = $this->Messages->newEntity();
         $messages = $this->Messages->find('all', array(
             'conditions' => array(
                 array('recipient' => $this->Auth->user('id')),
             )
         ));
 
-            $unread_messages = array();
-            foreach ($messages as $message) {
-                $seen = $message['seen'];
+        $unread_messages = array();
+        foreach ($messages as $message) {
+            $seen = $message['seen'];
 
-                if ($seen == false || $seen == null) {
-                    array_push($unread_messages, $message);
-                }
+            if ($seen == false || $seen == null) {
+                array_push($unread_messages, $message);
             }
+        }
 
 
         $this->set(compact('user', 'user_matching_data', 'list_of_users', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'top_interests', 'interest_count', 'unread_messages'));

@@ -178,10 +178,10 @@ endif; ?>
 
                     <div id="messages<?php echo $related_user->id; ?>"></div>
                     <div class="messages-in-view">
-                        <?= $this->Form->create($message, ['data-id' => $related_user->id, 'class' => 'message-form' . $related_user->id, 'id' => 'message-form' . $related_user->id, 'url' => '/users/send-message']) ?>
+                        <?= $this->Form->create($message, ['data-id' => $related_user->id, 'class' => 'message-form' . $related_user->id, 'id' => 'message-form' . $related_user->id, 'url' => ['action' => 'send-message']]) ?>
                         <fieldset>
                             <?php
-                            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'message-body' . $related_user->id, 'autocomplete' => 'off']);
+                            echo $this->Form->input('body', ['type' => 'text', 'label' => false, 'id' => 'message-body' . $related_user->id, 'autocomplete' => 'off', 'value' => '']);
                             echo $this->Form->hidden('recipient', ['value' => $related_user->id, 'id' => 'message-recipient']);
                             ?>
                         </fieldset>

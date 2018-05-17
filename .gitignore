@@ -40,3 +40,4 @@ nbproject/*
 .sass-cache/
 
 /webroot/img
+webroot/js/jquery.js
