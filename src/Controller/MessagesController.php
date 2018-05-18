@@ -179,8 +179,6 @@ class MessagesController extends AppController
             $message_data['sender'] = $this->Auth->user('id');
             $message_data['recipient'] = $id;
             $message_data['sent'] = date('Y-m-d H:i:s');
-            var_dump($message_data);
-            return;
             $message = $this->Messages->patchEntity($message, $message_data);
             if ($this->Messages->save($message)) {
             } else {
