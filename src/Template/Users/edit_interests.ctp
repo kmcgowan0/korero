@@ -20,7 +20,7 @@
     <?= $this->Form->create($interest, ['url' => '/interests/add', 'id' => 'new-interest-form']) ?>
     <fieldset>
         <?php
-        echo $this->Form->control('name', ['id' => 'search', 'autocomplete' => 'off']);
+        echo $this->Form->control('name', ['id' => 'search', 'autocomplete' => 'off', 'label' => 'Interest Name']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Add Interest')) ?>
