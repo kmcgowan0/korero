@@ -94,8 +94,10 @@ $(document).ready(function () {
         });
 
         //extra line
-        if (y[2].length > 3) {
-            var extras = y[2].length - (4);
+        console.log('length ' + y[2].length);
+        var extras = y[2].length - 4;
+        if (extras > 0) {
+            console.log('extra ' + extras);
             var others;
             if (extras == 1) {
                 others = extras + ' other';
