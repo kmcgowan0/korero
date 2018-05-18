@@ -61,11 +61,13 @@ $(document).ready(function () {
 
 
     $('#profile-picture').on('change', function () {
+        console.log('ok');
         if (typeof (FileReader) != "undefined") {
             var image_holder = $(".profile-preview");
             var reader = new FileReader();
             reader.onload = function (e) {
-                image_holder.attr('src', e.target.result);
+                image_holder.css({'background-image': 'url('+e.target.result+')'})
+                console.log(e.target.result);
             };
             reader.readAsDataURL($(this)[0].files[0]);
         } else {

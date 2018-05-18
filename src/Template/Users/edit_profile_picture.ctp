@@ -10,50 +10,20 @@
     else :
         $profile_img = 'placeholder.png';
     endif; ?>
+<div class="row">
+    <div class="small-12 columns text-center">
+<h4>Upload new profile picture</h4>
 
-    <?= $this->Form->create($user, ['id' => 'image-form']) ?>
+    <?= $this->Form->create($user, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>
-        <?php echo $this->Form->control('add-image', ['type' => 'file', 'id' => 'upload']); ?>
-        <div id="upload-demo"></div>
-        <?php echo $this->Form->hidden('upload', ['type' => 'file', 'id' => 'profile-picture']); ?>
+        <div class="profile-preview profile-picture profile-picture-large" style="background-image: url('/img/<?php echo $profile_img; ?>');"></div>
+            <?php echo $this->Form->control('upload', ['type' => 'file', 'id' => 'profile-picture', 'label' => false]); ?>
     </fieldset>
 
     <?= $this->Form->button(__('Update profile picture')) ?>
     <?= $this->Form->end() ?>
-
-    <script type="text/javascript">
-        $( document ).ready(function() {
-            var $uploadCrop;
-
-            function readFile(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $uploadCrop.croppie('bind', {
-                            url: e.target.result
-                        });
-                        $('.upload-demo').addClass('ready');
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-
-            $uploadCrop = $('#upload-demo').croppie({
-                viewport: {
-                    width: 200,
-                    height: 200,
-                    type: 'circle'
-                },
-                boundary: {
-                    width: 300,
-                    height: 300
-                }
-            });
-
-            $('#upload').on('change', function () { readFile(this); });
-
-        });
-    </script>
+    </div>
+</div>
 
 <?php else : ?>
 

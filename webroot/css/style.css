@@ -79,10 +79,16 @@ input.header-search {
 .search-profile {
     text-align: center;
 }
-.search-profile .profile-picture {
+.search-profile .profile-picture, .profile-preview {
     margin-left: auto;
     margin-right: auto;
 }
+#profile-picture {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
 .main-user {
     position: absolute;
     display: block;
