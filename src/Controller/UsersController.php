@@ -151,6 +151,9 @@ class UsersController extends AppController
 //updating the radius to search in
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
+            if ($user_data['radius'] > 1000000) {
+                $user_data['radius'] = 1000000;
+            }
             $user = $this->Users->patchEntity($user, $user_data);
             if ($this->Users->save($user)) {
                 return $this->redirect(['action' => 'search?term=' . $term]);
@@ -709,6 +712,9 @@ class UsersController extends AppController
 //updating the radius to search in
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
+            if ($user_data['radius'] > 1000000) {
+                $user_data['radius'] = 1000000;
+            }
             $user = $this->Users->patchEntity($user, $user_data);
             if ($this->Users->save($user)) {
                 return $this->redirect(['action' => 'connections']);
