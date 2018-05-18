@@ -78,6 +78,9 @@ $(document).ready(function () {
     $('[data-reveal]').on('closed.zf.reveal', function () {
 
         var liveMessageId = null;
+        $.each(xhrPool, function(idx, jqXHR) {
+            jqXHR.abort();
+        });
     });
 
     $("#message-form").submit(function (event) {
@@ -114,12 +117,18 @@ $(document).ready(function () {
     $('#new-interest-form').submit(function (event) {
         console.log(this);
         event.preventDefault();
+        var name = $('#search').val();
         var $form = $(this),
             url = $form.attr('action');
-        var posting = $.post(url, {name: $('#search').val()});
+        var posting = $.post(url, {name: name});
         posting.done(function (data) {
             $("#new-interest-form")[0].reset();
             refreshInterests();
+            $('#selected').append('<div>' +
+                '<p class="columns medium-6">' + name + '</p>' +
+                '<button class="remove">Remove</button>' +
+                '</div>' +
+                '');
         });
 
     });
@@ -143,6 +152,8 @@ $(document).ready(function () {
 
 });
 
+xhrPool = [];
+
 function search(term) {
     $.get({
         url: '/interests/search',
@@ -153,12 +164,15 @@ function search(term) {
     });
 }
 
-var interval = 1000;
+var interval = 10000;
 
 function refreshMessages(messageId) {
 
     $.get({
         url: '/messages/instant-messages/' + messageId,
+        beforeSend: function (jqXHR, settings) {
+            xhrPool.push(jqXHR);
+        },
         success: function (data) {
             $('#messages').html(data);
         },
@@ -175,6 +189,9 @@ function refreshInterests() {
 
     $.get({
         url: '/users/refresh-interests/',
+        beforeSend: function (jqXHR, settings) {
+            xhrPool.push(jqXHR);
+        },
         success: function (data) {
             $('#interests-list').html(data);
         },
@@ -186,8 +203,11 @@ function refreshInterests() {
 }
 
 function connectionMessages(messageId) {
-    $.get({
+    var connectionRequests = $.get({
         url: '/messages/connection-messages/' + messageId,
+        beforeSend: function (jqXHR, settings) {
+            xhrPool.push(jqXHR);
+        },
         success: function (data) {
             $('#messages' + messageId).html(data);
         },
@@ -238,6 +258,9 @@ function bindFunc() {
 function messageNotifications() {
     $.get({
         url: '/messages/unread-messages/',
+        beforeSend: function (jqXHR, settings) {
+            xhrPool.push(jqXHR);
+        },
         success: function (data) {
             $('#notifications').html(data);
         }
