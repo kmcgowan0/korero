@@ -319,20 +319,20 @@ pre {
 }
 
 .top-bar.expanded .title-area {
-    background: #130f36;
+    background: #0c0a20;
 }
 
 .top-bar.expanded, .top-bar,.top-bar-section ul li,.top-bar-section li:not(.has-form) a:not(.button) {
-    background: #130f36;
+    background: #0c0a20;
 }
 
 .top-bar-section li:not(.has-form) a:not(.button):hover {
-    background-color: #130f36;
+    background-color: #0c0a20;
     background: #130f36;
 }
 
 .side-nav li.heading {
-    color: #130f36;
+    color: #0c0a20;
     font-size: 0.875rem;
     font-weight: bold;
     text-transform: uppercase;
