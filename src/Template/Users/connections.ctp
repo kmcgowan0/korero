@@ -198,7 +198,7 @@
         <?php
         if (count($users_in_radius) > 10) { ?>
             <a href="/users" class="reveal-link">
-                <div class="related-user profile-picture"
+                <div class="related-user profile-picture extra-user"
                      style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(0deg) translate(18em) rotate(-0deg);">
                 </div>
                 <div class="hover-overlay"
@@ -207,6 +207,9 @@
                     <p>+<?= $extra_count ?> more</p>
                 </div>
             </a>
+    <script>
+        var moreUsers = true;
+    </script>
         <?php } ?>
 
     <script>
