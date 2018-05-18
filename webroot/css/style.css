@@ -9,7 +9,7 @@
     background: linear-gradient(#29264a, #130f36);
     color: #fff;
 }
-.dark-theme a {
+.dark-theme a, .dark-theme h5, .dark-theme h4 {
     color: #fff;
 }
 .hidden {
@@ -191,7 +191,7 @@ input.header-search {
     top: auto;
 }
 .radius-form {
-    padding: 2em;
+    padding: 2em 2em 0 2em;
 }
 input.radius-input {
     width: 90px;
