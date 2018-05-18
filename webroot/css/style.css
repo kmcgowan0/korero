@@ -1,3 +1,17 @@
+.light-theme {
+    background: #fff;
+    color: #0c0a20;
+}
+.light-theme a {
+    color: #0c0a20;
+}
+.dark-theme{
+    background: linear-gradient(#29264a, #130f36);
+    color: #fff;
+}
+.dark-theme a {
+    color: #fff;
+}
 .hidden {
     display: none;
 }
@@ -5,9 +19,18 @@
     padding: 0.25em;
     width: 150px;
 }
-
+.logo-home {
+    width: 250px;
+}
+.login-container {
+    color: #fff;
+}
+.intro-text {
+    font-size: 13px;
+    margin: 1em auto 0;
+}
 .footer {
-    background-color: #130f36;
+    background-color: #0c0a20;
     color: #fff;
 }
 .footer .columns {
@@ -102,7 +125,7 @@ input.header-search {
     width: 54em;
     height: 24em;
     padding: 2.8em;
-    margin: 1.75em auto 0;
+    margin: 1.75em auto;
 }
 .related-user {
     position: absolute;
@@ -171,7 +194,7 @@ input.header-search {
     padding: 2em;
 }
 input.radius-input {
-    width: 80px;
+    width: 90px;
 }
 div.location p {
     font-size: 0.8rem;
@@ -212,7 +235,12 @@ div.location p {
     background-color: #d33c44;
     color: #fff;
 }
-
+.current-interests-list {
+    display: flex;
+}
+.current-interests-list a {
+    padding: 0 1em;
+}
 /*loading animation */
 
 

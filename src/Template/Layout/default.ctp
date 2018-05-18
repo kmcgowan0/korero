@@ -32,11 +32,13 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('style.css') ?>
+    <?= $this->Html->css('croppie.css') ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/js/scripts.js"></script>
     <script src="/js/connections.js"></script>
+    <script src="/js/croppie.js"></script>
 
 
     <?= $this->fetch('meta') ?>
@@ -84,7 +86,8 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         </div>
         <div class="small-12 medium-4 columns">
            <p><strong>Lorem Ipsum</strong></p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam efficitur elit lacus, a molestie lectus imperdiet sit amet. Vestibulum varius, nisi vel interdum tincidunt, metus turpis vehicula odio, sit amet placerat dui eros vel dui. </p>
+            <p>Korero means conversation. Connect and converse with new people in your area based on similar interests.
+            </p>
         </div>
         <div class="small-12 medium-3 columns">
             <p><strong>Quick Links</strong></p>
