@@ -379,6 +379,7 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $user_data);
 
             if ($this->Users->save($user)) {
+                $this->Auth->setUser($user);
 
                 return $this->redirect(['action' => 'view', $user->id]);
             }
