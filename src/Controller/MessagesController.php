@@ -93,9 +93,11 @@ class MessagesController extends AppController
         }
         $sent_to_id = $id;
 
+        $auth_id = $this->Auth->user('id');
+
         $user = $user_array[$sent_to_id];
         $all_interests = $user_array[$sent_to_id]->interests;
-        $my_interests = $user_array[$this->Auth->user('id')]->interests;
+        $my_interests = $user_array[$auth_id]->interests;
 
         $all_interests_array = array();
         foreach ($all_interests as $an_interest) {
