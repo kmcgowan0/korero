@@ -66,7 +66,7 @@ $(document).ready(function () {
             var image_holder = $(".profile-preview");
             var reader = new FileReader();
             reader.onload = function (e) {
-                image_holder.css({'background-image': 'url('+e.target.result+')'})
+                image_holder.css({'background-image': 'url(' + e.target.result + ')'})
                 console.log(e.target.result);
             };
             reader.readAsDataURL($(this)[0].files[0]);
@@ -78,24 +78,26 @@ $(document).ready(function () {
     $('[data-reveal]').on('closed.zf.reveal', function () {
 
         var liveMessageId = null;
-        $.each(xhrPool, function(idx, jqXHR) {
+        $.each(xhrPool, function (idx, jqXHR) {
             jqXHR.abort();
         });
     });
 
-    $("#message-form").submit(function (event) {
+    $("#message-form").unbind('submit').bind('submit', function (event) {
         event.preventDefault();
-        var $form = $(this),
-            url = $form.attr('action');
-        var body = $('#body').val();
-        if (body != '') {
-            var posting = $.post(url, {body: body});
-            posting.done(function (data) {
-                $("#message-form")[0].reset();
-                refreshMessages(messageId);
+            var $form = $(this),
+                url = $form.attr('action');
+            var body = $('#body').val();
 
-            });
-        }
+            if (body != '') {
+                var posting = $.post(url, {body: body});
+                $("#message-form")[0].reset();
+                posting.done(function (data) {
+                    $("#message-form")[0].reset();
+                    refreshMessages(messageId);
+
+                });
+            }
         scrollBottom();
     });
 
@@ -133,6 +135,11 @@ $(document).ready(function () {
 
     });
 
+    if ($("div#messages").length > 0) {
+        refreshMessages(messageId);
+        scrollBottom();
+    }
+
     $('#profile-upload').on('change', function () {
         if (typeof (FileReader) != "undefined") {
             var image_holder = $("#upload-image");
@@ -147,7 +154,6 @@ $(document).ready(function () {
     });
 
     // var messageId = $('#messages-id').val();
-    refreshMessages(messageId);
 
 
 });
@@ -182,7 +188,7 @@ function refreshMessages(messageId) {
             messageNotifications();
         }
     });
-    scrollBottom();
+
 }
 
 function refreshInterests() {
