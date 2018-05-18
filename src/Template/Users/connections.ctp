@@ -1,9 +1,10 @@
-<?php if ($user->upload) :
+<?php if ($user->upload) {
     $profile_img = $user->upload;
-else :
+} else {
     $profile_img = 'placeholder.png';
-endif; ?>
+} ?>
 
+<div class="container <?php echo $user->theme; ?>-theme">
 <div class="row">
 
     <div class="radius-form columns small-12 medium-8">
@@ -15,11 +16,7 @@ endif; ?>
     </div>
 
     <div class="radius-form columns small-12 medium-4">
-        <div class="location">
-            <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a
-                        href="/users/edit/<?php echo $user->id; ?>">update
-                    your location here</a></p>
-        </div>
+
     </div>
 </div>
 
@@ -225,6 +222,25 @@ endif; ?>
     </div>
 <div id="canvas"></div>
 
+<div class="row">
+<?php if ($user->theme == 'dark') {
+    $other = 'light';
+} else {
+    $other = 'dark';
+} ?>
+    <div class="radius-form columns small-12 medium-8">
+        <a href="/users/switch-theme">Switch to <?php echo $other; ?> theme</a>
+    </div>
+
+    <div class="radius-form columns small-12 medium-4">
+        <div class="location">
+            <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a
+                        href="/users/edit/<?php echo $user->id; ?>">update
+                    your location here</a></p>
+        </div>
+    </div>
+</div>
+</div>
 <?php list($lat, $long) = explode(',', $user->location); ?>
 <script>
     var lat_connections = parseFloat(<?php echo json_encode($lat); ?>);

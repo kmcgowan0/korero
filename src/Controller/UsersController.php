@@ -832,6 +832,25 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
+    public function switchTheme() {
+        $id = $this->Auth->user('id');
+        $user = $this->Users->get($id, [
+            'contain' => ['Interests']
+        ]);
+        if ($user->theme == 'dark') {
+            $this->Users->query()->update()
+                ->set(['theme' => 'light'])
+                ->where(['id' => $id])
+                ->execute();
+        } else {
+            $this->Users->query()->update()
+                ->set(['theme' => 'dark'])
+                ->where(['id' => $id])
+                ->execute();
+        }
+        return $this->redirect(['action' => 'connections']);
+    }
+
 
     public function beforeFilter(Event $event)
     {
