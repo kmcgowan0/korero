@@ -128,9 +128,8 @@ class UsersController extends AppController
             array_multisort($interest_sort, SORT_DESC, $distinct_user_array);
         }
 
-        $distinct_users = $this->paginate($distinct_users);
 
-        $this->set(compact('user', 'user_matching_data', 'sort', 'message', 'distinct_users', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count', 'distinct_user_array', 'data'));
+        $this->set(compact('user', 'user_matching_data', 'sort', 'message', 'distinct_users', 'users_in_radius', 'space_allocated', 'number_of_interests', 'interest_count', 'distinct_user_array'));
         $this->set('_serialize', ['user']);
     }
 
@@ -483,7 +482,7 @@ class UsersController extends AppController
             if ($user_data['upload']['name'] != '') {
                 $file = $user_data['upload'];
                 $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
-                $arr_ext = ['jpg', 'png']; //set allowed extensions
+                $arr_ext = ['jpg', 'png', 'gif']; //set allowed extensions
                 $setNewFileName = time() . "_" . rand(000000, 999999);
                 //only process if the extension is valid
                 if (in_array($ext, $arr_ext)) {
