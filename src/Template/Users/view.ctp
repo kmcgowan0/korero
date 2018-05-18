@@ -11,6 +11,13 @@
         else :
             $profile_img = 'placeholder.png';
         endif; ?>
+        <?php if ($distance < 1) {
+            $distance_string = 'less than 1 mile';
+        } else if ($distance == 1) {
+                        $distance_string = '1 mile';
+        } else {
+            $distance_string = $distance . ' miles';
+        } ?>
         <div class="profile-picture-large profile-picture"
              style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
     </div>
@@ -25,7 +32,7 @@
         <p>You have blocked by <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can no longer message each other.</p>
          <?php } else { ?>
         <?php if ($allowed_user && $my_profile == false) { ?>
-            <p><span id="my-location"></span> (<?= $distance ?> miles from you)</p>
+            <p><span id="my-location"></span> (<?= $distance_string ?> from you)</p>
             <?php if (!empty($user->interests)):
                 $interests_string = array();
                 foreach ($mutual_interest_array as $interests):
