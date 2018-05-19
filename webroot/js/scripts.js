@@ -18,12 +18,19 @@ $(document).ready(function () {
     $('#results').on('click', '.selectable', function () {
         var name = $(this).text();
         var id = $(this).data('id');
-        $('#selected').append('<div>' +
-            '<p class="columns medium-6">' + name + '</p>' +
-            '<button class="remove" id="' + id + '">Remove</button>' +
-            '</div>' +
-            '');
-        $('#selected-form').append('<input type="hidden" id="' + id + '" name="interests[_ids][]" value="' + id + '">');
+        var added = [];
+        $("#selected-form input").each(function()
+        {
+            added.push(parseFloat($(this).val()));
+        });
+        if (jQuery.inArray(id, added) == -1) {
+            $('#selected').append('<div class="columns medium-6">' +
+                '<p>' + name + '</p>' +
+                '<button class="remove" id="' + id + '">Remove</button>' +
+                '</div>' +
+                '');
+            $('#selected-form').append('<input type="hidden" id="' + id + '" name="interests[_ids][]" value="' + id + '">');
+        }
         bindFunc();
     });
     $('.reveal-link').on('click', function () {
