@@ -221,7 +221,7 @@ div.location p {
 }
 .hover-overlay p {
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     text-transform: uppercase;
     position: absolute;
     top: 50%;
