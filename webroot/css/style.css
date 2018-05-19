@@ -241,6 +241,21 @@ div.location p {
 .current-interests-list a {
     padding: 0 1em;
 }
+.selectable:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+.close-button {
+    background: transparent;
+    font-size: 1.5em;
+    padding: 0;
+}
+.close-button:hover {
+    background: transparent;
+    font-size: 1.5em;
+    padding: 0;
+    color: #d33c44;
+}
 /*loading animation */
 
 

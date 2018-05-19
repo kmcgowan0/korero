@@ -170,7 +170,7 @@
                         <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
                     </div>
                     <div class="small-10 medium-2 columns">
-                        <?= $this->Html->link(__('Full Conversation'), ['controller' => 'messages', 'action' => 'view', $related_user->id]) ?>
+                        <?= $this->Html->link(__('All Messages'), ['controller' => 'messages', 'action' => 'view', $related_user->id]) ?>
                     </div>
                 </div>
 
