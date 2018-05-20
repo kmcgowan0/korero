@@ -482,17 +482,12 @@ div.message.hidden {
 /* Use 'one true layout' methods to get equal height columns */
 .container {
     overflow: hidden;
-    /*min-height: 92%; !* full height almost always *!*/
+    min-height: 70%; /* full height almost always */
     position: relative;
     z-index: 0;
 }
 
 /* Force equal height by overflowing */
-.content,
-#actions-sidebar {
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
-}
 @media(max-width: 640px) {
     #actions-sidebar {
         padding-bottom: 2rem;
