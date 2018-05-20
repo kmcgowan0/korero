@@ -140,6 +140,7 @@
                     } elseif ($distance >= 1000) {
                         $distance_from_center = 16;
                     }
+                }
 
                     ?>
                     <!--                //link to click to show modal-->
