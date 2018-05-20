@@ -168,10 +168,17 @@ class MessagesController extends AppController
 
             ),
             'order' => array('sent' => 'DESC')
-        ))->limit('5');
+        ));
 
         $messages_in_thread_array = $messages_in_thread->toArray();
         $messages_in_thread_ordered = array_reverse($messages_in_thread_array);
+        $count = count($messages_in_thread_ordered);
+        $first_messages = $messages_in_thread_ordered;
+
+//        if ($count > 5) {
+//            $remove_messages = $count - 5;
+//            $first_messages = array_slice($messages_in_thread_ordered, $remove_messages);
+//        }
         //sending messages from within message view
         $message = $this->Messages->newEntity();
 

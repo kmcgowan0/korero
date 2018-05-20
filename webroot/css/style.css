@@ -77,6 +77,10 @@ input.header-search {
     position: relative;
 }
 #messages {
+    height:350px;
+    overflow-y: scroll;
+}
+.messages-list {
     height:250px;
     overflow-y: scroll;
 }
