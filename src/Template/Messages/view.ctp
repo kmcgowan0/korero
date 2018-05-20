@@ -28,7 +28,7 @@
         <p>You have blocked by <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can no longer message each other.</p>
     <div id="messages"></div>
          <?php } else { ?>
-	<?php if ($user->accept_messages == 1 && $authorised_user->accept_messages == 1) { ?>
+	<?php if ($user->accept_messages == 1 && $authorised_user->accept_messages == 1 && count($related_interest_str) == 0) { ?>
 	<p>You and <?php echo $user_array[$sent_to_id]['firstname']; ?> have nothing in common. Still want to chat? Go ahead, find out something new.</p>
 	<?php
 } else if ($user->accept_messages == 1 && $authorised_user->accept_messages == 0) { ?>
@@ -36,7 +36,7 @@
 <?php } else { ?>
     <p>You both like: <?php echo implode(', ', $related_interest_str); ?></p>
 	<?php } ?>
-    <div id="messages"></div>
+    <div id="messages" class="messages-list"></div>
     <div class="large-12">
         <?= $this->Form->create($message, ['id' => 'message-form']) ?>
         <fieldset>
