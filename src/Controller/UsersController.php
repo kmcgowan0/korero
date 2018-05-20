@@ -144,9 +144,6 @@ class UsersController extends AppController
             'contain' => ['Interests']
         ]);
 
-        $this->paginate = [
-            'contain' => ['interests']
-        ];
 
         $term = $this->request->getQuery('term');
 
