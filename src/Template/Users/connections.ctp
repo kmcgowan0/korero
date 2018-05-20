@@ -174,7 +174,7 @@
                     </div>
                 </div>
 
-                <div id="messages<?php echo $related_user->id; ?>"></div>
+                <div id="messages<?php echo $related_user->id; ?>" class="messages-list"></div>
                 <div class="messages-in-view">
                     <?= $this->Form->create($message, ['data-id' => $related_user->id, 'class' => 'message-form' . $related_user->id, 'id' => 'message-form' . $related_user->id, 'url' => ['action' => 'send-message']]) ?>
                     <fieldset>
