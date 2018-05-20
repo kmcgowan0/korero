@@ -17,7 +17,7 @@ $(document).ready(function () {
         var name = $(this).text();
         var id = $(this).data('id');
         var added = [];
-        $("#selected-form input").each(function()
+        $("#selected-form input").each(function () {
             added.push(parseFloat($(this).val()));
         });
         if (jQuery.inArray(id, added) == -1) {
@@ -38,7 +38,6 @@ $(document).ready(function () {
 
         $('#related-user-' + liveMessageId).css('border', '2px solid #000');
         $('#notifications-' + liveMessageId).html('');
-        messageNotifications();
         $('#message-form' + liveMessageId).submit(function (event) {
             event.preventDefault();
             var $form = $(this),
@@ -46,12 +45,14 @@ $(document).ready(function () {
             var body = $('#message-body' + liveMessageId).val();
             if (body != '') {
                 var posting = $.post(url, {body: body, recipient: liveMessageId});
+                $(".message-form" + liveMessageId)[0].reset();
                 posting.done(function (data) {
                     $(".message-form" + liveMessageId)[0].reset();
-                    connectionMessages(liveMessageId);
+                    scrollBottom();
                 });
             }
         });
+        scrollBottom();
     });
 
     $('.location-button').on('click', function () {
@@ -87,19 +88,19 @@ $(document).ready(function () {
 
     $("#message-form").unbind('submit').bind('submit', function (event) {
         event.preventDefault();
-            var $form = $(this),
-                url = $form.attr('action');
-            var body = $('#body').val();
+        var $form = $(this),
+            url = $form.attr('action');
+        var body = $('#body').val();
 
-            if (body != '') {
-                var posting = $.post(url, {body: body});
+        if (body != '') {
+            var posting = $.post(url, {body: body});
+            $("#message-form")[0].reset();
+            posting.done(function (data) {
                 $("#message-form")[0].reset();
-                posting.done(function (data) {
-                    $("#message-form")[0].reset();
-                    refreshMessages(messageId);
-
-                });
-            }
+                refreshMessages(messageId);
+                scrollBottom();
+            });
+        }
         scrollBottom();
     });
 
@@ -172,7 +173,7 @@ function search(term) {
     });
 }
 
-var interval = 10000;
+var interval = 100000;
 
 function refreshMessages(messageId) {
 
@@ -186,8 +187,7 @@ function refreshMessages(messageId) {
         },
         complete: function () {
             // Schedule the next
-            setTimeout(refreshMessages(messageId), interval);
-            messageNotifications();
+            setTimeout(refreshMessages(messageId), 100000);
         }
     });
 
@@ -217,6 +217,7 @@ function refreshInterests() {
             })
         }
     });
+
 }
 
 function connectionMessages(messageId) {
@@ -230,10 +231,9 @@ function connectionMessages(messageId) {
         },
         complete: function () {
             // Schedule the next
-            setTimeout(connectionMessages(messageId), interval);
-            messageNotifications();
+            setTimeout(connectionMessages(messageId), 15000);
         }
-    });
+        });
 }
 
 function addInterests() {
@@ -249,11 +249,11 @@ function addInterests() {
 }
 
 function scrollBottom() {
-    var messages = $('#messages');
+    var messages = $('.messages-list');
     console.log(messages);
     var height = messages[0].scrollHeight;
     messages.scrollTop(height);
-    $('#messages').animate({scrollTop: 15000}, 'fast');
+    $('.messages-list').animate({scrollTop: 15000}, 'fast');
 }
 
 function getWindowSize() {
@@ -280,11 +280,11 @@ function messageNotifications() {
         },
         success: function (data) {
             $('#notifications').html(data);
+        },
+        complete: function () {
+            // Schedule the next
+            setTimeout(messageNotifications, 20000);
         }
-        // complete: function () {
-        //     // Schedule the next
-        //     // setTimeout(messageNotifications, interval);
-        // }
     })
 }
 
