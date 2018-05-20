@@ -8,8 +8,6 @@ $(document).ready(function () {
 
     refreshInterests();
 
-//     scrollBottom();
-
     $('#search').on('keyup', function () {
         var term = $(this).val();
         search(term);
@@ -20,7 +18,6 @@ $(document).ready(function () {
         var id = $(this).data('id');
         var added = [];
         $("#selected-form input").each(function()
-        {
             added.push(parseFloat($(this).val()));
         });
         if (jQuery.inArray(id, added) == -1) {
@@ -33,6 +30,7 @@ $(document).ready(function () {
         }
         bindFunc();
     });
+
     $('.reveal-link').on('click', function () {
 
         var liveMessageId = $(this).data('id');
@@ -85,9 +83,6 @@ $(document).ready(function () {
     $('[data-reveal]').on('closed.zf.reveal', function () {
 
         var liveMessageId = null;
-        $.each(xhrPool, function (idx, jqXHR) {
-            jqXHR.abort();
-        });
     });
 
     $("#message-form").unbind('submit').bind('submit', function (event) {
@@ -134,7 +129,7 @@ $(document).ready(function () {
             $("#new-interest-form")[0].reset();
             refreshInterests();
             $('#selected').append('<div>' +
-                '<p class="columns medium-6">' + name + '</p>' +
+                '<p>' + name + '</p>' +
                 '<button class="remove">Remove</button>' +
                 '</div>' +
                 '');
@@ -210,7 +205,16 @@ function refreshInterests() {
         },
         complete: function () {
             // Schedule the next
-            messageNotifications();
+            var ids = [];
+            $('.current-interests-list').each(function () {
+                var id = $(this).data('id');
+                ids.push(id);
+            });
+            console.log(ids);
+            $(ids).each(function (i, val) {
+                console.log(val);
+                $('#selected-form').append('<input type="hidden" id="' + val + '" name="interests[_ids][]" value="' + val + '">');
+            })
         }
     });
 }
