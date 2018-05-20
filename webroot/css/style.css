@@ -1,3 +1,6 @@
+.container {
+    padding-bottom: 4em;
+}
 .light-theme {
     background: #fff;
     color: #0c0a20;
@@ -9,7 +12,7 @@
     background: linear-gradient(#29264a, #130f36);
     color: #fff;
 }
-.dark-theme a, .dark-theme h5, .dark-theme h4 {
+.dark-theme a, .dark-theme h5, .dark-theme h4, .dark-theme h1 {
     color: #fff;
 }
 .hidden {
@@ -58,6 +61,9 @@ input.header-search {
 }
 .search-column {
     padding-bottom: 1em;
+}
+.blocked {
+    color: #ff1e19;
 }
 /* Messages */
 
