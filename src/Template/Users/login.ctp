@@ -12,8 +12,8 @@
             <?= $this->Flash->render() ?>
             <?= $this->Form->create() ?>
             <fieldset>
-                <?= $this->Form->control('email') ?>
-                <?= $this->Form->control('password') ?>
+                <?= $this->Form->control('email', ['label' => false, 'placeholder' => 'Email Address']) ?>
+                <?= $this->Form->control('password', ['label' => false, 'placeholder' => 'Password']) ?>
             </fieldset>
             <?= $this->Form->button(__('Login')); ?>
             <?= $this->Form->end() ?>
