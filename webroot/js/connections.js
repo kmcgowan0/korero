@@ -106,7 +106,13 @@ $(document).ready(function () {
             var id = 'line_' + new Date().getTime();
             var line = "<div id='" + id + "'class='line' title='" + others + "'>&nbsp;</div>";
             // var color = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
-            var color = '000';
+            var color;
+            if ($('.dark-theme').length > 0) {
+                color = 'fff';
+            }
+            if ($('.light-theme').length > 0) {
+                color = '000';
+            }
             $('#canvas').append(line);
 
             var left = x1;
