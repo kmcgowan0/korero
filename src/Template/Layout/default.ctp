@@ -55,7 +55,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class="large-4 medium-4 columns search-column">
         <?php if ($authUser) : ?>
         <?= $this->Form->create('', ['type' => 'get', 'url' => '/users/search']) ?>
-        <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search', 'class' => 'header-search']) ?>
+        <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search for interests', 'class' => 'header-search']) ?>
         <?= $this->Form->end() ?>
         <?php endif; ?>
     </div>
@@ -76,7 +76,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </div>
 </nav>
 <?= $this->Flash->render() ?>
-<div class="container clearfix">
+<div class=" clearfix">
     <?= $this->fetch('content') ?>
 </div>
 <footer class="footer">
