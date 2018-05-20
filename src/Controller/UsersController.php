@@ -282,6 +282,7 @@ class UsersController extends AppController
      */
     public function view($id = null)
     {
+
         $user = $this->Users->get($id, [
             'contain' => ['Interests']
         ]);
@@ -300,6 +301,7 @@ class UsersController extends AppController
         $this->loadComponent('Allowed');
 
         $authorised_user = $this->Auth->user();
+//        $authorised_user = $this->Users->get($authorised_user_id);
         $allowed_user = $this->Allowed->checkAllowed($user, $authorised_user);
 
         $this->loadComponent('Distance');
@@ -412,7 +414,8 @@ class UsersController extends AppController
 
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user_data = $this->request->getData();
+            $user = $this->Users->patchEntity($user, $user_data);
             if ($this->Users->save($user)) {
                 $this->Auth->setUser($user);
                 if (isset($this->request->data['new-interest'])) {
@@ -856,7 +859,7 @@ class UsersController extends AppController
                 ->where(['id' => $id])
                 ->execute();
         }
-        return $this->redirect(['action' => 'connections']);
+        return $this->redirect($this->referer());
     }
 
 
