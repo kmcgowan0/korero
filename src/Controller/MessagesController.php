@@ -209,7 +209,7 @@ class MessagesController extends AppController
             ->where(['sender' => $id])
             ->execute();
 
-        $this->set(compact('messages_in_thread_ordered'));
+        $this->set(compact('messages_in_thread_ordered', 'first_messages', 'count', 'remove_messages'));
     }
 
     public function inbox()

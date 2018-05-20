@@ -66,6 +66,7 @@ class UsersController extends AppController
         $this->loadComponent('Distance');
         $this->loadComponent('Mutual');
         $this->loadComponent('Age');
+        $this->loadComponent('Blocked');
 
         //only get distinct users
         $distinct_users = $related_users_interests->group('Users.id');
@@ -102,6 +103,8 @@ class UsersController extends AppController
             $single_user['age'] = $age;
             $distance = $this->Distance->getDistance($user['location'], $single_user['location']);
             $single_user['distance'] = $distance;
+            $blocked = $this->Blocked->blockedUser($single_user, $user);
+            $single_user['blocked'] = $blocked;
             //create assoc array to sort by distance
             $distance_sort[$key] = $distance;
 

@@ -14,10 +14,10 @@
         <thead>
         <tr>
             <th scope="col"></th>
-            <th scope="col"><?= $this->Paginator->sort('firstname') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('location') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('You both like') ?></th>
-            <th scope="col" class="actions"><?= __('Actions') ?></th>
+            <th scope="col">Name</th>
+            <th scope="col">Location</th>
+            <th scope="col">You both like</th>
+            <th scope="col" class="actions"></th>
         </tr>
         </thead>
         <tbody>
@@ -62,7 +62,7 @@
 
                     </div>
                 </td>
-                <td><?= h($user->firstname) ?>, <?= h($user->age) ?></td>
+                <td><?= h($user->firstname) ?>, <?= h($user->age) ?><br><?php if ($user->blocked == true) { ?><span class="blocked">(Blocked)</span><?php } ?></td>
                 <td><?= h($user->coded_location) ?></td>
                 <td><?php echo implode(", ", $related_interest_str); ?>
                 </td>
