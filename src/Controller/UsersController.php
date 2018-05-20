@@ -255,8 +255,11 @@ class UsersController extends AppController
         foreach ($users_in_radius as $users_in_radiu) {
             $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
             $age = $this->Age->getAge($users_in_radiu['dob']);
+            $full_user = $users->get($users_in_radiu['id'], ['contain' => 'interests']);
+            $all_interests = $full_user['interests'];
             $users_in_radiu['distance'] = $distance;
             $users_in_radiu['age'] = $age;
+            $users_in_radiu['interests'] = $all_interests;
         }
 
         if (count($users_in_radius)) {
@@ -266,7 +269,7 @@ class UsersController extends AppController
         }
 
 
-        $this->set(compact('user', 'users', 'search_result', 'interest_count', 'related_users_interests', 'distinct_users', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance'));
+        $this->set(compact('user', 'users', 'search_result', 'bunch_of_interests', 'interest_count', 'related_users_interests', 'distinct_users', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance'));
         $this->set('_serialize', ['user']);
     }
 

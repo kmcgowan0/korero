@@ -50,17 +50,19 @@
                         //if the matching data matches the id of the related user
                         //add that interest to an array for this user
                         foreach ($matching_datum as $a_match) {
-                            if ($a_match['_matchingData']['UsersInterests']->user_id == $related_user->id) {
+                            if ($a_match['_matchingData']['UsersInterests']->user_id == $related_user->id && !in_array($a_match['_matchingData']['Interests'], $related_interests)) {
 
                                 array_push($related_interests, $a_match['_matchingData']['Interests']);
+
                             }
                         }
 
                     }
 
                     foreach ($search_result as $result) {
-                        if (!in_array($result, $related_interests)) {
+                        if (!in_array($result, $related_interests) && in_array($result, $related_user->interests)) {
                             array_push($related_interests, $result);
+
                         }
                     }
 
@@ -69,6 +71,7 @@
 
                     //create associative array where user id: interest
                     $related_users_var[$related_user->id] = $related_interests;
+
 
                     //add each related interest to a string
                     $related_interest_str = array();
@@ -82,18 +85,59 @@
                         $related_profile_img = 'placeholder.png';
                     endif;
 
-                    $distance = $related_user->distance;
-                    if ($distance < 2) {
-                        $distance_from_center = 5.5;
+                $distance = $related_user->distance;
+                if ($related_user->radius <= 5) {
+                    if ($distance < 0.1) {
+                        $distance_from_center = 9;
+                    } elseif ($distance < 0.5) {
+                        $distance_from_center = 10;
+                    } elseif ($distance < 1) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 2) {
+                        $distance_from_center = 12;
+                    } elseif ($distance < 3) {
+                        $distance_from_center = 14;
+                    } elseif ($distance <= 5) {
+                        $distance_from_center = 16;
+                    }
+                } else if ($related_user->radius <= 10) {
+                    if ($distance < 0.5) {
+                        $distance_from_center = 9;
+                    } elseif ($distance < 1) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 2) {
+                        $distance_from_center = 12;
                     } elseif ($distance < 5) {
+                        $distance_from_center = 14;
+                    } elseif ($distance > 7) {
+                        $distance_from_center = 16;
+                    }
+                } else if ($related_user->radius < 500) {
+                    if ($distance < 2) {
+                        $distance_from_center = 8;
+                    } elseif ($distance < 5) {
+                        $distance_from_center = 10;
+                    } elseif ($distance < 20) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 40) {
+                        $distance_from_center = 12;
+                    } elseif ($distance < 70) {
+                        $distance_from_center = 14;
+                    } elseif ($distance <= 100) {
+                        $distance_from_center = 16;
+                    }
+                } else if ($related_user->radius >= 500) {
+                    if ($distance < 2) {
+                        $distance_from_center = 8;
+                    } elseif ($distance < 10) {
                         $distance_from_center = 10;
                     } elseif ($distance < 50) {
                         $distance_from_center = 11;
                     } elseif ($distance < 100) {
                         $distance_from_center = 12;
-                    } elseif ($distance > 1000) {
+                    } elseif ($distance < 1000) {
                         $distance_from_center = 14;
-                    } elseif ($distance <= 1000) {
+                    } elseif ($distance >= 1000) {
                         $distance_from_center = 16;
                     }
 
@@ -129,7 +173,7 @@
                                 } else {
                                     $distance = round($related_user->distance);
                                 } ?>
-                                <p>Town<br>(<?php echo $distance; ?> miles from you)</p>
+                                <p><?= h($related_user->coded_location) ?><br>(<?php echo $distance; ?> miles from you)</p>
                                 <p><?= h($related_user->firstname) ?>
                                     likes <?php echo implode(", ", $related_interest_str); ?></p>
                             </div>
