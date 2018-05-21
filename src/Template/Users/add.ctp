@@ -1,19 +1,22 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User $user
- */
-?>
-<div class="users form medium-7 medium-offset-2 columns content">
+<div class="container login-container dark-theme">
+    <div class="row">
+        <div class="columns small-12 medium-4 medium-offset-4 text-center">
+            <img src="/img/logo-home.png" class="logo-home">
+            <p class="intro-text">
+                Korero means conversation. Connect and converse with new people in your area based on similar interests.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="users form columns small-12 medium-4 medium-offset-4">
     <?= $this->Form->create($user, ['id' => 'add-user-form']) ?>
     <fieldset>
-        <legend><?= __('Create an Account') ?></legend>
         <?php
-        echo $this->Form->control('firstname', ['label' => 'First Name']);
-        echo $this->Form->control('lastname', ['label' => 'Last Name']);
-        echo $this->Form->control('email');
-        echo $this->Form->control('password');
-        echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1920, 'maxYear' => date('Y')]);
+        echo $this->Form->control('firstname', ['label' => false, 'placeholder' => 'First name']);
+        echo $this->Form->control('lastname', ['label' => false, 'placeholder' => 'Last name']);
+        echo $this->Form->control('email', ['label' => false, 'placeholder' => 'Email']);
+        echo $this->Form->control('password', ['label' => false, 'placeholder' => 'Password']);
+        echo $this->Form->control('dob', ['empty' => true, 'minYear' => 1920, 'maxYear' => date('Y'), 'label' => 'Date of birth']);
         echo $this->Form->hidden('location', ['type' => 'text', 'id' => 'location-coords']); ?>
         <button class="location-button" type="button">Get my location</button>
         <h6 class="hidden">Current location: <span class="my-coded-location"></span></h6>
@@ -24,5 +27,6 @@
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
-
+        </div>
+    </div>
 </div>
