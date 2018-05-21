@@ -271,19 +271,39 @@ function bindFunc() {
     });
 }
 
-//ajax request to unread messages to get notifications
-function messageNotifications() {
+
+
+function connectionMessageNotifications() {
     $.get({
-        url: '/messages/unread-messages/',
-        beforeSend: function (jqXHR, settings) {
-            xhrPool.push(jqXHR);
-        },
+        url: '/messages/messages-notifications/',
         success: function (data) {
-            $('#notifications').html(data);
+            $('.unread-messages-script').html(data);
+            var allUnread = []
+            $.each(unreadMessages, function (i, value) {
+                $('#related-user-' + i).css('border', 'solid #d33c44 4px');
+                $('#notifications-' + i).html(value);
+                allUnread.push(value);
+            });
+            if (allUnread.length > 0) {
+                allUnread.reduce(function (acc, val) {
+                    var result = (acc + val);
+                    $('#notifications').html('('+result+')');
+                });
+            }
         },
         complete: function () {
             // Schedule the next
-            setTimeout(messageNotifications, 20000);
+            setTimeout(connectionMessageNotifications, 5000);
+        }
+    })
+
+}
+
+function messageNotifications() {
+    $.get({
+        url: '/messages/unread-messages/',
+        success: function (data) {
+            $('#notifications').html(data);
         }
     })
 }

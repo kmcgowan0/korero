@@ -349,5 +349,28 @@ class MessagesController extends AppController
         $notifications = count($unread_messages);
         $this->set(compact('notifications'));
     }
+
+    public function messagesNotifications()
+    {
+        $messages = $this->Messages->find('all', array(
+            'conditions' => array(
+                array('recipient' => $this->Auth->user('id')),
+            )
+        ));
+
+        $unread_messages = array();
+        $senders = array();
+        foreach ($messages as $message) {
+            $seen = $message['seen'];
+
+            if ($seen == false || $seen == null) {
+                array_push($unread_messages, $message['sender']);
+            }
+        }
+        $unread_counts = array_count_values($unread_messages);
+
+        $notifications = count($unread_messages);
+        $this->set(compact('notifications', 'unread_messages', 'senders', 'unread_counts'));
+    }
 }
 
