@@ -48,27 +48,67 @@ $(document).ready(function () {
 
             var left = x1;
             var top = y1;
-            if (transform < 45) {
-                top = y1  + (2 * 30);
+            if (transform < 40) {
+                top = y1 - (i * 4);
+                left = x1 + (i * 3);
+            }
+            if (transform >= 40 && transform < 80) {
+                top = y1 - (i * 5);
+                left = x1 + (i * 8);
+            }
+            if (transform >= 80 && transform < 120) {
+                top = y1 + (i * 5);
+                left = x1 + (i * 10);
+            }
+            if (transform >= 120 && transform < 150) {
+                top = y1 + (i * 7);
+                left = x1 + (i * 10);
+            }
+            if (transform >= 150 && transform < 180) {
+                top = y1 + (10) - (i * 3);
+                left = x1 + (i * 10);
+            }
+            if (transform >= 180 && transform < 240) {
+                top = y1 + (10) - (i * 2);
+                left = x1 + 5 + (i * 8);
+            }
+            if (transform >= 240 && transform < 270) {
+                top = y1;
+                left = x1 - (10) + (i * 10);
+            }
+            if (transform >= 270 && transform < 310) {
+                top = y1 - (i*2);
+                left = x1 + 5;
+            }
+            if (transform >= 310) {
+                top = y1 + 5;
                 left = x1;
             }
-            if (transform > 180) {
-                top = y1  + (i * 5);
-                left = x1  + (i * 1);
-            }
-            if (transform > 90) {
-                top = y1  + (i * 5);
-                left = x1  + (i * 10);
-            }
-            if (transform < 90) {
-                top = y1;
-                left = x1  + (i * 10);
-            }
-
+            // if (transform > 200 && transform < 300) {
+            //     top = y1  + (i * 5);
+            //     left = x1  + (i * 10);
+            // }
+            // if (transform > 300) {
+            //     top = y1  + (i * 10);
+            //     left = x1  + (i * 10);
+            // }
+            // if (transform > 120 && transform < 200) {
+            //     top = y1  + (i * 10);
+            //     left = x1  + (i * 10);
+            // }
+            // if (transform > 90 && transform < 120) {
+            //     top = y1  + (i * 5);
+            //     left = x1  + (i * 10);
+            // }
+            // if (transform < 90 && transform > 45) {
+            //     top = y1;
+            //     left = x1  + (i * 10);
+            // }
+            console.log('line: ' + id + ' transform: ' + transform + ' top: ' + top + ' left: ' + left);
             //rotate the line
             $('#' + id).css({
-                'left': left - (i*5),
-                'top': top - (i*4),
+                'left': left - (i * 5),
+                'top': top - (i * 4),
                 'width': '0px',
                 'height': '4px',
                 'z-index': '10',
@@ -211,23 +251,23 @@ $(document).ready(function () {
 
 });
 
-$( function() {
-    $( document ).tooltip({
+$(function () {
+    $(document).tooltip({
         position: {
             my: "center bottom-20",
             at: "center top",
-            using: function( position, feedback ) {
-                $( this ).css( position );
-                $( "<div>" )
-                    .addClass( "arrow" )
-                    .addClass( feedback.vertical )
-                    .addClass( feedback.horizontal )
-                    .appendTo( this );
+            using: function (position, feedback) {
+                $(this).css(position);
+                $("<div>")
+                    .addClass("arrow")
+                    .addClass(feedback.vertical)
+                    .addClass(feedback.horizontal)
+                    .appendTo(this);
             }
         },
         track: true
     });
-} );
+});
 
 function coordinates(key, val) {
 
