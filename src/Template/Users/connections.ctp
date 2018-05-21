@@ -4,7 +4,7 @@
     $profile_img = 'placeholder.png';
 } ?>
 
-<div class="container <?php echo $user->theme; ?>-theme">
+<div class="container <?php echo $user->theme; ?>-theme connections">
     <div class="row">
 
         <div class="radius-form columns small-12 medium-8">
@@ -163,7 +163,7 @@
                         <div class="profile-picture-small profile-picture small-2 columns"
                              style="background-image: url(/img/<?php echo $related_profile_img; ?>)"></div>
                     </a>
-                    <div class="small-10 medium-8 columns">
+                    <div class="small-10 medium-7 columns">
                         <a href="/users/view/<?php echo $related_user->id; ?>">
                             <h4><?= h($related_user->firstname) ?></h4>
                         </a>
@@ -198,15 +198,14 @@
         endforeach; ?>
 
         <?php
-        if (count($users_in_radius) > 10) { ?>
+        if (count($top_interests) > 10) { ?>
             <a href="/users" class="reveal-link">
                 <div class="related-user profile-picture extra-user"
                      style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(0deg) translate(18em) rotate(-0deg);">
                 </div>
                 <div class="hover-overlay"
                      style="transform: rotate(0deg) translate(18em) rotate(-0deg);">
-                    <?php $extra_count = count($top_interests) - 10; ?>
-                    <p>+<?= $extra_count ?> more</p>
+                    <p>See all</p>
                 </div>
             </a>
             <script>
@@ -227,25 +226,27 @@
     </div>
     <div id="canvas"></div>
 
-    <div class="row">
+    <div class="row connections-options">
         <?php if ($user->theme == 'dark') {
             $other = 'light';
         } else {
             $other = 'dark';
         } ?>
-        <div class="radius-form columns small-12 medium-8">
-            <a href="/users/switch-theme">Switch to <?php echo $other; ?> theme</a>
-        </div>
-
-        <div class="radius-form columns small-12 medium-4">
+        <div class="radius-form columns small-12 medium-6 large-3">
             <div class="location">
-                <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a
-                            href="/users/edit/<?php echo $user->id; ?>">update
+                <p class="small-text">We think you're in <span id="my-location"></span>. If we're wrong, please <a
+                            href="/users/edit/<?php echo $user->id; ?>" class="underline-hover">update
                         your location here</a></p>
             </div>
         </div>
+
+        <div class="radius-form columns small-12 medium-6 large-9 medium-text-right small-text-left">
+            <a href="/users/switch-theme" class="small-text">Switch to <?php echo $other; ?> theme</a>
+
+        </div>
     </div>
 </div>
+<div class="unread-messages-script"></div>
 <?php list($lat, $long) = explode(',', $user->location); ?>
 <script>
     var lat_connections = parseFloat(<?php echo json_encode($lat); ?>);
