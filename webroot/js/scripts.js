@@ -6,6 +6,24 @@ $(document).ready(function () {
 
     messageNotifications();
 
+    if ($("div.connections").length > 0) {
+        connectionMessageNotifications();
+    }
+
+    if ($("div.full-user-list").length > 0) {
+        var size_li = $("#all-users tr").length;
+        console.log(size_li);
+        var x = 10;
+        $('#all-users tr:lt(' + x + ')').show();
+        $('#load-more').click(function () {
+            x = (x + 20 <= size_li) ? x + 5 : size_li;
+            $('#all-users tr:lt(' + x + ')').show();
+            if (x == size_li) {
+                $('#load-more').hide();
+            }
+        });
+    }
+
     refreshInterests();
 
     $('#search').on('keyup', function () {

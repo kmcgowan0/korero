@@ -4,12 +4,11 @@
  * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
  */
 ?>
-
 <div class="users index large-9 medium-8 columns content full-user-list">
     <h3><?= __('Users') ?></h3>
 
-    <p>Sort by: <?= $this->Html->link(__('Distance from me'), ['distance']) ?>
-        <?= $this->Html->link(__('Number of mutual interests'), ['interests']) ?></p>
+    <p>Sort by: <?= $this->Html->link(__('Distance from me'), ['distance'], ['class' => 'red-button']) ?>
+        <?= $this->Html->link(__('Number of mutual interests'), ['interests'], ['class' => 'red-button']) ?></p>
     <table cellpadding="0" cellspacing="0" id="user-table">
         <thead>
         <tr>
@@ -20,45 +19,45 @@
             <th scope="col" class="actions"></th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="all-users">
 
         <?php
         $user_locations = array();
         foreach ($distinct_user_array as $user):
 
-        if ($user->id != $authUser['id']) {
+            if ($user->id != $authUser['id']) {
 
-            $user_locations[$user->id] = $user->location;
+                $user_locations[$user->id] = $user->location;
 
-        $related_interests = [];
+                $related_interests = [];
 
-        foreach ($user_matching_data as $matching_datum) {
-            //if the matching data matches the id of the related user
-            //add that interest to an array for this user
-            if ($matching_datum['UsersInterests']->user_id == $user->id) {
+                foreach ($user_matching_data as $matching_datum) {
+                    //if the matching data matches the id of the related user
+                    //add that interest to an array for this user
+                    if ($matching_datum['UsersInterests']->user_id == $user->id) {
 
-                array_push($related_interests, $matching_datum['Interests']);
-            }
-        }
+                        array_push($related_interests, $matching_datum['Interests']);
+                    }
+                }
 
-            $related_users_var[$user->id] = $related_interests;
-            //add each related interest to a string
-            $related_interest_str = array();
-            foreach ($related_interests as $related_interest) {
-                $related_interest_str[] = $related_interest->name;
-            }
-            $interest_count = count($related_interest_str);
+                $related_users_var[$user->id] = $related_interests;
+                //add each related interest to a string
+                $related_interest_str = array();
+                foreach ($related_interests as $related_interest) {
+                    $related_interest_str[] = $related_interest->name;
+                }
+                $interest_count = count($related_interest_str);
 
-            ?>
+                ?>
 
-            <tr>
-                <td><?php if ($user->upload) :
-                        $profile_img = $user->upload;
-                    else :
-                        $profile_img = 'placeholder.png';
-                    endif; ?>
-                    <div class="profile-picture-small profile-picture"
-                         style="background-image: url(/img/<?php echo $profile_img; ?>)">
+                <tr class="data-item">
+                    <td class="thin-column"><?php if ($user->upload) :
+                            $profile_img = $user->upload;
+                        else :
+                            $profile_img = 'placeholder.png';
+                        endif; ?>
+                        <div class="profile-picture-small profile-picture"
+                             style="background-image: url(/img/<?php echo $profile_img; ?>)">
 
                         </div>
                     </td>
@@ -81,11 +80,13 @@
                 </tr>
             <?php } ?>
 
-            <?php
+        <?php
         endforeach; ?>
         </tbody>
     </table>
+    <button id="load-more" type="button" class="red-button">Load more</button>
 </div>
 <script>
     var userLocations = <?php echo json_encode($user_locations); ?>;
+
 </script>
