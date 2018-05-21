@@ -175,17 +175,19 @@
                                     $distance = round($related_user->distance);
                                 } ?>
                                 <p><?= h($related_user->coded_location) ?><br>(<?php echo $distance; ?> miles from you)</p>
+                                <?php if (count($related_interest_str) > 0) { ?>
                                 <p><?= h($related_user->firstname) ?>
                                     likes <?php echo implode(", ", $related_interest_str); ?></p>
+                                    <?php } ?>
                             </div>
 
                         </div>
                     <div class="row">
                         <div class="small-12 text-center">
-                            <?php if ($related_user->accept_messages == 1 && count($related_interest_str) == 1) { ?>
+                            <?php if ($related_user->accept_messages == 1 && count($related_interest_str) == 0) { ?>
                                 <p>You can message <?php echo $related_user->firstname; ?>, but doing so will allow them to message you.</p>
                                 <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'button']) ?>
-                            <?php } else if (count($related_interest_str) > 1) { ?>
+                            <?php } else if (count($related_interest_str) > 0) { ?>
                                 <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'button']) ?>
                             <?php } ?>
                         </div>
