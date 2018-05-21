@@ -384,7 +384,7 @@ table tr:nth-of-type(even) {
 
 fieldset {
     border: none;
-    padding: 1.25rem;
+    padding: 0;
     margin: 1.125rem 0;
 }
 

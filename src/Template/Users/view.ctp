@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<div class="container">
+<div class="container view-profile">
     <div class="large-3 medium-4 columns">
         <?php if ($user->upload) :
             $profile_img = $user->upload;
@@ -14,7 +14,7 @@
         <?php if ($distance < 1) {
             $distance_string = 'less than 1 mile';
         } else if ($distance == 1) {
-                        $distance_string = '1 mile';
+            $distance_string = '1 mile';
         } else {
             $distance_string = $distance . ' miles';
         } ?>
@@ -23,7 +23,7 @@
     </div>
     <div class="users view large-9 medium-8 columns content">
         <h3><?= h($user->firstname) ?>, <?= $user_age ?></h3>
-<!--        If the user has been blocked by the logged in user-->
+        <!--        If the user has been blocked by the logged in user-->
         <?php if ($blocked_user) { ?>
             <p>You have blocked <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can
                 no longer message each other.</p>
@@ -67,15 +67,15 @@
             }
             //give option to message if have no mututal interests
         }
-        //give option to message if have no mututal interests
-                      }
         ?>
         <?php if ($my_profile == true) { ?>
-            <h6><?= $this->Html->link(__('Reset Password'), ['action' => 'password-reset', $user->id]) ?></h6>
-            <h6><?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $user->id]) ?></h6>
-            <h6><?= $this->Html->link(__('Edit Interests'), ['action' => 'edit-interests', $user->id]) ?></h6>
-            <h6><?= $this->Html->link(__('Edit Profile picture'), ['action' => 'edit-profile-picture', $user->id]) ?></h6>
-            <h6><?= $this->Html->link(__('Remove Profile picture'), ['action' => 'remove-profile-picture']) ?></h6>
+            <ul class="profile-links">
+                <li><?= $this->Html->link(__('Reset Password'), ['action' => 'password-reset', $user->id]) ?></li>
+                <li><?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $user->id]) ?></li>
+                <li><?= $this->Html->link(__('Edit Interests'), ['action' => 'edit-interests', $user->id]) ?></li>
+                <li><?= $this->Html->link(__('Edit Profile picture'), ['action' => 'edit-profile-picture', $user->id]) ?></li>
+                <li><?= $this->Html->link(__('Remove Profile picture'), ['action' => 'remove-profile-picture']) ?></li>
+            </ul>
             <table class="vertical-table">
                 <tr>
                     <th scope="row"><?= __('Email') ?></th>
@@ -88,10 +88,6 @@
                 <tr>
                     <th scope="row"><?= __('Last Name') ?></th>
                     <td><?= h($user->lastname) ?></td>
-                </tr>
-                <tr>
-                    <th scope="row"><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($user->id) ?></td>
                 </tr>
                 <tr>
                     <th scope="row"><?= __('Age') ?></th>

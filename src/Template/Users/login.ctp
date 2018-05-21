@@ -19,7 +19,7 @@
             <?= $this->Form->end() ?>
         </div>
         <div class="columns small-12 medium-4 medium-offset-4 text-center">
-            <?= $this->Html->link('Don\'t have an account? Sign up here', ['controller' => 'Users', 'action' => 'add']); ?>
+            <?= $this->Html->link('Don\'t have an account? Sign up here', ['controller' => 'Users', 'action' => 'add'], ['class' => 'underline-hover']); ?>
         </div>
     </div>
 </div>
