@@ -32,13 +32,11 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('croppie.css') ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script src="/js/scripts.js"></script>
     <script src="/js/connections.js"></script>
-    <script src="/js/croppie.js"></script>
 
 
     <?= $this->fetch('meta') ?>
