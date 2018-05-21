@@ -53,18 +53,26 @@ $(document).ready(function () {
                 left = x1 + (i * 3);
             }
             if (transform >= 40 && transform < 80) {
-                top = y1 - (i * 5);
+                top = y1 - (i * 3);
                 left = x1 + (i * 8);
             }
-            if (transform >= 80 && transform < 120) {
+            if (transform >= 80 && transform < 100) {
                 top = y1 + (i * 5);
-                left = x1 + (i * 10);
+                left = x1 + (i * 11);
             }
-            if (transform >= 120 && transform < 150) {
+            if (transform >= 100 && transform < 120) {
+                top = y1 + (i * 5);
+                left = x1 + (12) - (i * 2);
+            }
+            if (transform >= 120 && transform < 140) {
                 top = y1 + (i * 7);
                 left = x1 + (i * 10);
             }
-            if (transform >= 150 && transform < 180) {
+            if (transform >= 140 && transform < 160) {
+                top = y1 + (20) - (i *7);
+                left = x1 + (i * 10);
+            }
+            if (transform >= 160 && transform < 180) {
                 top = y1 + (10) - (i * 3);
                 left = x1 + (i * 10);
             }
@@ -104,7 +112,6 @@ $(document).ready(function () {
             //     top = y1;
             //     left = x1  + (i * 10);
             // }
-            console.log('line: ' + id + ' transform: ' + transform + ' top: ' + top + ' left: ' + left);
             //rotate the line
             $('#' + id).css({
                 'left': left - (i * 5),
@@ -158,9 +165,15 @@ $(document).ready(function () {
             var left = x1;
             var top = y1;
 
+            if (transform > 170 && transform < 200) {
+                top = top - (9);
+            } else {
+                left = left  - (9);
+            }
+
             //rotate the line
             $('#' + id).css({
-                'left': left - (6),
+                'left': left,
                 'top': top,
                 'width': '0px',
                 'height': '4px',
