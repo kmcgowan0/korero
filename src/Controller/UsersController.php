@@ -67,6 +67,7 @@ class UsersController extends AppController
         $this->loadComponent('Mutual');
         $this->loadComponent('Age');
         $this->loadComponent('Blocked');
+        $this->loadComponent('Hidden');
 
         //only get distinct users
         $distinct_users = $related_users_interests->group('Users.id');
@@ -105,6 +106,8 @@ class UsersController extends AppController
             $single_user['distance'] = $distance;
             $blocked = $this->Blocked->blockedUser($single_user, $user);
             $single_user['blocked'] = $blocked;
+            $hidden = $this->Hidden->hiddenUser($single_user, $user);
+            $single_user['hidden'] = $hidden;
             //create assoc array to sort by distance
             $distance_sort[$key] = $distance;
 
@@ -324,14 +327,17 @@ class UsersController extends AppController
 
         //check if users have blocked each other
         $this->loadComponent('Blocked');
+        $this->loadComponent('Hidden');
 
         $current_user = $this->Users->get($authorised_user['id']);
 
         $blocked_user = $this->Blocked->blockedUser($user, $current_user);
         $blocked_by = $this->Blocked->blockedBy($user, $current_user);
 
+        $hidden_user = $this->Hidden->hiddenUser($user, $current_user);
 
-        $this->set(compact('user', 'blocked_user', 'blocked_by', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
+
+        $this->set(compact('user', 'blocked_user', 'blocked_by', 'hidden_user', 'allowed_user', 'my_profile', 'mutual_interest_array', 'user_age', 'distance'));
         $this->set('_serialize', ['user']);
     }
 
@@ -588,8 +594,29 @@ class UsersController extends AppController
             ->set(['blocked_users' => $new_blocked_list])
             ->where(['id' => $user['id']])
             ->execute();
-        return $this->redirect(['action' => 'view', $uid]);
+        return $this->redirect($this->referer());
 
+
+    }
+
+    public function hideUser($uid = null)
+    {
+        $authorised_user = $this->Auth->user('id');
+        $user = $this->Users->get($authorised_user);
+        $hidden_users = $user['hidden_users'];
+        var_dump($hidden_users);
+        $hidden_array = explode(",", $hidden_users);
+
+        if (!in_array($uid, $hidden_array)) {
+            array_push($hidden_array, $uid);
+        }
+
+        $new_hidden_list = implode(",", $hidden_array);
+        $this->Users->query()->update()
+            ->set(['hidden_users' => $new_hidden_list])
+            ->where(['id' => $user['id']])
+            ->execute();
+        return $this->redirect($this->referer());
 
     }
 
@@ -611,7 +638,29 @@ class UsersController extends AppController
             ->set(['blocked_users' => $new_blocked_list])
             ->where(['id' => $user['id']])
             ->execute();
-        return $this->redirect(['action' => 'view', $uid]);
+        return $this->redirect($this->referer());
+
+
+    }
+
+    public function unhideUser($uid = null)
+    {
+        $authorised_user = $this->Auth->user('id');
+        $user = $this->Users->get($authorised_user);
+        $hidden_users = $user['hidden_users'];
+        var_dump($hidden_users);
+        $hidden_array = explode(",", $hidden_users);
+
+        if (($key = array_search($uid, $hidden_array)) !== false) {
+            unset($hidden_array[$key]);
+        }
+
+        $new_hidden_list = implode(",", $hidden_array);
+        $this->Users->query()->update()
+            ->set(['hidden_users' => $new_hidden_list])
+            ->where(['id' => $user['id']])
+            ->execute();
+        return $this->redirect($this->referer());
 
 
     }
@@ -782,6 +831,7 @@ class UsersController extends AppController
         //set empty array for users in radius
         $users_in_radius = array();
         $this->loadComponent('Blocked');
+        $this->loadComponent('Hidden');
 
 
         $array_count = 0;
@@ -794,9 +844,10 @@ class UsersController extends AppController
         foreach ($list_of_users as $distinct_user) {
             $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
             $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
+            $hidden_user = $this->Hidden->hiddenUser($distinct_user, $user);
             $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
             //if the user is within the radius and in the top users array add it to the users in radius var
-            if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $array_count <= 10) {
+            if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $hidden_user == false && $array_count <= 10) {
                 array_push($users_in_radius, $distinct_user);
                 $array_count++;
             }

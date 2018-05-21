@@ -60,19 +60,26 @@
                     <div class="profile-picture-small profile-picture"
                          style="background-image: url(/img/<?php echo $profile_img; ?>)">
 
-                    </div>
-                </td>
-                <td><?= h($user->firstname) ?>, <?= h($user->age) ?><br><?php if ($user->blocked == true) { ?><span class="blocked">(Blocked)</span><?php } ?></td>
-                <td><?= h($user->coded_location) ?></td>
-                <td><?php echo implode(", ", $related_interest_str); ?>
-                </td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View profile'), ['action' => 'view', $user->id]) ?>
-                    <br>
-                    <?= $this->Html->link(__('Send a message'), ['controller' => 'messages', 'action' => 'view', $user->id]) ?>
-                </td>
-            </tr>
-        <?php } ?>
+                        </div>
+                    </td>
+                    <td><?= h($user->firstname) ?>, <?= h($user->age) ?><br>
+                        <?php if ($user->blocked == true) { ?>
+                            <span class="blocked">(Blocked)</span><br>
+                            <?= $this->Html->link(__('Unblock'), ['action' => 'unblock-user', $user->id]) ?>
+                        <?php } elseif ($user->hidden == true) { ?>
+                            <span class="blocked">(Hidden from connections view)</span><br>
+                            <?= $this->Html->link(__('Unhide'), ['action' => 'unhide-user', $user->id]) ?>
+                        <?php } ?></td>
+                    <td><?= h($user->coded_location) ?></td>
+                    <td><?php echo implode(", ", $related_interest_str); ?>
+                    </td>
+                    <td class="actions">
+                        <?= $this->Html->link(__('View profile'), ['action' => 'view', $user->id]) ?>
+                        <br>
+                        <?= $this->Html->link(__('Send a message'), ['controller' => 'messages', 'action' => 'view', $user->id]) ?>
+                    </td>
+                </tr>
+            <?php } ?>
 
             <?php
         endforeach; ?>

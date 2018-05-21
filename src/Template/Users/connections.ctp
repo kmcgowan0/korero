@@ -169,8 +169,9 @@
                         </a>
                         <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
                     </div>
-                    <div class="small-10 medium-2 columns">
+                    <div class="small-10 medium-3 columns">
                         <?= $this->Html->link(__('All Messages'), ['controller' => 'messages', 'action' => 'view', $related_user->id]) ?>
+                        <?= $this->Html->link(__('Hide from connections'), ['action' => 'hide-user', $related_user->id]) ?>
                     </div>
                 </div>
 
