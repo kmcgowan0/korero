@@ -14,6 +14,8 @@
             <fieldset>
                 <?= $this->Form->control('email', ['label' => false, 'placeholder' => 'Email Address']) ?>
                 <?= $this->Form->control('password', ['label' => false, 'placeholder' => 'Password']) ?>
+                <?= $this->Form->hidden('screen_size', ['id' => 'screen-size']) ?>
+
             </fieldset>
             <?= $this->Form->button(__('Login')); ?>
             <?= $this->Form->end() ?>
@@ -23,3 +25,7 @@
         </div>
     </div>
 </div>
+<script>
+    var width = $(window).width();
+    $('#screen-size').val(width);
+</script>
