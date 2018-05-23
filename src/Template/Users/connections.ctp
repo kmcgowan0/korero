@@ -2,7 +2,9 @@
     $profile_img = $user->upload;
 } else {
     $profile_img = 'placeholder.png';
-} ?>
+}
+
+?>
 
 <div class="container <?php echo $user->theme; ?>-theme connections">
     <div class="row">
@@ -45,12 +47,13 @@
                 //if the matching data matches the id of the related user
                 //add that interest to an array for this user
                 if ($matching_datum['UsersInterests']->user_id == $related_user->id) {
-
                     array_push($related_interests, $matching_datum['Interests']);
                 } ?>
                 <?php
             }
+
             //count number of related interests
+
             $interest_count = count($related_interests);
 
             //create associative array where user id: interest
@@ -79,66 +82,70 @@
                 $related_profile_img = $related_user->upload;
             else :
                 $related_profile_img = 'placeholder.png';
-            endif;
-            $distance = $related_user->distance;
-            if ($related_user->radius <= 5) {
-                if ($distance < 0.1) {
-                    $distance_from_center = 9;
-                } elseif ($distance < 0.5) {
-                    $distance_from_center = 10;
-                } elseif ($distance < 1) {
-                    $distance_from_center = 11;
-                } elseif ($distance < 2) {
-                    $distance_from_center = 12;
-                } elseif ($distance < 3) {
-                    $distance_from_center = 14;
-                } elseif ($distance <= 5) {
-                    $distance_from_center = 16;
-                }
-            } else if ($related_user->radius <= 10) {
-                if ($distance < 0.5) {
-                    $distance_from_center = 9;
-                } elseif ($distance < 1) {
-                    $distance_from_center = 11;
-                } elseif ($distance < 2) {
-                    $distance_from_center = 12;
-                } elseif ($distance < 5) {
-                    $distance_from_center = 14;
-                } elseif ($distance > 7) {
-                    $distance_from_center = 16;
-                }
-            } else if ($related_user->radius < 500) {
-                if ($distance < 2) {
-                    $distance_from_center = 8;
-                } elseif ($distance < 5) {
-                    $distance_from_center = 10;
-                } elseif ($distance < 20) {
-                    $distance_from_center = 11;
-                } elseif ($distance < 40) {
-                    $distance_from_center = 12;
-                } elseif ($distance < 70) {
-                    $distance_from_center = 14;
-                } elseif ($distance <= 100) {
-                    $distance_from_center = 16;
-                }
-            } else if ($related_user->radius >= 500) {
-                if ($distance < 2) {
-                    $distance_from_center = 8;
-                } elseif ($distance < 10) {
-                    $distance_from_center = 10;
-                } elseif ($distance < 50) {
-                    $distance_from_center = 11;
-                } elseif ($distance < 100) {
-                    $distance_from_center = 12;
-                } elseif ($distance < 1000) {
-                    $distance_from_center = 14;
-                } elseif ($distance >= 1000) {
-                    $distance_from_center = 16;
-                }
-            }
+            endif; ?>
+           <?php
+            if ($width > 768) {
+               $distance = $related_user->distance;
 
+               if ($related_user->radius <= 5) {
+                   if ($distance < 0.1) {
+                       $distance_from_center = 9;
+                   } elseif ($distance < 0.5) {
+                       $distance_from_center = 10;
+                   } elseif ($distance < 1) {
+                       $distance_from_center = 11;
+                   } elseif ($distance < 2) {
+                       $distance_from_center = 12;
+                   } elseif ($distance < 3) {
+                       $distance_from_center = 14;
+                   } elseif ($distance <= 5) {
+                       $distance_from_center = 16;
+                   }
+               } else if ($related_user->radius <= 10) {
+                   if ($distance < 0.5) {
+                       $distance_from_center = 9;
+                   } elseif ($distance < 1) {
+                       $distance_from_center = 11;
+                   } elseif ($distance < 2) {
+                       $distance_from_center = 12;
+                   } elseif ($distance < 5) {
+                       $distance_from_center = 14;
+                   } elseif ($distance > 7) {
+                       $distance_from_center = 16;
+                   }
+               } else if ($related_user->radius < 500) {
+                   if ($distance < 2) {
+                       $distance_from_center = 8;
+                   } elseif ($distance < 5) {
+                       $distance_from_center = 10;
+                   } elseif ($distance < 20) {
+                       $distance_from_center = 11;
+                   } elseif ($distance < 40) {
+                       $distance_from_center = 12;
+                   } elseif ($distance < 70) {
+                       $distance_from_center = 14;
+                   } elseif ($distance <= 100) {
+                       $distance_from_center = 16;
+                   }
+               } else if ($related_user->radius >= 500) {
+                   if ($distance < 2) {
+                       $distance_from_center = 8;
+                   } elseif ($distance < 10) {
+                       $distance_from_center = 10;
+                   } elseif ($distance < 50) {
+                       $distance_from_center = 11;
+                   } elseif ($distance < 100) {
+                       $distance_from_center = 12;
+                   } elseif ($distance < 1000) {
+                       $distance_from_center = 14;
+                   } elseif ($distance >= 1000) {
+                       $distance_from_center = 16;
+                   }
+               }
+           } else {
+               $distance_from_center = 8;
+           }?>
 
-            ?>
             <!--                //link to click to show modal-->
             <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
                data-id="<?php echo $related_user->id; ?>" id="user-<?php echo $related_user->id; ?>"

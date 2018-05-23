@@ -8,6 +8,7 @@ use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\ORM\Query;
 use Cake\I18n\Time;
+use Cake\Network\Session\DatabaseSession;
 
 /**
  * Users Controller
@@ -271,8 +272,10 @@ class UsersController extends AppController
             $space_allocated = 360 / $number_of_users;
         }
 
+        $width = $this->request->session()->read('screen_size');
 
-        $this->set(compact('user', 'users', 'search_result', 'bunch_of_interests', 'interest_count', 'related_users_interests', 'distinct_users', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance'));
+
+        $this->set(compact('user', 'users', 'search_result', 'bunch_of_interests', 'interest_count', 'related_users_interests', 'distinct_users', 'user_matching_data', 'message', 'number_of_interests', 'users_in_radius', 'space_allocated', 'term', 'distance', 'width'));
         $this->set('_serialize', ['user']);
     }
 
@@ -674,8 +677,12 @@ class UsersController extends AppController
             return $this->redirect($redirect_url);
         }
         if ($this->request->is('post')) {
+            $user_data = $this->request->getData();
             $user = $this->Auth->identify();
             if ($user) {
+                $session = $this->request->session();
+                $session->write('screen_size', $user_data['screen_size']);
+//                $this->request->Session->write('User.screenSize', $user_data['screen_size']);
                 $this->Auth->setUser($user);
                 //on first login redirect to edit interests
                 if ($user['loggedin'] == 0) {
@@ -694,6 +701,7 @@ class UsersController extends AppController
 
     public function logout()
     {
+        $this->request->session()->destroy('User');
         return $this->redirect($this->Auth->logout());
     }
 
@@ -763,6 +771,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => ['Interests']
         ]);
+
 //updating the radius to search in
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user_data = $this->request->getData();
@@ -806,7 +815,6 @@ class UsersController extends AppController
 
         //empty array for counting interests
         $interest_count = array();
-
 //        for each interest set the this interest variable to 0
         foreach ($related_users_interests as $an_interest) {
             $this_interest = 0;
