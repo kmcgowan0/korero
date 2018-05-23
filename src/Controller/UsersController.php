@@ -843,32 +843,36 @@ class UsersController extends AppController
 
 
         $array_count = 0;
-        $list_of_users = array();
+        $top_interest_ids = array();
+
         foreach ($top_interests as $top_interest_id => $count) {
-            $top_user = $this->Users->get($top_interest_id);
-            array_push($list_of_users, $top_user);
-        }
-        //for each user get the distance from the main user
-        foreach ($list_of_users as $distinct_user) {
-            $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
-            $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
-            $hidden_user = $this->Hidden->hiddenUser($distinct_user, $user);
-            $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
-            //if the user is within the radius and in the top users array add it to the users in radius var
-            if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $hidden_user == false && $array_count <= 10) {
-                array_push($users_in_radius, $distinct_user);
-                $array_count++;
-            }
+            array_push($top_interest_ids, $top_interest_id);
         }
 
-        foreach ($users_in_radius as $users_in_radiu) {
-            $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
+        if (count($top_interest_ids) > 0) {
+            $list_of_users = $this->Users->find('all', ['contain' => ['Interests']])->where(['id IN' => $top_interest_ids]);
+
+            //for each user get the distance from the main user
+            foreach ($list_of_users as $distinct_user) {
+                $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
+                $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
+                $hidden_user = $this->Hidden->hiddenUser($distinct_user, $user);
+                $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
+//            if the user is within the radius and in the top users array add it to the users in radius var
+                if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $hidden_user == false && $array_count < 10 && $user['id'] != $distinct_user['id']) {
+                    array_push($users_in_radius, $distinct_user);
+                    $array_count++;
+                }
+            }
+
+
+            foreach ($users_in_radius as $users_in_radiu) {
+                $distance = $this->Distance->getDistance($user['location'], $users_in_radiu['location']);
 //            $mutual_interests = $this->Mutual->getMutual($user->interests, )
 //                $number_in_common =
-            $users_in_radiu['distance'] = $distance;
+                $users_in_radiu['distance'] = $distance;
+            }
         }
-
-        $users_in_radius_limit = array_slice($users_in_radius, 0, 10, true);
 
         //if there are distinct users work out how much space each gets
         if (count($users_in_radius)) {
@@ -897,8 +901,10 @@ class UsersController extends AppController
             }
         }
 
+        $width = $this->request->session()->read('screen_size');
 
-        $this->set(compact('user', 'user_matching_data', 'list_of_users', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'top_interests', 'interest_count', 'unread_messages'));
+
+        $this->set(compact('user', 'user_matching_data', 'top_user', 'list_of_users', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'top_interests', 'interest_count', 'width', 'unread_messages'));
         $this->set('_serialize', ['user']);
     }
 
