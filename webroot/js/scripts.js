@@ -12,7 +12,6 @@ $(document).ready(function () {
 
     if ($("div.full-user-list").length > 0) {
         var size_li = $("#all-users tr").length;
-        console.log(size_li);
         var x = 10;
         $('#all-users tr:lt(' + x + ')').show();
         $('#load-more').click(function () {
@@ -40,7 +39,7 @@ $(document).ready(function () {
         });
         if (jQuery.inArray(id, added) == -1) {
             $('#selected').append('<div class="columns medium-6">' +
-                '<p>' + name + '</p>' +
+                '<p class="new-interest">' + name + '</p>' +
                 '<button class="remove" id="' + id + '">Remove</button>' +
                 '</div>' +
                 '');
@@ -70,6 +69,7 @@ $(document).ready(function () {
     });
 
 
+    $('.reveal-link').on('click', function () {
         var liveMessageId = $(this).data('id');
         markRead(liveMessageId);
 
@@ -166,7 +166,6 @@ $(document).ready(function () {
     });
 
     $('#new-interest-form').submit(function (event) {
-        console.log(this);
         event.preventDefault();
         var name = $('#search').val();
         var $form = $(this),
@@ -259,9 +258,6 @@ function refreshMessages(messageId) {
 
     $.get({
         url: '/messages/instant-messages/' + messageId,
-        beforeSend: function (jqXHR, settings) {
-            xhrPool.push(jqXHR);
-        },
         success: function (data) {
             $('#messages').html(data);
         },
@@ -277,9 +273,6 @@ function refreshInterests() {
 
     $.get({
         url: '/users/refresh-interests/',
-        beforeSend: function (jqXHR, settings) {
-            xhrPool.push(jqXHR);
-        },
         success: function (data) {
             $('#interests-list').html(data);
         },
@@ -290,9 +283,7 @@ function refreshInterests() {
                 var id = $(this).data('id');
                 ids.push(id);
             });
-            console.log(ids);
             $(ids).each(function (i, val) {
-                console.log(val);
                 $('#selected-form').append('<input type="hidden" id="' + val + '" name="interests[_ids][]" value="' + val + '">');
             })
         }
@@ -303,9 +294,6 @@ function refreshInterests() {
 function connectionMessages(messageId) {
     var connectionRequests = $.get({
         url: '/messages/connection-messages/' + messageId,
-        beforeSend: function (jqXHR, settings) {
-            xhrPool.push(jqXHR);
-        },
         success: function (data) {
             $('#messages' + messageId).html(data);
         },
@@ -313,24 +301,11 @@ function connectionMessages(messageId) {
             // Schedule the next
             setTimeout(connectionMessages(messageId), 15000);
         }
-        });
-}
-
-function addInterests() {
-    console.log('button click');
-    var newInterest = $('#search').val();
-    $.get({
-        url: '/interests/add',
-        data: {name: newInterest},
-        success: function (data) {
-            console.log(data);
-        }
     });
 }
 
 function scrollBottom() {
     var messages = $('.messages-list');
-    console.log(messages);
     var height = messages[0].scrollHeight;
     messages.scrollTop(height);
     $('.messages-list').animate({scrollTop: 15000}, 'fast');
@@ -339,7 +314,6 @@ function scrollBottom() {
 function getWindowSize() {
     var width = $(document).width();
     var height = $('.container').height() / 4;
-    console.log('width: ' + width + ' height: ' + height);
     $('.related-container').css({'width': width, 'height': height})
 }
 
@@ -412,7 +386,6 @@ function getLocation(output) {
 
 function geocodeLatLng(geocoder, lat, lng, output) {
     var latlng = {lat: lat, lng: lng};
-    console.log(latlng);
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === 'OK') {
             if (results[0]) {
