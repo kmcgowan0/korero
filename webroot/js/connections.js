@@ -52,9 +52,13 @@ $(document).ready(function () {
                 top = y1 - (i * 4);
                 left = x1 + (i * 3);
             }
-            if (transform >= 40 && transform < 80) {
+            if (transform >= 40 && transform < 70) {
                 top = y1 - (i * 3);
                 left = x1 + (i * 8);
+            }
+            if (transform >= 70 && transform < 80) {
+                top = y1 - (i * 3);
+                left = x1 + (i * 10);
             }
             if (transform >= 80 && transform < 100) {
                 top = y1 + (i * 5);
@@ -69,7 +73,7 @@ $(document).ready(function () {
                 left = x1 + (i * 10);
             }
             if (transform >= 140 && transform < 160) {
-                top = y1 + (20) - (i *7);
+                top = y1 + (20) - (i * 7);
                 left = x1 + (i * 10);
             }
             if (transform >= 160 && transform < 180) {
@@ -85,11 +89,15 @@ $(document).ready(function () {
                 left = x1 - (10) + (i * 10);
             }
             if (transform >= 270 && transform < 310) {
-                top = y1 - (i*2);
+                top = y1 - (i * 2);
                 left = x1 + 5;
             }
-            if (transform >= 310) {
+            if (transform >= 310 && transform < 340) {
                 top = y1 + 5;
+                left = x1;
+            }
+            if (transform >= 340) {
+                top = y1 + 5 - (i * 2);
                 left = x1;
             }
             // if (transform > 200 && transform < 300) {
@@ -138,11 +146,11 @@ $(document).ready(function () {
                 width: d
             }, 600, "linear", function () {
             });
-            return i < 3;
+            return i < 2;
         });
 
         //extra line
-        var extras = y[2].length - 4;
+        var extras = y[2].length - 3;
         if (extras > 0) {
             var others;
             if (extras == 1) {
@@ -165,10 +173,43 @@ $(document).ready(function () {
             var left = x1;
             var top = y1;
 
-            if (transform > 170 && transform < 200) {
+            if (transform < 40) {
+                top = top - (20);
+            }
+            if (transform >= 40 && transform < 80) {
+                left = left - (7);
+            }
+            if (transform >= 80 && transform < 130) {
+                left = left - (7);
+            }
+            if (transform >= 130 && transform < 170) {
+                left = left - (7);
+                top = top -(4);
+            }
+            if (transform >= 170 && transform < 200) {
                 top = top - (9);
-            } else {
-                left = left  - (9);
+            }
+            if (transform >= 200 && transform < 240) {
+                top = top + (13);
+            }
+            if (transform >= 240 && transform < 260) {
+                left = left + (11);
+            }
+            if (transform >= 260 && transform < 290) {
+                left = left + (11);
+            }
+            if (transform >= 290 && transform < 300) {
+                top = top + (19);
+                left = left + (4);
+            }
+            if (transform >= 300 && transform < 310) {
+                top = top + (19);
+            }
+            if (transform >= 310 && transform < 330) {
+                top = top + (14);
+            }
+            if (transform >= 330) {
+                top = top + (11);
             }
 
             //rotate the line
@@ -200,67 +241,6 @@ $(document).ready(function () {
         }
 
     });
-
-    if (moreUsers) {
-        var extraUser = $('.extra-user');
-        var extraOffset = extraUser.offset();
-        var extraWidth = extraUser.width();
-        var extraHeight = extraUser.height();
-        var extraX = extraOffset.left + extraWidth / 2;
-        var extraY = extraOffset.top + extraHeight / 2 - 60;
-        x1 = mainX;
-        y1 = mainY;
-        x2 = extraX;
-        y2 = extraY;
-        //count number of interests
-
-        var m = (y2 - y1) / (x2 - x1); //slope of the segment
-        var angle = (Math.atan(m)) * 180 / (Math.PI); //angle of the line
-        var d = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1))); //length of the segment
-        var transform;
-
-        // the (css) transform angle depends on the direction of movement of the line
-        if (x2 >= x1) {
-            transform = (360 + angle) % 360;
-        } else {
-            transform = 180 + angle;
-        }
-
-        var id = 'line_' + new Date().getTime();
-        var line = "<div id='" + id + "'class='line'>&nbsp;</div>";
-        var color = '#' + Math.random().toString(16).slice(2, 8).toUpperCase();
-        $('#canvas').append(line);
-
-        var left = x1;
-        var top = y1;
-
-        //rotate the line
-        $('#' + id).css({
-            'left': left,
-            'top': top,
-            'width': '0px',
-            'height': '4px',
-            'z-index': '10',
-            'background-color': '#' + color,
-            'position': 'absolute',
-            'transform': 'rotate(' + transform + 'deg)',
-            'transform-origin': '0px 0px',
-            '-ms-transform': 'rotate(' + transform + 'deg)',
-            '-ms-transform-origin': '0px 0px',
-            '-moz-transform': 'rotate(' + transform + 'deg)',
-            '-moz-transform-origin': '0px 0px',
-            '-webkit-transform': 'rotate(' + transform + 'deg)',
-            '-webkit-transform-origin': '0px 0px',
-            '-o-transform': 'rotate(' + transform + 'deg)',
-            '-o-transform-origin': '0px 0px'
-        });
-
-        // 'draw' the line
-        $('#' + id).animate({
-            width: d
-        }, 600, "linear", function () {
-        });
-    }
 
 });
 
