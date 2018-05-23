@@ -44,20 +44,26 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
+
 <nav class="top-bar expanded" data-topbar role="navigation">
-    <ul class="title-area large-3  medium-3 columns">
+    <ul class="title-area small-8 large-3 medium-4 columns">
         <li class="name">
             <a href="/users/connections"><img src="/img/logo-header.png" class="logo"></a>
         </li>
     </ul>
+
     <div class="large-4 medium-4 columns search-column">
         <?php if ($authUser) : ?>
-        <?= $this->Form->create('', ['type' => 'get', 'url' => '/users/search']) ?>
-        <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search for interests', 'class' => 'header-search']) ?>
-        <?= $this->Form->end() ?>
+            <?= $this->Form->create('', ['type' => 'get', 'url' => '/users/search']) ?>
+            <?= $this->Form->control('term', ['label' => false, 'placeholder' => 'Search for interests', 'class' => 'header-search']) ?>
+            <?= $this->Form->end() ?>
         <?php endif; ?>
     </div>
-    <div class="top-bar-section large-5 medium-5 columns">
+    <div class="small-4 columns search-column show-for-medium-down">
+        <a data-toggle="offCanvas" class="menu-link"><img class="burger-menu" src="/img/menu.png"></a>
+
+    </div>
+    <div class="top-bar-section large-5 medium-4 columns hide-for-medium-down">
         <ul class="right">
             <?php if ($authUser) : ?>
                 <li><?= $this->Html->link(__('Connections'), ['controller' => 'Users', 'action' => 'connections']) ?></li>
@@ -73,58 +79,80 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     </div>
 </nav>
-<?= $this->Flash->render() ?>
-<div class=" clearfix">
-    <?= $this->fetch('content') ?>
+
+<div class="off-canvas position-right" id="offCanvas" data-off-canvas>
+    <?php if ($authUser) : ?>
+        <li><?= $this->Html->link(__('Connections'), ['controller' => 'Users', 'action' => 'connections']) ?></li>
+        <li><?= $this->Html->link(__('View Profile'), ['controller' => 'Users', 'action' => 'view', $authUser['id']]) ?></li>
+        <!-- number of notifications -->
+        <li><a href="/messages/inbox">Messages <span id="notifications"></span></a></li>
+        <li><?= $this->Html->link(__('Logout'), ['controller' => 'Users', 'action' => 'logout']) ?></li>
+    <?php else : ?>
+        <li><?= $this->Html->link(__('Login'), ['controller' => 'Users', 'action' => 'login']) ?></li>
+        <li><?= $this->Html->link(__('Create an account'), ['controller' => 'Users', 'action' => 'add']) ?></li>
+    <?php endif; ?>
 </div>
-<footer class="footer">
-    <div class="row">
-        <div class="small-12 medium-2 columns">
-            <img class="logo" src="/img/logo-footer.png">
-        </div>
-        <div class="small-12 medium-4 columns">
-           <p><strong>Lorem Ipsum</strong></p>
-            <p>Korero means conversation. Connect and converse with new people in your area based on similar interests.
-            </p>
-        </div>
-        <div class="small-12 medium-3 columns">
-            <p><strong>Quick Links</strong></p>
-            <ul class="footer-links">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Help</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-        <div class="small-12 medium-3 columns">
-            <p><strong>Get in Touch</strong></p>
-            <ul class="footer-links">
-                <li>Call: 00000000000</li>
-                <li>Email: info@koreroapp.com</li>
-                <li>Facebook</li>
-                <li>Twitter</li>
-            </ul>
-        </div>
+<div class="off-canvas-content" data-off-canvas-content>
+    <!-- Your page content lives here -->
+
+    <ul class="vertical medium-horizontal menu">
+
+    </ul>
+    <?= $this->Flash->render() ?>
+    <div class=" clearfix">
+        <?= $this->fetch('content') ?>
     </div>
+    <footer class="footer">
+        <div class="row">
+            <div class="small-12 medium-2 columns">
+                <img class="logo" src="/img/logo-footer.png">
+            </div>
+            <div class="small-12 medium-4 columns">
+                <p><strong>Lorem Ipsum</strong></p>
+                <p>Korero means conversation. Connect and converse with new people in your area based on similar
+                    interests.
+                </p>
+            </div>
+            <div class="small-12 medium-3 columns">
+                <p><strong>Quick Links</strong></p>
+                <ul class="footer-links">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="small-12 medium-3 columns">
+                <p><strong>Get in Touch</strong></p>
+                <ul class="footer-links">
+                    <li>Call: 00000000000</li>
+                    <li>Email: info@koreroapp.com</li>
+                    <li>Facebook</li>
+                    <li>Twitter</li>
+                </ul>
+            </div>
+        </div>
 
-    <script>
-        $("#btn").click(function () {
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({'address': 'miami, us'}, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    alert("location : " + results[0].geometry.location.lat() + " " + results[0].geometry.location.lng());
-                } else {
-                    alert("Something got wrong " + status);
-                }
+        <script>
+            $("#btn").click(function () {
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({'address': 'miami, us'}, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        alert("location : " + results[0].geometry.location.lat() + " " + results[0].geometry.location.lng());
+                    } else {
+                        alert("Something got wrong " + status);
+                    }
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuQ_s1xd3bkDunnX0IJQCE2FXJgEQFOkU"></script>
-    <script src="/js/vendor/what-input.js"></script>
-    <script src="/js/vendor/foundation.js"></script>
-    <script src="/js/app.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAuQ_s1xd3bkDunnX0IJQCE2FXJgEQFOkU"></script>
+        <script src="/js/vendor/what-input.js"></script>
+        <script src="/js/vendor/foundation.js"></script>
+        <script src="/js/app.js"></script>
 
 
-</footer>
+    </footer>
+</div>
+
 </body>
 </html>

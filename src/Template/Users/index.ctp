@@ -49,7 +49,6 @@
                 $interest_count = count($related_interest_str);
 
                 ?>
-
                 <tr class="data-item">
                     <td class="thin-column"><?php if ($user->upload) :
                             $profile_img = $user->upload;
