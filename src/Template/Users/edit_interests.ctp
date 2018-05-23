@@ -5,7 +5,7 @@
  * @var \App\Model\Entity\Interest $interest
  */
 ?>
-<div class="users form large-9 medium-8 columns content">
+<div class="users form large-9 small-12 columns content">
     <?php if ($user->interests) { ?>
         <h4>Current Interests</h4>
         <div id="interests-list"></div>
@@ -30,7 +30,7 @@
         <?= $this->Form->create($user) ?>
         <fieldset>
             <h4>Top Interests</h4>
-            <?php echo $this->Form->control('interests._ids', ['options' => $top_interests, 'multiple' => 'checkbox', 'label' => false]);
+            <?php echo $this->Form->control('interests._ids', ['options' => $top_interests, 'multiple' => 'checkbox', 'label' => false, 'class' => 'half-width']);
             ?>
             <div id="selected-form">
                 <?php
