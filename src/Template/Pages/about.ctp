@@ -1,51 +1,74 @@
 <div class="container dark-theme">
     <div class="row">
-<div class="columns small-12 medium-10 medium-offset-1 text-center">
-    <h1>What is Korero?</h1>
-    <p>Korero means conversation. Connect and converse with new people in your area based on similar interests.Korero means conversation. Connect and converse with new people in your area based on similar interests.Korero means conversation. Connect and converse with new people in your area based on similar interests.Korero means conversation. Connect and converse with new people in your area based on similar interests.</p>
-</div>
-    </div>
-    <div class="row">
         <div class="columns small-12 medium-10 medium-offset-1 text-center">
-            <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit>
-                <div class="orbit-wrapper">
-                    <div class="orbit-controls">
-                        <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
-                        <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
-                    </div>
-                    <ul class="orbit-container">
-                        <li class="is-active orbit-slide">
-                            <div class="columns small-12 medium-6">
-                                <img class="orbit-image" src="https://placehold.it/1200x600/888?text=Slide-2" alt="Space">
-                            </div>
-                            <div class="columns small-12 medium-6">
-                                <p>Korero means conversation. Connect and converse with new people in your area based on similar interests.</p>
-                            </div>
-
-                        </li>
-                        <li class="orbit-slide">
-                            <div class="columns small-12 medium-6">
-                                <p>Korero means conversation. Connect and converse with new people in your area based on similar interests.</p>
-                            </div>
-                            <div class="columns small-12 medium-6">
-                                <img class="orbit-image" src="https://placehold.it/1200x600/888?text=Slide-2" alt="Space">
-                            </div>
-                        </li>
-                        <li class="orbit-slide">
-
-                            <figure class="orbit-figure">
-                                <img class="orbit-image" src="https://placehold.it/1200x600/666&text=Slide-4" alt="Space">
-                                <figcaption class="orbit-caption">Outta This World</figcaption>
-                            </figure>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <h1>What is Korero?</h1>
+            <p>Korero means conversation. Connect and converse with new people in your area based on similar
+                interests.Korero means conversation. Connect and converse with new people in your area based on similar
+                interests.Korero means conversation. Connect and converse with new people in your area based on similar
+                interests.Korero means conversation. Connect and converse with new people in your area based on similar
+                interests.</p>
         </div>
     </div>
     <div class="row">
         <div class="columns small-12 medium-10 medium-offset-1 text-center">
-           <h4>Join today!</h4>
+            <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit>
+                <ul class="orbit-container">
+                    <li class="orbit-slide is-active">
+                        <div class="row">
+                            <div class="columns small-12 medium-6">
+                                <img src="/img/logo.png">
+                            </div>
+                            <div class="columns small-12 medium-6">
+                                <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde
+                                    harum rem, beatae ipsa consectetur quisquam. Rerum ratione, delectus atque tempore
+                                    sed, suscipit ullam, beatae distinctio cupiditate ipsam eligendi tempora
+                                    expedita.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="orbit-slide">
+                        <div class="row">
+                            <div class="columns small-12 medium-6">
+                                <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde
+                                    harum rem,
+                                    beatae ipsa consectetur quisquam. Rerum ratione, delectus atque tempore sed,
+                                    suscipit ullam,
+                                    beatae distinctio cupiditate ipsam eligendi tempora expedita.</p>
+                            </div>
+                            <div class="columns small-12 medium-6">
+                                <img src="/img/logo.png">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="orbit-slide">
+                        <div class="row">
+                            <div class="columns small-12 medium-6">
+                                <img src="/img/logo.png">
+                            </div>
+                            <div class="columns small-12 medium-6">
+                                <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde
+                                    harum rem,
+                                    beatae ipsa consectetur quisquam. Rerum ratione, delectus atque tempore sed,
+                                    suscipit ullam,
+                                    beatae distinctio cupiditate ipsam eligendi tempora expedita.</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- More slides... -->
+                </ul>
+                <nav class="orbit-bullets">
+                    <button class="is-active" data-slide="0"><span class="show-for-sr">First slide details.</span><span
+                                class="show-for-sr">Current Slide</span></button>
+                    <button data-slide="1"><span class="show-for-sr">Second slide details.</span></button>
+                    <button data-slide="2"><span class="show-for-sr">Third slide details.</span></button>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="columns small-12 medium-10 medium-offset-1 text-center">
+            <h4>Join today!</h4>
             <?= $this->Html->link('Sign up', ['controller' => 'Users', 'action' => 'add'], ['class' => 'button']); ?>
         </div>
     </div>
