@@ -49,7 +49,26 @@ $(document).ready(function () {
         bindFunc();
     });
 
-    $('.reveal-link').on('click', function () {
+    var changeArray = [];
+    changeArray['old'] = $('#notifications').html();
+    changeArray['new'] = 0;
+    console.log('notif' + $('#notifications').html());
+
+    $('#notifications').bind("DOMSubtreeModified",function(){
+            changeArray['new'] = parseFloat($('#notifications').html());
+        if (changeArray['new'] > changeArray['old']) {
+            notifyMe();
+            console.log(changeArray);
+
+            changeArray['old'] = changeArray['new'];
+        }
+        console.log(changeArray);
+        // console.log(changeArray['old']);
+        // console.log(changeArray['new']);
+        //     changeArray['old'] = changeArray['new'];
+        // changeArray['old'] = 1;
+    });
+
 
         var liveMessageId = $(this).data('id');
         markRead(liveMessageId);
@@ -75,7 +94,12 @@ $(document).ready(function () {
                 });
             }
         });
-        scrollBottom();
+        changeArray['old'] = parseFloat($('#notifications').html()) || 0;
+        console.log('changes');
+        console.log(changeArray);
+
+
+
     });
 
     $('.location-button').on('click', function () {
@@ -102,9 +126,10 @@ $(document).ready(function () {
         }
     });
 
-    $('[data-reveal]').on('closed.zf.reveal', function () {
 
+    $('[data-reveal]').on('closed.zf.reveal', function () {
         var liveMessageId = null;
+
     });
 
     $("#message-form").unbind('submit').bind('submit', function (event) {
@@ -177,12 +202,46 @@ $(document).ready(function () {
         }
     });
 
-    // var messageId = $('#messages-id').val();
+    Notification.requestPermission().then(function(result) {
+        console.log(result);
 
+    });
 
 });
 
-xhrPool = [];
+function notifyMe() {
+
+    var title = "You have new messages!";
+    var options = {
+        icon: "/img/icon.png"
+    }
+
+    // Let's check if the browser supports notifications
+    if (!("Notification" in window)) {
+    }
+
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        var notification = new Notification(title, options);
+    }
+
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+                var notification = new Notification(title, options);
+            }
+        });
+    }
+    setTimeout(notification.close.bind(notification), 4000);
+
+    // Finally, if the user has denied notifications and you
+    // want to be respectful there is no need to bother them any more.
+}
+
+
 
 function search(term) {
     $.get({
