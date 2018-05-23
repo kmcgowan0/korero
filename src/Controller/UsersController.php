@@ -497,7 +497,7 @@ class UsersController extends AppController
             if ($user_data['upload']['name'] != '') {
                 $file = $user_data['upload'];
                 $ext = substr(strtolower(strrchr($file['name'], '.')), 1); //get the extension
-                $arr_ext = ['jpg', 'png', 'gif']; //set allowed extensions
+                $arr_ext = ['jpg', 'png', 'gif', 'jpeg']; //set allowed extensions
                 $setNewFileName = time() . "_" . rand(000000, 999999);
                 //only process if the extension is valid
                 if (in_array($ext, $arr_ext)) {
