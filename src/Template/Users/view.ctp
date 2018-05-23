@@ -5,7 +5,7 @@
  */
 ?>
 <div class="container view-profile">
-    <div class="large-3 medium-4 columns">
+    <div class="large-3 medium-4 columns small-12">
         <?php if ($user->upload) :
             $profile_img = $user->upload;
         else :
@@ -18,11 +18,13 @@
         } else {
             $distance_string = $distance . ' miles';
         } ?>
-        <div class="profile-picture-large profile-picture"
+        <div class="profile-picture-large profile-picture main-profile-picture"
              style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
     </div>
-    <div class="users view large-9 medium-8 columns content">
+    <div class="users view large-9 medium-8 columns content small-12">
+        <div class="info text-center">
         <h3><?= h($user->firstname) ?>, <?= $user_age ?></h3>
+        </div>
         <!--        If the user has been blocked by the logged in user-->
         <?php if ($blocked_user) { ?>
             <p>You have blocked <?= h($user->firstname) ?>. This means you can't' see each other's profiles, and you can
