@@ -144,7 +144,7 @@
                }
            } else {
                $distance_from_center = 8;
-           }?>
+           } ?>
 
             <!--                //link to click to show modal-->
             <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
@@ -205,19 +205,13 @@
         endforeach; ?>
 
         <?php
-        if (count($top_interests) > 10) { ?>
+        if ($list_of_users->count() > 10) { ?>
             <a href="/users" class="reveal-link">
                 <div class="related-user profile-picture extra-user"
-                     style="border: solid #000 2px; background-image: url(/img/placeholder.png); transform: rotate(0deg) translate(18em) rotate(-0deg);">
-                </div>
-                <div class="hover-overlay"
-                     style="transform: rotate(0deg) translate(18em) rotate(-0deg);">
-                    <p>See all</p>
+                     style="border: solid #000 2px; background: #000; transform: rotate(0deg) translate(25em) rotate(-0deg);">
+                    <p class="see-all">See all</p>
                 </div>
             </a>
-            <script>
-                var moreUsers = true;
-            </script>
         <?php } ?>
 
             <script>
@@ -242,7 +236,7 @@
         <div class="radius-form columns small-12 medium-6 large-3">
             <div class="location">
                 <p class="small-text">We think you're in <span id="my-location"></span>. If we're wrong, please <a
-                            href="/users/edit/<?php echo $user->id; ?>" class="underline-hover">update
+                            href="/users/edit/<?php echo $user->id; ?>" class="underline-hover underline">update
                         your location here</a></p>
             </div>
         </div>
