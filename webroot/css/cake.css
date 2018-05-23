@@ -130,7 +130,7 @@ ul.pagination .disabled:hover a {
     font-size: 0.75rem;
     font-weight: normal;
     font-style: italic;
-    color: rgba(0, 0, 0, 0.54);
+    color: #fff;
 }
 
 .required > label {
@@ -328,7 +328,7 @@ pre {
 
 .top-bar-section li:not(.has-form) a:not(.button):hover {
     background-color: #0c0a20;
-    background: #130f36;
+    background: #0c0a20;
 }
 
 .side-nav li.heading {

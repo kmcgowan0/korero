@@ -12,11 +12,14 @@
     background: linear-gradient(#29264a, #130f36);
     color: #fff;
 }
-.dark-theme a, .dark-theme h6, .dark-theme h5, .dark-theme h4, .dark-theme h1 {
+.dark-theme a, .dark-theme h6, .dark-theme h5, .dark-theme h4, .dark-theme h1, .dark-theme label {
     color: #fff;
 }
 .hidden {
     display: none;
+}
+.underline {
+    text-decoration: underline;
 }
 .underline-hover:hover {
     text-decoration: underline;
@@ -69,6 +72,12 @@ input.header-search {
     background: transparent;
     border: none;
     border-bottom: 1px solid #cacaca;
+}
+input.header-search:focus {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #cacaca;
+    color: #fff;
 }
 .search-column {
     padding-bottom: 1em;
@@ -226,10 +235,7 @@ input.radius-input {
 div.location p {
     font-size: 0.8rem;
 }
-.checkbox {
-    width: 50%;
-    display: inline-block;
-}
+
 
 .hover-overlay {
     position: absolute;
@@ -297,9 +303,9 @@ div.location p {
     margin-left: 0;
 }
 .profile-links li {
-    display: inline;
-    padding: 1em;
-    margin: 1em 1em 1em 0;
+    display: inline-block;
+    padding: 0.5em;
+    margin: 0.5em 0.3em 0.5em 0;
     background-color: #f14c38;
     color: #fff;
     border-radius: 3px;
@@ -389,4 +395,67 @@ ul.interests {
 /*user infinite scroll*/
 #all-users tr{
     display:none;
+}
+.red-button {
+    padding: 1em;
+    margin: 1em 1em 1em 0;
+    background-color: #f14c38;
+    color: #fff;
+    border-radius: 3px;
+    width: 110px;
+}
+.red-button:hover {
+    padding: 1em;
+    margin: 1em 1em 1em 0;
+    background-color: #f15b4a;
+    color: #fff;
+    border-radius: 3px;
+    width: 110px;
+}
+.see-all {
+    color: white;
+    font-size: 12px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/*responsiveness*/
+/*.columns {*/
+    /*padding-bottom: 1em;*/
+/*}*/
+.off-canvas {
+    background-color: #0c0a21;
+    color: #fff;
+}
+.off-canvas a {
+    color: #fff;
+}
+.off-canvas li {
+    list-style-type: none;
+    padding: 0.75em 1em;
+}
+.menu-link {
+    margin-left: auto;
+}
+.burger-menu {
+    width: 30px;
+}
+.main-profile-picture {
+    margin-left: auto;
+    margin-right: auto;
+}
+.checkbox {
+     width: 50%;
+     display: inline-block;
+ }
+
+@media screen and (max-width: 500px){
+    .checkbox {
+        width: 100%;
+    }
 }
