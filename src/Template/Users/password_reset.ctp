@@ -1,10 +1,9 @@
 <div class="users form large-9 medium-9 columns">
     <?= $this->Form->create() ?>
     <fieldset>
-        <legend><?= __('Reset password') ?></legend>
-        <?= $this->Form->input('old_password',['type' => 'password' , 'label'=>'Old password'])?>
-        <?= $this->Form->input('password1',['type'=>'password' ,'label'=>'Password']) ?>
-        <?= $this->Form->input('password2',['type' => 'password' , 'label'=>'Repeat password'])?>
+        <?= $this->Form->input('old_password',['type' => 'password' , 'placeholder' => 'Old password', 'label' => false])?>
+        <?= $this->Form->input('password1',['type'=>'password' ,'placeholder'=>'New password', 'label' => false]) ?>
+        <?= $this->Form->input('password2',['type' => 'password' , 'placeholder'=>'Repeat password', 'label' => false])?>
     </fieldset>
     <?= $this->Form->button(__('Save')) ?>
 <?= $this->Form->end() ?>
