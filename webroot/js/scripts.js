@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     getWindowSize();
 
-    messageNotifications();
+    // messageNotifications();
 
     if ($("div.connections").length > 0) {
         connectionMessageNotifications();
@@ -52,8 +52,13 @@ $(document).ready(function () {
     $('.reveal-link').on('click', function () {
 
         var liveMessageId = $(this).data('id');
-        connectionMessages(liveMessageId);
+        markRead(liveMessageId);
 
+        scrollBottom();
+        connectionMessages(liveMessageId);
+        $('#message-body' + liveMessageId).focus(function(){
+            markRead(liveMessageId);
+        });
         $('#related-user-' + liveMessageId).css('border', '2px solid #000');
         $('#notifications-' + liveMessageId).html('');
         $('#message-form' + liveMessageId).submit(function (event) {
@@ -85,13 +90,11 @@ $(document).ready(function () {
 
 
     $('#profile-picture').on('change', function () {
-        console.log('ok');
         if (typeof (FileReader) != "undefined") {
             var image_holder = $(".profile-preview");
             var reader = new FileReader();
             reader.onload = function (e) {
                 image_holder.css({'background-image': 'url(' + e.target.result + ')'})
-                console.log(e.target.result);
             };
             reader.readAsDataURL($(this)[0].files[0]);
         } else {
@@ -288,41 +291,42 @@ function bindFunc() {
         $('#' + id).remove();
     });
 }
-
-
-
 function connectionMessageNotifications() {
+    console.log('hello');
     $.get({
         url: '/messages/messages-notifications/',
         success: function (data) {
             $('.unread-messages-script').html(data);
-            var allUnread = []
+            // console.log(data);
+
             $.each(unreadMessages, function (i, value) {
                 $('#related-user-' + i).css('border', 'solid #d33c44 4px');
                 $('#notifications-' + i).html(value);
-                allUnread.push(value);
             });
-            if (allUnread.length > 0) {
-                allUnread.reduce(function (acc, val) {
-                    var result = (acc + val);
-                    $('#notifications').html('('+result+')');
-                });
-            }
+            messageNotifications();
+
         },
         complete: function () {
             // Schedule the next
             setTimeout(connectionMessageNotifications, 5000);
         }
-    })
+    });
 
 }
 
 function messageNotifications() {
+    console.log('bye bitch');
     $.get({
         url: '/messages/unread-messages/',
         success: function (data) {
             $('#notifications').html(data);
         }
+    })
+}
+
+function markRead(messageId) {
+    $.get({
+        url: '/messages/mark-read/' + messageId
     })
 }
 

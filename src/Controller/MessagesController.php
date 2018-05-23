@@ -175,10 +175,7 @@ class MessagesController extends AppController
         $count = count($messages_in_thread_ordered);
         $first_messages = $messages_in_thread_ordered;
 
-//        if ($count > 5) {
-//            $remove_messages = $count - 5;
-//            $first_messages = array_slice($messages_in_thread_ordered, $remove_messages);
-//        }
+
         //sending messages from within message view
         $message = $this->Messages->newEntity();
 
@@ -203,13 +200,29 @@ class MessagesController extends AppController
             $user_array[$user['id']] = $user;
         }
 
+        $this->set(compact('messages_in_thread_ordered', 'first_messages', 'count', 'remove_messages'));
+    }
+
+    public function markRead($id = null) {
+
+        $auth_id = $this->Auth->user('id');
+        $messages_in_thread = $this->Messages->find('all', array(
+            'conditions' => array(
+                'OR' => array(
+                    array('sender' => $id, 'recipient' => $this->Auth->user('id')),
+                    array('recipient' => $id, 'sender' => $this->Auth->user('id')),
+                )
+
+            ),
+            'order' => array('sent' => 'DESC')
+        ));
+
         $update_query = $messages_in_thread;
         $update_query->update()
             ->set(['seen' => true])
-            ->where(['sender' => $id])
+            ->where(['sender' => $id, 'recipient' => $auth_id])
             ->execute();
 
-        $this->set(compact('messages_in_thread_ordered', 'first_messages', 'count', 'remove_messages'));
     }
 
     public function inbox()
