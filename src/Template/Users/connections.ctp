@@ -3,15 +3,15 @@
 } else {
     $profile_img = 'placeholder.png';
 }
-
+$this->assign('title', 'Connections');
 ?>
 
 <div class="container <?php echo $user->theme; ?>-theme connections">
-    <div class="row">
+    <div class="row radius-options">
 
         <div class="radius-form columns small-12 medium-8">
             <p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create($user, ['class' => 'radius-update-form']) ?>
             <?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
             <?= $this->Form->button(__('Update radius')) ?>
             <?= $this->Form->end() ?>
@@ -21,6 +21,7 @@
 
         </div>
     </div>
+    <div class="row show-for-small-only" style="padding-bottom: 3em"></div>
 
     <div class="related-container">
         <a href="/users/view/<?php echo $user->id; ?>">
@@ -83,68 +84,68 @@
             else :
                 $related_profile_img = 'placeholder.png';
             endif; ?>
-           <?php
+            <?php
             if ($width > 768) {
-               $distance = $related_user->distance;
+                $distance = $related_user->distance;
 
-               if ($related_user->radius <= 5) {
-                   if ($distance < 0.1) {
-                       $distance_from_center = 9;
-                   } elseif ($distance < 0.5) {
-                       $distance_from_center = 10;
-                   } elseif ($distance < 1) {
-                       $distance_from_center = 11;
-                   } elseif ($distance < 2) {
-                       $distance_from_center = 12;
-                   } elseif ($distance < 3) {
-                       $distance_from_center = 14;
-                   } elseif ($distance <= 5) {
-                       $distance_from_center = 16;
-                   }
-               } else if ($related_user->radius <= 10) {
-                   if ($distance < 0.5) {
-                       $distance_from_center = 9;
-                   } elseif ($distance < 1) {
-                       $distance_from_center = 11;
-                   } elseif ($distance < 2) {
-                       $distance_from_center = 12;
-                   } elseif ($distance < 5) {
-                       $distance_from_center = 14;
-                   } elseif ($distance > 7) {
-                       $distance_from_center = 16;
-                   }
-               } else if ($related_user->radius < 500) {
-                   if ($distance < 2) {
-                       $distance_from_center = 8;
-                   } elseif ($distance < 5) {
-                       $distance_from_center = 10;
-                   } elseif ($distance < 20) {
-                       $distance_from_center = 11;
-                   } elseif ($distance < 40) {
-                       $distance_from_center = 12;
-                   } elseif ($distance < 70) {
-                       $distance_from_center = 14;
-                   } elseif ($distance <= 100) {
-                       $distance_from_center = 16;
-                   }
-               } else if ($related_user->radius >= 500) {
-                   if ($distance < 2) {
-                       $distance_from_center = 8;
-                   } elseif ($distance < 10) {
-                       $distance_from_center = 10;
-                   } elseif ($distance < 50) {
-                       $distance_from_center = 11;
-                   } elseif ($distance < 100) {
-                       $distance_from_center = 12;
-                   } elseif ($distance < 1000) {
-                       $distance_from_center = 14;
-                   } elseif ($distance >= 1000) {
-                       $distance_from_center = 16;
-                   }
-               }
-           } else {
-               $distance_from_center = 8;
-           } ?>
+                if ($related_user->radius <= 5) {
+                    if ($distance < 0.1) {
+                        $distance_from_center = 9;
+                    } elseif ($distance < 0.5) {
+                        $distance_from_center = 10;
+                    } elseif ($distance < 1) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 2) {
+                        $distance_from_center = 12;
+                    } elseif ($distance < 3) {
+                        $distance_from_center = 14;
+                    } elseif ($distance <= 5) {
+                        $distance_from_center = 16;
+                    }
+                } else if ($related_user->radius <= 10) {
+                    if ($distance < 0.5) {
+                        $distance_from_center = 9;
+                    } elseif ($distance < 1) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 2) {
+                        $distance_from_center = 12;
+                    } elseif ($distance < 5) {
+                        $distance_from_center = 14;
+                    } elseif ($distance > 7) {
+                        $distance_from_center = 16;
+                    }
+                } else if ($related_user->radius < 500) {
+                    if ($distance < 2) {
+                        $distance_from_center = 8;
+                    } elseif ($distance < 5) {
+                        $distance_from_center = 10;
+                    } elseif ($distance < 20) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 40) {
+                        $distance_from_center = 12;
+                    } elseif ($distance < 70) {
+                        $distance_from_center = 14;
+                    } elseif ($distance <= 100) {
+                        $distance_from_center = 16;
+                    }
+                } else if ($related_user->radius >= 500) {
+                    if ($distance < 2) {
+                        $distance_from_center = 8;
+                    } elseif ($distance < 10) {
+                        $distance_from_center = 10;
+                    } elseif ($distance < 50) {
+                        $distance_from_center = 11;
+                    } elseif ($distance < 100) {
+                        $distance_from_center = 12;
+                    } elseif ($distance < 1000) {
+                        $distance_from_center = 14;
+                    } elseif ($distance >= 1000) {
+                        $distance_from_center = 16;
+                    }
+                }
+            } else {
+                $distance_from_center = 8;
+            } ?>
 
             <!--                //link to click to show modal-->
             <a href="#" data-open="modal-<?php echo $related_user->id; ?>"
@@ -169,13 +170,12 @@
                     <a href="/users/view/<?php echo $related_user->id; ?>">
                         <div class="profile-picture-small profile-picture small-2 columns"
                              style="background-image: url(/img/<?php echo $related_profile_img; ?>)"></div>
+                        <div class="small-9 medium-7 columns">
+                            <h4 class="align-middle"><?= h($related_user->firstname) ?></h4>
+                            <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
+                        </div>
                     </a>
-                    <div class="small-10 medium-7 columns">
-                        <a href="/users/view/<?php echo $related_user->id; ?>">
-                            <h4><?= h($related_user->firstname) ?></h4>
-                        </a>
-                        <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
-                    </div>
+
                     <div class="small-10 medium-3 columns">
                         <?= $this->Html->link(__('All Messages'), ['controller' => 'messages', 'action' => 'view', $related_user->id]) ?>
                         <?= $this->Html->link(__('Hide from connections'), ['action' => 'hide-user', $related_user->id]) ?>
@@ -233,7 +233,12 @@
         } else {
             $other = 'dark';
         } ?>
-        <div class="radius-form columns small-12 medium-6 large-3">
+        <div class="radius-form columns small-12 medium-5 large-3">
+            <div class="all-users show-for-small-only text-center">
+                <a href="/users" class="red-button">See all</a>
+
+            </div>
+
             <div class="location">
                 <p class="small-text">We think you're in <span id="my-location"></span>. If we're wrong, please <a
                             href="/users/edit/<?php echo $user->id; ?>" class="underline-hover underline">update
@@ -241,7 +246,7 @@
             </div>
         </div>
 
-        <div class="radius-form columns small-12 medium-6 large-9 medium-text-right small-text-left">
+        <div class="radius-form columns small-12 medium-7 large-9 medium-text-right small-text-left">
             <a href="/users/switch-theme" class="small-text">Switch to <?php echo $other; ?> theme</a>
 
         </div>

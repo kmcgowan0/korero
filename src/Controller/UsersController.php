@@ -20,6 +20,7 @@ use Cake\Network\Session\DatabaseSession;
 class UsersController extends AppController
 {
 
+
     /**
      * Index method
      *
@@ -27,6 +28,7 @@ class UsersController extends AppController
      */
     public function index($sort = null)
     {
+
 
         $id = $this->Auth->user('id');
         $user = $this->Users->get($id, [

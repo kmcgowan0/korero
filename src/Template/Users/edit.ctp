@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+$this->assign('title', 'Edit account');
 ?>
 <?php if ($my_profile) : ?>
     <?php if ($user->upload) :
@@ -10,7 +11,8 @@
     else :
         $profile_img = 'placeholder.png';
     endif; ?>
-    <div class="users form large-9 medium-8 columns content">
+<div class="row">
+    <div class="users form small-12 medium-6 medium-offset-3 columns content edit-form">
         <?= $this->Form->create($user, ['enctype' => 'multipart/form-data']) ?>
         <fieldset>
             <legend><?= __('Edit User') ?></legend>
@@ -41,3 +43,4 @@
 
 <?php endif; ?>
 <p id="my-location"></p>
+</div>

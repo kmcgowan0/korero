@@ -1,3 +1,24 @@
+.mb-1 {
+    margin-bottom: 1em;
+}
+.mb-2 {
+    margin-bottom: 2em;
+}
+.mb-3 {
+    margin-bottom: 3em;
+}
+.mb-4 {
+    margin-bottom: 4em;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+h1 {
+    font-size: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 1em;
+}
 .container {
     min-height: 80vh;
 }
@@ -12,7 +33,7 @@
     background: linear-gradient(#29264a, #130f36);
     color: #fff;
 }
-.dark-theme a, .dark-theme h6, .dark-theme h5, .dark-theme h4, .dark-theme h1, .dark-theme label {
+.dark-theme a, .dark-theme h6, .dark-theme h5, .dark-theme h4, .dark-theme h1, .dark-theme h2, .dark-theme label {
     color: #fff;
 }
 .hidden {
@@ -27,6 +48,10 @@
 .logo {
     padding: 0.25em;
     width: 150px;
+}
+.footer-logo {
+    padding: 0.25em;
+    width: 110px;
 }
 .logo-home {
     width: 250px;
@@ -63,7 +88,10 @@
     margin-left: 0;
 }
 .connections-options {
-    margin-top: 4em;
+    margin-top: 8em;
+}
+.radius-options {
+    margin-bottom: 6em;
 }
 .small-text {
     font-size: 0.8rem;
@@ -71,6 +99,7 @@
 input.header-search {
     background: transparent;
     border: none;
+    margin-bottom: 1em;
     border-bottom: 1px solid #cacaca;
 }
 input.header-search:focus {
@@ -79,8 +108,15 @@ input.header-search:focus {
     border-bottom: 1px solid #cacaca;
     color: #fff;
 }
+.input.file {
+    text-align: center;
+    width: 210px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+}
 .search-column {
-    padding-bottom: 1em;
+    /*padding-bottom: 1em;*/
 }
 .blocked {
     color: #ff1e19;
@@ -120,6 +156,10 @@ input.header-search:focus {
 .profile-picture-small {
     height:80px;
     width:80px;
+}
+.profile-picture-extra-medium {
+    height:110px;
+    width:110px;
 }
 .profile-picture-medium {
     height:180px;
@@ -164,6 +204,35 @@ input.header-search:focus {
     width: 4em; height: 4em;
     margin: -2em;
     z-index: 100;
+}
+.single-user {
+    padding: 2em;
+}
+.single-user p {
+    margin-bottom: 0;
+}
+.single-user .user-detail p, .single-user .user-detail a, .single-user .user-detail span {
+    padding: 0.25em;
+}
+.single-user h4 {
+    margin-bottom: 0;
+}
+.single-user a.red-button {
+    padding: 0.5em;
+    margin: 0 0.5em 0 0;
+}
+.single-user .red-button:hover {
+    padding: 0.5em;
+    margin: 0 0.5em 0 0;
+}
+.single-user .user-detail {
+    padding: 0 3em;
+}
+p.margin-bottom {
+    margin-bottom: 1em;
+}
+.grey-area {
+    background-color: #efefef;
 }
 
 .profile-info {
@@ -229,8 +298,15 @@ input.header-search:focus {
 .radius-form {
     padding: 2em 2em 0 2em;
 }
+.radius-update-form {
+    display: flex;
+}
+.radius-update-form button{
+    padding: 0.6em;
+}
 input.radius-input {
     width: 90px;
+    margin: 0 0.5em 0 0;
 }
 div.location p {
     font-size: 0.8rem;
@@ -272,7 +348,7 @@ div.location p {
     display: flex;
 }
 .current-interests-list a {
-    padding: 0 1em;
+    padding: 0 1em 0 0;
 }
 .new-interest {
     text-transform: capitalize;
@@ -280,6 +356,12 @@ div.location p {
 .selectable:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+.selected-items {
+    display: flex;
+}
+.selected-items a {
+    padding: 0 1em 0 0;
 }
 .close-button {
     background: transparent;
@@ -396,13 +478,16 @@ ul.interests {
 #all-users tr{
     display:none;
 }
+.full-user-list .single-user {
+    display: none;
+}
 .red-button {
+    display: inline-block;
     padding: 1em;
     margin: 1em 1em 1em 0;
     background-color: #f14c38;
     color: #fff;
     border-radius: 3px;
-    width: 110px;
 }
 .red-button:hover {
     padding: 1em;
@@ -410,7 +495,14 @@ ul.interests {
     background-color: #f15b4a;
     color: #fff;
     border-radius: 3px;
-    width: 110px;
+}
+.red-button.send-button {
+    border-radius: 3px;
+    border:none;
+    margin: 1em;
+}
+.search-options .red-button {
+    margin: 1em;
 }
 .see-all {
     color: white;
@@ -453,9 +545,38 @@ ul.interests {
      width: 50%;
      display: inline-block;
  }
-
+.all-users {
+    margin: 3em;
+}
+.date select[name="dob[year]"] {
+    width:29%;
+}
+.date select[name="dob[month]"] {
+width: 40%
+}
+.date select[name="dob[day]"] {
+width: 20%;
+}
+.edit-form .checkbox {
+    width: 100%;
+}
 @media screen and (max-width: 500px){
     .checkbox {
         width: 100%;
+    }
+    #messages {
+        height: 270px;
+    }
+}
+
+@media screen and (max-width: 640px){
+    .single-user .user-detail {
+        padding: 0;
+    }
+    .search-text {
+        padding-top: 0.5em;
+    }
+    .connections-options {
+        margin-top: 6em;
     }
 }

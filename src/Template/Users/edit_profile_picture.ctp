@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+$this->assign('title', 'Edit Profile Picture');
 ?>
 <?php if ($my_profile) : ?>
     <?php if ($user->upload) :
@@ -11,8 +12,7 @@
         $profile_img = 'placeholder.png';
     endif; ?>
 <div class="row">
-    <div class="small-12 columns text-center">
-<h4>Upload new profile picture</h4>
+    <div class="small-12 medium-6 medium-offset-3 large-4 large-offset-4 columns text-center">
 
     <?= $this->Form->create($user, ['enctype' => 'multipart/form-data']) ?>
     <fieldset>

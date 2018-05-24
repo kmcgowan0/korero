@@ -2,23 +2,23 @@
     $profile_img = $user->upload;
 } else {
     $profile_img = 'placeholder.png';
-} ?>
+}
+$this->assign('title', 'Search');
+?>
 
 <div class="container <?php echo $user->theme; ?>-theme">
-    <div class="row">
 
-    </div>
-    <div class="row">
-        <div class="radius-form columns small-12 medium-8">
-            <h4>People who like <?php echo $term; ?></h4>
-
-        </div>
-        <div class="radius-form columns small-12 medium-4">
+    <div class="row radius-options">
+        <div class="radius-form columns small-12 medium-4 small-6">
             <p>Currently showing users within <?php echo $user->radius; ?> miles of you.</p>
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create($user, ['class' => 'radius-update-form']) ?>
             <?= $this->Form->control('radius', ['label' => false, 'placeholder' => 'Update radius', 'class' => 'radius-input']) ?>
             <?= $this->Form->button(__('Update radius')) ?>
             <?= $this->Form->end() ?>
+        </div>
+        <div class="radius-form search-text columns small-12 medium-4 small-6 small-text-left medium-text-center">
+            <h5>People who like: <span class="uppercase"><?php echo $term; ?></span></h5>
+
         </div>
 
 
@@ -184,14 +184,14 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row search-options">
                     <div class="small-12 text-center">
                         <?php if ($related_user->accept_messages == 1 && count($related_interest_str) == 0) { ?>
                             <p>You can message <?php echo $related_user->firstname; ?>, but doing so will allow them to
                                 message you.</p>
                             <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'button']) ?>
                         <?php } else if (count($related_interest_str) > 0) { ?>
-                            <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'button']) ?>
+                            <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'red-button']) ?>
                         <?php } ?>
                     </div>
                 </div>
@@ -220,22 +220,24 @@
     </div>
     <div id="canvas"></div>
 
-    <div class="row">
+    <div class="row connections-options">
         <?php if ($user->theme == 'dark') {
             $other = 'light';
         } else {
             $other = 'dark';
         } ?>
-        <div class="radius-form columns small-12 medium-8">
-            <a href="/users/switch-theme">Switch to <?php echo $other; ?> theme</a>
-        </div>
+        <div class="radius-form columns small-12 medium-5 large-3">
 
-        <div class="radius-form columns small-12 medium-4">
             <div class="location">
-                <p>We think you're in <span id="my-location"></span>. If we're wrong, please <a
-                            href="/users/edit/<?php echo $user->id; ?>" class="underline underline-hover">update
+                <p class="small-text">We think you're in <span id="my-location"></span>. If we're wrong, please <a
+                            href="/users/edit/<?php echo $user->id; ?>" class="underline-hover underline">update
                         your location here</a></p>
             </div>
+        </div>
+
+        <div class="radius-form columns small-12 medium-7 large-9 medium-text-right small-text-left">
+            <a href="/users/switch-theme" class="small-text">Switch to <?php echo $other; ?> theme</a>
+
         </div>
     </div>
 </div>

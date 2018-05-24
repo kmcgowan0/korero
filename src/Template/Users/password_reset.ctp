@@ -1,3 +1,4 @@
+<?php $this->assign('title', 'Reset Password'); ?>
 <div class="users form large-9 medium-9 columns">
     <?= $this->Form->create() ?>
     <fieldset>
@@ -7,3 +8,4 @@
     </fieldset>
     <?= $this->Form->button(__('Save')) ?>
 <?= $this->Form->end() ?>
+</div>

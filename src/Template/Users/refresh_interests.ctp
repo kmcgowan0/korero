@@ -1,7 +1,7 @@
 <div class="row">
 <?php foreach ($user->interests as $interests): ?>
 
-        <div class="columns small-6 large-4 current-interests-list" data-id="<?= h($interests->id) ?>">
+        <div class="columns small-12 medium-6 large-4 current-interests-list" data-id="<?= h($interests->id) ?>">
             <?= $this->Form->postLink(
                 __('x'),
                 ['action' => 'remove-interest', $user->id, $interests->id],
