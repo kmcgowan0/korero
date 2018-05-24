@@ -6,7 +6,7 @@
 $this->assign('title', 'Connections');
 ?>
 
-<div class="container <?php echo $user->theme; ?>-theme connections">
+<div class="container <?php echo $user->theme; ?>-theme connections connection-view">
     <div class="row radius-options">
 
         <div class="radius-form columns small-12 medium-8">
@@ -204,16 +204,6 @@ $this->assign('title', 'Connections');
         $position = $position + $space_allocated;
         endforeach; ?>
 
-        <?php
-        if ($list_of_users->count() > 10) { ?>
-            <a href="/users" class="reveal-link">
-                <div class="related-user profile-picture extra-user"
-                     style="border: solid #000 2px; background: #000; transform: rotate(0deg) translate(25em) rotate(-0deg);">
-                    <p class="see-all">See all</p>
-                </div>
-            </a>
-        <?php } ?>
-
             <script>
                 var relatedUsers = <?php echo json_encode($related_users_var); ?>;
             </script>
@@ -226,18 +216,21 @@ $this->assign('title', 'Connections');
         <?php endif; ?>
     </div>
     <div id="canvas"></div>
-
     <div class="row connections-options">
+        <?php
+        if ($list_of_users->count() > 10) { ?>
+        <div class="radius-form columns small-12 medium-6 medium-offset-6 text-right">
+                <a href="/users" class="red-button">See all users</a><br>
+        </div>
+        <?php } ?>
+    </div>
+    <div class="row">
         <?php if ($user->theme == 'dark') {
             $other = 'light';
         } else {
             $other = 'dark';
         } ?>
         <div class="radius-form columns small-12 medium-5 large-3">
-            <div class="all-users show-for-small-only text-center">
-                <a href="/users" class="red-button">See all</a>
-
-            </div>
 
             <div class="location">
                 <p class="small-text">We think you're in <span id="my-location"></span>. If we're wrong, please <a
@@ -247,6 +240,7 @@ $this->assign('title', 'Connections');
         </div>
 
         <div class="radius-form columns small-12 medium-7 large-9 medium-text-right small-text-left">
+
             <a href="/users/switch-theme" class="small-text">Switch to <?php echo $other; ?> theme</a>
 
         </div>
@@ -259,8 +253,6 @@ $this->assign('title', 'Connections');
     var lng_connections = parseFloat(<?php echo json_encode($long); ?>);
     $(document).ready(function () {
         var geocoder = new google.maps.Geocoder;
-        console.log('lat ' + lat_connections);
-        console.log(lng_connections);
         geocodeLatLng(geocoder, lat_connections, lng_connections, '#my-location');
     });
 </script>
