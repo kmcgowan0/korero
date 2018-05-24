@@ -6,7 +6,7 @@
 $this->assign('title', 'Search');
 ?>
 
-<div class="container <?php echo $user->theme; ?>-theme">
+<div class="container <?php echo $user->theme; ?>-theme connection-view">
 
     <div class="row radius-options">
         <div class="radius-form columns small-12 medium-4 small-6">
@@ -247,8 +247,6 @@ $this->assign('title', 'Search');
     var lng_connections = parseFloat(<?php echo json_encode($long); ?>);
     $(document).ready(function () {
         var geocoder = new google.maps.Geocoder;
-        console.log('lat ' + lat_connections);
-        console.log(lng_connections);
         geocodeLatLng(geocoder, lat_connections, lng_connections, '#my-location');
     });
 </script>
