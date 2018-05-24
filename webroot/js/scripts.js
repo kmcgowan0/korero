@@ -4,19 +4,21 @@ $(document).ready(function () {
 
     getWindowSize();
 
-    // messageNotifications();
+    messageNotifications();
 
     if ($("div.connections").length > 0) {
         connectionMessageNotifications();
     }
 
     if ($("div.full-user-list").length > 0) {
-        var size_li = $("#all-users tr").length;
+        var size_li = $(".full-user-list .single-user").length;
         var x = 10;
-        $('#all-users tr:lt(' + x + ')').show();
+        console.log (size_li);
+        console.log(x);
+        $('.full-user-list .single-user:lt(' + x + ')').show();
         $('#load-more').click(function () {
             x = (x + 20 <= size_li) ? x + 5 : size_li;
-            $('#all-users tr:lt(' + x + ')').show();
+            $('.full-user-list .single-user:lt(' + x + ')').show();
             if (x == size_li) {
                 $('#load-more').hide();
             }
@@ -38,9 +40,8 @@ $(document).ready(function () {
             added.push(parseFloat($(this).val()));
         });
         if (jQuery.inArray(id, added) == -1) {
-            $('#selected').append('<div class="columns medium-6">' +
-                '<p class="new-interest">' + name + '</p>' +
-                '<button class="remove" id="' + id + '">Remove</button>' +
+            $('#selected').append('<div class="columns small-12 medium-6 selected-items">' +
+                '<a class="remove" id="' + id + '">x</a> <p class="new-interest">' + name + '</p>' +
                 '</div>' +
                 '');
             $('#selected-form').append('<input type="hidden" id="' + id + '" name="interests[_ids][]" value="' + id + '">');
@@ -51,21 +52,13 @@ $(document).ready(function () {
     var changeArray = [];
     changeArray['old'] = $('#notifications').html();
     changeArray['new'] = 0;
-    console.log('notif' + $('#notifications').html());
 
-    $('#notifications').bind("DOMSubtreeModified",function(){
-            changeArray['new'] = parseFloat($('#notifications').html());
+    $('#notifications').bind("DOMSubtreeModified", function () {
+        changeArray['new'] = parseFloat($('#notifications').html());
         if (changeArray['new'] > changeArray['old']) {
             notifyMe();
-            console.log(changeArray);
-
             changeArray['old'] = changeArray['new'];
         }
-        console.log(changeArray);
-        // console.log(changeArray['old']);
-        // console.log(changeArray['new']);
-        //     changeArray['old'] = changeArray['new'];
-        // changeArray['old'] = 1;
     });
 
 
@@ -75,7 +68,7 @@ $(document).ready(function () {
 
         scrollBottom();
         connectionMessages(liveMessageId);
-        $('#message-body' + liveMessageId).focus(function(){
+        $('#message-body' + liveMessageId).focus(function () {
             markRead(liveMessageId);
         });
         $('#related-user-' + liveMessageId).css('border', '2px solid #000');
@@ -95,10 +88,6 @@ $(document).ready(function () {
             }
         });
         changeArray['old'] = parseFloat($('#notifications').html()) || 0;
-        console.log('changes');
-        console.log(changeArray);
-
-
 
     });
 
@@ -201,9 +190,7 @@ $(document).ready(function () {
         }
     });
 
-    Notification.requestPermission().then(function(result) {
-        console.log(result);
-
+    Notification.requestPermission().then(function (result) {
     });
 
 });
@@ -239,7 +226,6 @@ function notifyMe() {
     // Finally, if the user has denied notifications and you
     // want to be respectful there is no need to bother them any more.
 }
-
 
 
 function search(term) {
@@ -324,13 +310,12 @@ function bindFunc() {
         $('#' + id).remove();
     });
 }
+
 function connectionMessageNotifications() {
-    console.log('hello');
     $.get({
         url: '/messages/messages-notifications/',
         success: function (data) {
             $('.unread-messages-script').html(data);
-            // console.log(data);
 
             $.each(unreadMessages, function (i, value) {
                 $('#related-user-' + i).css('border', 'solid #d33c44 4px');
@@ -348,7 +333,6 @@ function connectionMessageNotifications() {
 }
 
 function messageNotifications() {
-    console.log('bye bitch');
     $.get({
         url: '/messages/unread-messages/',
         success: function (data) {
