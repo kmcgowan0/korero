@@ -18,6 +18,16 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119882173-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-119882173-1');
+    </script>
+
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -115,14 +125,14 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             </div>
             <div class="small-12 medium-4 columns">
                 <p><strong>About Korero</strong></p>
-                <p>Korero means conversation. Connect and converse with new people in your area based on similar
+                <p>Korero means conversation. Connect and talk to new people in your area based on similar
                     interests.
                 </p>
             </div>
             <div class="small-12 medium-3 columns">
                 <p><strong>Quick Links</strong></p>
                 <ul class="footer-links">
-                    <li><a href="#">About</a></li>
+                    <li><?= $this->Html->link(__('About'), ['controller' => 'Pages', 'action' => 'about']) ?></li>
                     <li><?= $this->Html->link(__('Contact'), ['controller' => 'Pages', 'action' => 'contact']) ?></li>
 
                 </ul>
