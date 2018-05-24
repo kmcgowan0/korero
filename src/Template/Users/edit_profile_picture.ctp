@@ -11,7 +11,7 @@ $this->assign('title', 'Edit Profile Picture');
     else :
         $profile_img = 'placeholder.png';
     endif; ?>
-<div class="row">
+<div class="row view-profile">
     <div class="small-12 medium-6 medium-offset-3 large-4 large-offset-4 columns text-center">
 
     <?= $this->Form->create($user, ['enctype' => 'multipart/form-data']) ?>
