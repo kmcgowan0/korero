@@ -5,9 +5,9 @@
  */
 $this->assign('title', 'View Profile');
 ?>
-<div class="container view-profile">
-    <div class="row">
-        <div class="large-3 medium-4 columns small-12">
+<div class="container ">
+    <div class="row" data-equalizer data-equalize-on="medium">
+        <div class="large-3 medium-4 columns small-12 grey-area view-profile" data-equalizer-watch>
             <?php if ($user->upload) :
                 $profile_img = $user->upload;
             else :
@@ -22,10 +22,35 @@ $this->assign('title', 'View Profile');
             } ?>
             <div class="profile-picture-large profile-picture main-profile-picture"
                  style="background-image: url(/img/<?php echo $profile_img; ?>)"></div>
+            <?php if ($my_profile == true) { ?>
+                <ul class="profile-links">
+                    <li><?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('Edit Interests'), ['action' => 'edit-interests', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('Edit Profile picture'), ['action' => 'edit-profile-picture', $user->id]) ?></li>
+                    <li><?= $this->Html->link(__('Remove Profile picture'), ['action' => 'remove-profile-picture']) ?></li>
+                    <li><?= $this->Html->link(__('Reset Password'), ['action' => 'password-reset', $user->id]) ?></li>
+
+                </ul>
+            <?php } else { ?>
+            <ul class="profile-links">
+                <li><?= $this->Html->link(__('Message ' . $user->firstname), ['controller' => 'Messages', 'action' => 'view', $user->id]) ?></li>
+                <?php if ($hidden_user) { ?>
+                    <p><?php echo $user->firstname; ?> is currently hidden on the connections page.</p>
+                    <li><?= $this->Html->link(__('Show ' . $user->firstname . ' on connections page '), ['action' => 'unhide-user', $user->id]) ?></>
+                <?php } else { ?>
+                    <li><?= $this->Html->link(__('Hide ' . $user->firstname . ' from connections page '), ['action' => 'hide-user', $user->id]) ?></li>
+                <?php } ?>
+                <li> <?= $this->Form->postLink(
+                        __('Block this user'),
+                        ['action' => 'block-user', $user->id],
+                        ['confirm' => __('Are you sure? You will no longer be able to view each other\'s profiles or send each other messages')]
+                    )
+                    ?></li>
+                <?php } ?>
         </div>
-        <div class="users view large-9 medium-8 columns content small-12">
+        <div class="users view large-9 medium-8 columns content small-12 view-profile" data-equalizer-watch>
             <div class="info">
-                <h3><?= h($user->firstname) ?>, <?= $user_age ?></h3>
+                <h4><?= h($user->firstname) ?>, <?= $user_age ?></h4>
             </div>
             <!--        If the user has been blocked by the logged in user-->
             <?php if ($blocked_user) { ?>
@@ -47,20 +72,13 @@ $this->assign('title', 'View Profile');
                             array_push($interests_string, $interests);
                         endforeach; ?>
                         <div class="related">
-                            <h4>You both like <?php echo implode(", ", $interests_string); ?></h4>
-                            <h6><?= $this->Html->link(__('Message ' . $user->firstname), ['controller' => 'Messages', 'action' => 'view', $user->id]) ?></h6>
-                            <?php if ($hidden_user) { ?>
-                                <p><?php echo $user->firstname; ?> is currently hidden on the connections page.</p>
-                                <h6><?= $this->Html->link(__('Show ' . $user->firstname . ' on connections page '), ['action' => 'unhide-user', $user->id]) ?></h6>
-                            <?php } else { ?>
-                                <h6><?= $this->Html->link(__('Hide ' . $user->firstname . ' from connections page '), ['action' => 'hide-user', $user->id]) ?></h6>
-                            <?php } ?>
-                            <h6> <?= $this->Form->postLink(
-                                    __('Block this user'),
-                                    ['action' => 'block-user', $user->id],
-                                    ['confirm' => __('Are you sure? You will no longer be able to view each other\'s profiles or send each other messages')]
-                                )
-                                ?></h6>
+                            <h4>Interests</h4>
+                            <?php foreach ($interests_string as $interest) { ?>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <p><?php echo $interest; ?></p>
+                                </div>
+                                <?php
+                            } ?>
 
                         </div>
                     <?php endif; ?>
@@ -75,42 +93,22 @@ $this->assign('title', 'View Profile');
             }
             ?>
             <?php if ($my_profile == true) { ?>
-                <ul class="profile-links">
-                    <li><?= $this->Html->link(__('Reset Password'), ['action' => 'password-reset', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('Edit Account'), ['action' => 'edit', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('Edit Interests'), ['action' => 'edit-interests', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('Edit Profile picture'), ['action' => 'edit-profile-picture', $user->id]) ?></li>
-                    <li><?= $this->Html->link(__('Remove Profile picture'), ['action' => 'remove-profile-picture']) ?></li>
-                </ul>
-                <table class="vertical-table">
-                    <tr>
-                        <th scope="row"><?= __('Email') ?></th>
-                        <td><?= h($user->email) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?= __('First Name') ?></th>
-                        <td><?= h($user->firstname) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?= __('Last Name') ?></th>
-                        <td><?= h($user->lastname) ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?= __('Age') ?></th>
-                        <td><?= $user_age ?></td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?= __('Location') ?></th>
-                        <td><span id="my-location"></span></td>
-                    </tr>
-                </table>
+                <div class="secondary-info">
+                    <p><span id="my-location"></span></p>
+                    <p><?= h($user->email) ?></p>
+                </div>
+
                 <?php if (!empty($user->interests)): ?>
                     <div class="related">
                         <h4><?= __('Interests') ?></h4>
                         <ul class="interests">
-                            <?php foreach ($mutual_interest_array as $interests): ?>
-                                <li><?= h($interests) ?></li>
-                            <?php endforeach; ?>
+                            <?php
+                            foreach ($mutual_interest_array as $interests): ?>
+                                <div class="small-12 medium-6 large-3 columns">
+                                    <p><?= h($interests) ?></p>
+                                </div>
+                            <?php
+                            endforeach; ?>
                         </ul>
 
                     </div>
@@ -134,8 +132,6 @@ $this->assign('title', 'View Profile');
     var lng_connections = parseFloat(<?php echo json_encode($long); ?>);
     $(document).ready(function () {
         var geocoder = new google.maps.Geocoder;
-        console.log('lat ' + lat_connections);
-        console.log(lng_connections);
         geocodeLatLng(geocoder, lat_connections, lng_connections, '#my-location');
     });
 </script>
