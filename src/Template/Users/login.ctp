@@ -4,8 +4,8 @@
         <div class="columns small-12 medium-6 medium-offset-3 text-center large-4 large-offset-4">
             <img src="/img/logo-home.png" class="logo-home">
             <p class="intro-text">
-               Korero means conversation. Connect and converse with new people in your area based on similar interests.
-            </p>
+                Korero means conversation. Connect and talk to new people in your area based on similar
+                interests. </p>
         </div>
     </div>
     <div class="row">
