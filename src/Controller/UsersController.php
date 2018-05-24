@@ -510,8 +510,6 @@ class UsersController extends AppController
 
                 }
                 $user_data['upload'] = $imageFileName;
-            } elseif ($user_data['remove-profile'] == 'yes') {
-                $user_data['upload'] = '';
             } else {
                 $user_data['upload'] = $user->getOriginal('upload');
             }
