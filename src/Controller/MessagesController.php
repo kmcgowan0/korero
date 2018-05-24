@@ -270,6 +270,23 @@ class MessagesController extends AppController
             $message_threads[$messaged_user] = $messages_in_thread;
 
         }
+        $sent_time_sort = array();
+        $unique_user_array = array();
+        foreach ($message_threads as $id => $message_thread) {
+            if (!in_array($id, $unique_user_array)) {
+                array_push($unique_user_array, $id);
+                foreach ($message_thread as $key => $message) {
+                    if ($message['sender'] == $this->Auth->user('id')) {
+                        $sent_time_sort[$message['recipient']] = $message['sent'];
+                    } else if ($message['recipient'] == $this->Auth->user('id')) {
+                        $sent_time_sort[$message['sender']] = $message['sent'];
+                    }
+                }
+            }
+
+        }
+
+        array_multisort($sent_time_sort, SORT_DESC, $message_threads);
 
 
         $this->set(compact('message_threads', 'user_array'));
