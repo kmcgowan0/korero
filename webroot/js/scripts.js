@@ -40,13 +40,40 @@ $(document).ready(function () {
             added.push(parseFloat($(this).val()));
         });
         if (jQuery.inArray(id, added) == -1) {
-            $('#selected').append('<div class="columns small-12 medium-6 selected-items">' +
+            $('#selected').append('<div class="columns small-12 medium-6 large-4 selected-items">' +
                 '<a class="remove" id="' + id + '">x</a> <p class="new-interest">' + name + '</p>' +
                 '</div>' +
                 '');
             $('#selected-form').append('<input type="hidden" id="' + id + '" name="interests[_ids][]" value="' + id + '">');
         }
         bindFunc();
+    });
+
+    $('#new-interest-form').submit(function (event) {
+        event.preventDefault();
+        var name = $('#search').val();
+        var $form = $(this),
+            url = $form.attr('action');
+        var posting = $.post(url, {name: name});
+        posting.done(function (data) {
+            var ids = [];
+            $('.current-interests-list').each(function () {
+                var id = $(this).data('id');
+                ids.push(id);
+            });
+            var secondLastID = ids.slice(-1)[0];
+            var lastID = secondLastID + (1);
+            $("#new-interest-form")[0].reset();
+            refreshInterests();
+            $('#selected').append('<div class="columns small-12 medium-6 large-4 selected-items">' +
+                '<a class="remove" id="' + lastID + '">x</a> <p class="new-interest">' + name + '</p>' +
+                '</div>');
+            $('#selected-form').append('<input type="hidden" id="' + lastID + '" name="interests[_ids][]" value="' + lastID + '">');
+            bindFunc();
+
+        });
+
+
     });
 
     var changeArray = [];
@@ -154,23 +181,6 @@ $(document).ready(function () {
         form.submit();
     });
 
-    $('#new-interest-form').submit(function (event) {
-        event.preventDefault();
-        var name = $('#search').val();
-        var $form = $(this),
-            url = $form.attr('action');
-        var posting = $.post(url, {name: name});
-        posting.done(function (data) {
-            $("#new-interest-form")[0].reset();
-            refreshInterests();
-            $('#selected').append('<div>' +
-                '<p>' + name + '</p>' +
-                '<button class="remove">Remove</button>' +
-                '</div>' +
-                '');
-        });
-
-    });
 
     if ($("div#messages").length > 0) {
         refreshMessages(messageId);
@@ -263,18 +273,18 @@ function refreshInterests() {
             $('#interests-list').html(data);
         },
         complete: function () {
-            // Schedule the next
-            var ids = [];
-            $('.current-interests-list').each(function () {
-                var id = $(this).data('id');
-                ids.push(id);
-            });
-            $(ids).each(function (i, val) {
-                $('#selected-form').append('<input type="hidden" id="' + val + '" name="interests[_ids][]" value="' + val + '">');
-            })
         }
     });
 
+}
+
+function formChanged(form) {
+    form.find('input[type="text"]').each(function (elem) {
+        if (elem.defaultValue != elem.value) {
+            return true;
+        }
+    });
+    return false;
 }
 
 function connectionMessages(messageId) {

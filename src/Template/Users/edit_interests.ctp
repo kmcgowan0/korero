@@ -31,7 +31,7 @@ $this->assign('title', 'Edit Interests');
         <div id="results"></div>
         </div>
         <div class="row">
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create($user, ['id' => 'add-interests-form']) ?>
             <fieldset>
                 <h4>Top Interests</h4>
                 <?php echo $this->Form->control('interests._ids', ['options' => $top_interests, 'multiple' => 'checkbox', 'label' => false, 'class' => 'half-width']);
@@ -54,6 +54,6 @@ $this->assign('title', 'Edit Interests');
     </div>
 </div>
 
-
-
-
+<script>
+    var userId = <?php echo json_encode($user->id); ?>;
+</script>
