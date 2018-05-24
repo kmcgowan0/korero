@@ -13,8 +13,6 @@ $(document).ready(function () {
     if ($("div.full-user-list").length > 0) {
         var size_li = $(".full-user-list .single-user").length;
         var x = 10;
-        console.log (size_li);
-        console.log(x);
         $('.full-user-list .single-user:lt(' + x + ')').show();
         $('#load-more').click(function () {
             x = (x + 20 <= size_li) ? x + 5 : size_li;
@@ -86,6 +84,7 @@ $(document).ready(function () {
             notifyMe();
             changeArray['old'] = changeArray['new'];
         }
+
     });
 
 
@@ -318,6 +317,8 @@ function bindFunc() {
         var id = $(this).attr('id');
         $(this).parent().remove();
         $('#' + id).remove();
+        var hideInterest = '[data-id=' + id + ']';
+        $(hideInterest).css('display', 'none');
     });
 }
 
@@ -346,7 +347,12 @@ function messageNotifications() {
     $.get({
         url: '/messages/unread-messages/',
         success: function (data) {
-            $('#notifications').html(data);
+            if (data.length > 0) {
+                $('#notifications').html('(' + data + ')');
+            } else {
+                $('#notifications').html('');
+
+            }
         }
     })
 }
@@ -389,20 +395,6 @@ function geocodeLatLng(geocoder, lat, lng, output) {
                 window.alert('No results found');
             }
         } else {
-        }
-    });
-}
-
-function geocodeTown(address) {
-    var geocoder = new google.maps.Geocoder;
-    geocoder.geocode({'address': address}, function (results, status) {
-        if (status === 'OK') {
-            //In this case it creates a marker, but you can get the lat and lng from the location.LatLng
-            var lat = results[0].geometry.location.lat();
-            var lng = results[0].geometry.location.lng();
-            $('#location-coords').val(lat + ',' + lng);
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
         }
     });
 }
