@@ -851,13 +851,20 @@ class UsersController extends AppController
 
         if (count($top_interest_ids) > 0) {
             $list_of_users = $this->Users->find('all', ['contain' => ['Interests']])->where(['id IN' => $top_interest_ids]);
-
+            $user_list = $list_of_users->toArray();
+            $interest_sort = array();
+            foreach ($user_list as $single_list) {
+                $count = count($single_list['interests']);
+                $interest_sort[$single_list['id']] = $count;
+            }
+            array_multisort($interest_sort, SORT_DESC, $user_list);
             //for each user get the distance from the main user
-            foreach ($list_of_users as $distinct_user) {
+            foreach ($user_list as $distinct_user) {
                 $blocked_user = $this->Blocked->blockedUser($distinct_user, $user);
                 $blocked_by = $this->Blocked->blockedBy($distinct_user, $user);
                 $hidden_user = $this->Hidden->hiddenUser($distinct_user, $user);
                 $distance = $this->Distance->getDistance($user['location'], $distinct_user['location']);
+
 //            if the user is within the radius and in the top users array add it to the users in radius var
                 if ($distance <= $user['radius'] && $blocked_user == false && $blocked_by == false && $hidden_user == false && $array_count < 10 && $user['id'] != $distinct_user['id']) {
                     array_push($users_in_radius, $distinct_user);
@@ -871,6 +878,7 @@ class UsersController extends AppController
 //            $mutual_interests = $this->Mutual->getMutual($user->interests, )
 //                $number_in_common =
                 $users_in_radiu['distance'] = $distance;
+
             }
         }
 
@@ -904,11 +912,12 @@ class UsersController extends AppController
         $width = $this->request->session()->read('screen_size');
 
 
-        $this->set(compact('user', 'user_matching_data', 'top_user', 'list_of_users', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'top_interests', 'interest_count', 'width', 'unread_messages'));
+        $this->set(compact('user', 'user_matching_data', 'top_user', 'list_of_users', 'message', 'users_in_radius', 'space_allocated', 'number_of_interests', 'top_interests', 'interest_count', 'width', 'user_list', 'unread_messages'));
         $this->set('_serialize', ['user']);
     }
 
-    public function switchTheme() {
+    public function switchTheme()
+    {
         $id = $this->Auth->user('id');
         $user = $this->Users->get($id, [
             'contain' => ['Interests']
