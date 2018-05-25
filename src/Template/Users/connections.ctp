@@ -170,15 +170,15 @@ $this->assign('title', 'Connections');
                     <a href="/users/view/<?php echo $related_user->id; ?>">
                         <div class="profile-picture-small profile-picture small-2 columns"
                              style="background-image: url(/img/<?php echo $related_profile_img; ?>)"></div>
-                        <div class="small-9 medium-7 columns">
+                        <div class="small-9 medium-5 columns">
                             <h4 class="align-middle"><?= h($related_user->firstname) ?></h4>
                             <p>You both like <?php echo implode(", ", $related_interest_str); ?></p>
                         </div>
                     </a>
 
-                    <div class="small-10 medium-3 columns">
-                        <?= $this->Html->link(__('All Messages'), ['controller' => 'messages', 'action' => 'view', $related_user->id]) ?>
-                        <?= $this->Html->link(__('Hide from connections'), ['action' => 'hide-user', $related_user->id]) ?>
+                    <div class="small-10 medium-5 columns connections-buttons">
+                        <?= $this->Html->link(__('All messages'), ['controller' => 'messages', 'action' => 'view', $related_user->id], ['class' => 'red-button']) ?><br>
+                        <?= $this->Html->link(__('Hide from connections'), ['action' => 'hide-user', $related_user->id], ['class' => 'red-button']) ?>
                     </div>
                 </div>
 
@@ -216,6 +216,7 @@ $this->assign('title', 'Connections');
         <?php endif; ?>
     </div>
     <div id="canvas"></div>
+    <?php if (count($users_in_radius)) { ?>
     <div class="row connections-options">
         <?php
         if ($list_of_users->count() > 10) { ?>
@@ -224,6 +225,7 @@ $this->assign('title', 'Connections');
         </div>
         <?php } ?>
     </div>
+    <?php } ?>
     <div class="row">
         <?php if ($user->theme == 'dark') {
             $other = 'light';

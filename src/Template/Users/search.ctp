@@ -189,7 +189,7 @@ $this->assign('title', 'Search');
                         <?php if ($related_user->accept_messages == 1 && count($related_interest_str) == 0) { ?>
                             <p>You can message <?php echo $related_user->firstname; ?>, but doing so will allow them to
                                 message you.</p>
-                            <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'button']) ?>
+                            <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'red-button']) ?>
                         <?php } else if (count($related_interest_str) > 0) { ?>
                             <?= $this->Html->link(__('Message ' . $related_user->firstname), ['controller' => 'Messages', 'action' => 'view', $related_user->id], ['class' => 'red-button']) ?>
                         <?php } ?>

@@ -365,11 +365,11 @@ class UsersController extends AppController
             $user_data['lastname'] = ucwords($user_data['lastname']);
             $user = $this->Users->patchEntity($user, $user_data);
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+                $this->Flash->success(__('Your account has been created.'));
 
                 return $this->redirect(['action' => 'login']);
             }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            $this->Flash->error(__('There was a problem with your account. Please check below for errors.'));
         }
 
 
@@ -518,7 +518,6 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $user_data);
 
             if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
 
                 return $this->redirect(['action' => 'view', $user->id]);
             }
@@ -718,8 +717,8 @@ class UsersController extends AppController
                 ['validate' => 'password']
             );
             if ($this->Users->save($user)) {
-                $this->Flash->success('The password is successfully changed');
-                return $this->redirect(['action' => 'index']);
+                $this->Flash->success('The password was successfully changed');
+                return $this->redirect(['action' => 'view', $this->Auth->user('id')]);
             } else {
                 $this->Flash->error('There was an error during the save!');
             }

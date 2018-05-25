@@ -712,6 +712,15 @@ ul.interests {
 .about-text {
 padding-top: 3em;
 }
+#notifications {
+    color: #f14c38;
+}
+.connections-buttons .red-button {
+    margin-top: 0.25em;
+}
+button:hover {
+    background-color: #f15b4a;
+}
 @media screen and (max-width: 500px) {
     .checkbox {
         width: 100%;

@@ -42,7 +42,7 @@ $(document).ready(function () {
                 '<a class="remove" id="' + id + '">x</a> <p class="new-interest">' + name + '</p>' +
                 '</div>' +
                 '');
-            $('#selected-form').append('<input type="hidden" id="' + id + '" name="interests[_ids][]" value="' + id + '">');
+            $('#selected-form').append('<input type="hidden" id="' + id + '" class="' + name + '" name="interests[_ids][]" value="' + id + '">');
         }
         bindFunc();
     });
@@ -54,37 +54,29 @@ $(document).ready(function () {
             url = $form.attr('action');
         var posting = $.post(url, {name: name});
         posting.done(function (data) {
-            var ids = [];
-            $('.current-interests-list').each(function () {
-                var id = $(this).data('id');
-                ids.push(id);
-            });
-            var secondLastID = ids.slice(-1)[0];
-            var lastID = secondLastID + (1);
             $("#new-interest-form")[0].reset();
             refreshInterests();
             $('#selected').append('<div class="columns small-12 medium-6 large-4 selected-items">' +
-                '<a class="remove" id="' + lastID + '">x</a> <p class="new-interest">' + name + '</p>' +
-                '</div>');
-            $('#selected-form').append('<input type="hidden" id="' + lastID + '" name="interests[_ids][]" value="' + lastID + '">');
-            bindFunc();
-
+                '<a class="remove">x</a> <p class="new-interest">' + name + '</p>' +
+                '</div>' +
+                '');
         });
 
 
     });
 
     var changeArray = [];
-    changeArray['old'] = $('#notifications').html();
+    changeArray['old'] = 0;
     changeArray['new'] = 0;
 
     $('#notifications').bind("DOMSubtreeModified", function () {
-        changeArray['new'] = parseFloat($('#notifications').html());
+        var notifications = $('#notifications').html();
+        console.log(parseFloat(notifications));
+        changeArray['new'] = notifications;
         if (changeArray['new'] > changeArray['old']) {
             notifyMe();
             changeArray['old'] = changeArray['new'];
         }
-
     });
 
 
@@ -272,6 +264,15 @@ function refreshInterests() {
             $('#interests-list').html(data);
         },
         complete: function () {
+            // Schedule the next
+            var ids = [];
+            $('.current-interests-list').each(function () {
+                var id = $(this).data('id');
+                ids.push(id);
+            });
+            $(ids).each(function (i, val) {
+                $('#selected-form').append('<input type="hidden" id="' + val + '" name="interests[_ids][]" value="' + val + '">');
+            })
         }
     });
 
@@ -347,12 +348,7 @@ function messageNotifications() {
     $.get({
         url: '/messages/unread-messages/',
         success: function (data) {
-            if (data.length > 0) {
-                $('#notifications').html('(' + data + ')');
-            } else {
-                $('#notifications').html('');
-
-            }
+            $('#notifications').html(data);
         }
     })
 }

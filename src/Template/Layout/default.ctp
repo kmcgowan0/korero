@@ -57,7 +57,12 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area small-8 large-3 medium-4 columns">
             <li class="name">
-                <a href="/users/connections"><img src="/img/logo-header.png" class="logo"></a>
+                <?php if ($authUser) {
+                    $home_link = '/users/connections';
+                } else {
+                    $home_link = '/';
+                } ?>
+                <a href="<?php echo $home_link; ?>"><img src="/img/logo-header.png" class="logo"></a>
             </li>
         </ul>
 

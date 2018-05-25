@@ -86,7 +86,6 @@ $this->assign('title', 'View Profile');
                     <p>You and <?= h($user->firstname) ?> have no mutual interests.</p>
                     <?php if ($user->accept_messages == 1) { ?>
                         <p>You can still send <?= h($user->firstname) ?> messages.</p>
-                        <h6><?= $this->Html->link(__('Message ' . $user->firstname), ['controller' => 'Messages', 'action' => 'view', $user->id]) ?></h6>
                     <?php }
                 }
                 //give option to message if have no mututal interests
